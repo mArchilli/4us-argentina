@@ -15,7 +15,7 @@ export default function Welcome({ auth, featuredProducts }) {
             <div className="bg-[#0e0e0e] text-white min-h-screen overflow-x-hidden">
                 <Navbar auth={auth} />
 
-                <main className="pt-24">
+                <main>
                     <HeroSection />
                     <AboutSection />
                     <FeaturedSection products={featuredProducts} />

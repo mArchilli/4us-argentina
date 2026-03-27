@@ -16,7 +16,7 @@ return [
     |
     */
 
-    'products_images_path'     => env('PUBLIC_PRODUCTS_IMAGES_PATH', 'images'),
-    'products_images_url_path' => env('PUBLIC_PRODUCTS_IMAGES_URL_PATH', 'images'),
+    'products_images_path'     => env('PUBLIC_PRODUCTS_IMAGES_PATH', 'images/products'),
+    'products_images_url_path' => env('PUBLIC_PRODUCTS_IMAGES_URL_PATH', 'images/products'),
 
 ];
