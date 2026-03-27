@@ -1,7 +1,34 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function ContactSection() {
     const [form, setForm] = useState({ name: '', email: '', message: '' });
+
+    const infoRef = useRef(null);
+    const formRef = useRef(null);
+
+    useEffect(() => {
+        const ctx = gsap.context(() => {
+            gsap.fromTo(infoRef.current,
+                { x: -40, opacity: 0 },
+                {
+                    x: 0, opacity: 1, duration: 1, ease: 'power3.out',
+                    scrollTrigger: { trigger: infoRef.current, start: 'top 85%', once: true },
+                }
+            );
+            gsap.fromTo(formRef.current,
+                { x: 40, opacity: 0 },
+                {
+                    x: 0, opacity: 1, duration: 1, ease: 'power3.out',
+                    scrollTrigger: { trigger: formRef.current, start: 'top 85%', once: true },
+                }
+            );
+        });
+        return () => ctx.revert();
+    }, []);
 
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
@@ -17,7 +44,7 @@ export default function ContactSection() {
         <section id="contacto" className="py-24 px-6 md:px-16 max-w-7xl mx-auto">
             <div className="bg-[#262626] rounded-2xl p-10 md:p-20 grid grid-cols-1 md:grid-cols-2 gap-16">
                 {/* Left: info */}
-                <div>
+                <div ref={infoRef}>
                     <h2 className="text-4xl font-bold mb-6 tracking-tight">
                         PONETE EN <br />
                         <span className="text-[#8eff71]">CONTACTO.</span>
@@ -50,7 +77,7 @@ export default function ContactSection() {
                 </div>
 
                 {/* Right: form */}
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
                     <input
                         name="name"
                         type="text"

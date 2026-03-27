@@ -1,6 +1,28 @@
+import { useRef, useEffect } from 'react';
+import gsap from 'gsap';
 import LiquidChrome from './LiquidChrome';
 
 export default function HeroSection() {
+    const contentRef = useRef(null);
+
+    useEffect(() => {
+        const ctx = gsap.context(() => {
+            gsap.fromTo(
+                Array.from(contentRef.current.children),
+                { y: 40, opacity: 0 },
+                {
+                    y: 0,
+                    opacity: 1,
+                    duration: 0.9,
+                    ease: 'power3.out',
+                    stagger: 0.2,
+                    delay: 0.3,
+                }
+            );
+        });
+        return () => ctx.revert();
+    }, []);
+
     return (
         <section id="inicio" className="relative min-h-screen flex items-center px-6 md:px-16 overflow-hidden">
             <div className="absolute inset-0 z-0">
@@ -15,7 +37,7 @@ export default function HeroSection() {
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0e0e0e]/40 to-[#0e0e0e]" />
             </div>
 
-            <div className="relative z-10 max-w-4xl">
+            <div ref={contentRef} className="relative z-10 max-w-4xl">
                 <h1 className="text-6xl md:text-8xl font-black tracking-tighter leading-none mb-6">
                     ELEVÁ LA <br />
                     <span className="text-[#8eff71] italic">CULTURA.</span>

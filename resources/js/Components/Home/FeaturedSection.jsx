@@ -1,9 +1,41 @@
+import { useRef, useEffect } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
+
 export default function FeaturedSection({ products = [] }) {
+    const headerRef = useRef(null);
+    const gridRef = useRef(null);
+
+    useEffect(() => {
+        if (!headerRef.current || !gridRef.current) return;
+        const ctx = gsap.context(() => {
+            gsap.fromTo(headerRef.current,
+                { y: 40, opacity: 0 },
+                {
+                    y: 0, opacity: 1, duration: 0.9, ease: 'power3.out',
+                    scrollTrigger: { trigger: headerRef.current, start: 'top 85%', once: true },
+                }
+            );
+            gsap.fromTo(
+                Array.from(gridRef.current.children),
+                { y: 60, opacity: 0 },
+                {
+                    y: 0, opacity: 1, duration: 0.8, ease: 'power3.out',
+                    stagger: 0.15,
+                    scrollTrigger: { trigger: gridRef.current, start: 'top 80%', once: true },
+                }
+            );
+        });
+        return () => ctx.revert();
+    }, [products]);
+
     if (products.length === 0) return null;
 
     return (
         <section id="catalogo" className="py-24 px-6 md:px-16">
-            <div className="flex justify-between items-end mb-16">
+            <div ref={headerRef} className="flex justify-between items-end mb-16">
                 <h2 className="text-5xl font-bold tracking-tight">
                     LANZAMIENTO <br />
                     <span className="text-[#8eff71]">DESTACADO.</span>
@@ -13,7 +45,7 @@ export default function FeaturedSection({ products = [] }) {
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+            <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 gap-12">
                 {products.map((product, index) => {
                     const image  = product.primary_media?.url ?? null;
                     const isOdd  = index % 2 !== 0;
