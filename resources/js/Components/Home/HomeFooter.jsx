@@ -49,6 +49,16 @@ export default function HomeFooter() {
                     </a>
                 ))}
             </div>
+
+            <a
+                href="https://archillimatias.dev"
+                target="_blank"
+                rel="noreferrer"
+                className="text-sm tracking-widest uppercase hover:opacity-80 transition-opacity"
+            >
+                <span className="text-[#adaaaa]">Powered by </span>
+                <span className="text-[#8eff71]">Pampa Labs</span>
+            </a>
         </footer>
     );
 }

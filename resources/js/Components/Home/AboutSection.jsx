@@ -29,7 +29,7 @@ export default function AboutSection() {
     }, []);
 
     return (
-        <section id="nosotros" className="py-24 px-6 md:px-16 max-w-7xl mx-auto">
+        <section id="nosotros" className="py-24 px-6 md:px-16 min-h-screen flex flex-col justify-center overflow-hidden">
             <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
                 <div ref={leftRef} className="md:col-span-7 bg-[#131313] p-12 md:p-20 rounded-2xl flex flex-col justify-center">
                     <span className="text-[#8eff71] font-bold tracking-widest uppercase mb-5 block text-sm md:text-base">
@@ -46,7 +46,7 @@ export default function AboutSection() {
                     </p>
                 </div>
 
-                <div ref={rightRef} className="md:col-span-5 relative h-[400px] md:h-auto overflow-hidden rounded-2xl">
+                <div ref={rightRef} className="md:col-span-5 relative h-[400px] md:h-full overflow-hidden rounded-2xl">
                     <img
                         className="absolute inset-0 w-full h-full object-cover"
                         src="/images/logo-4us-nuevo.png"
