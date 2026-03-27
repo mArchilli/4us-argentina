@@ -36,8 +36,9 @@ export default function ContactSection() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // TODO: connect to backend endpoint
-        console.log('Form submitted:', form);
+        const text = `Hola! Te escribo desde el sitio web.\n\n*Nombre:* ${form.name}\n*Email:* ${form.email}\n\n*Mensaje:*\n${form.message}`;
+        const url = `https://wa.me/5491169659907?text=${encodeURIComponent(text)}`;
+        window.open(url, '_blank', 'noopener,noreferrer');
     };
 
     return (
