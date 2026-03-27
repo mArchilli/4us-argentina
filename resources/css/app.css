@@ -5,6 +5,11 @@
 @tailwind components;
 @tailwind utilities;
 
+::selection {
+    background-color: #8eff71;
+    color: #0d3d00;
+}
+
 .material-symbols-outlined {
     font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }

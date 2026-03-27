@@ -1,13 +1,18 @@
+import LiquidChrome from './LiquidChrome';
+
 export default function HeroSection() {
     return (
         <section id="inicio" className="relative min-h-screen flex items-center px-6 md:px-16 overflow-hidden">
             <div className="absolute inset-0 z-0">
-                <img
-                    className="w-full h-full object-cover opacity-60 grayscale-[40%]"
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCILPZC2jmtwR-WIxvXA6kVJaqL3Tk9-VtMop3P7pRc75kbHaiuqmL5HJKVlIvpUIBTCU7eByrn4ean-ndssDaIIgFcmk7jNTh8azTKvDBPRpifdanH9kLRZLJ4pmTv1pZloE03qK5qKAMpsikHZY3oSiHDz8LGCEPTBy0SM1u4Dc-KXkYiXtD4De8uIqw0ULQL_EwXal9IwUXIf1uEgtK0m1PANAjvC2P_tWRn5pclWAwZlSasQJl2uvWvAuPxZdRH5pj7ezxmHWc"
-                    alt="Productos premium para fumadores"
+                <LiquidChrome
+                    baseColor={[0.557, 1.0, 0.443]}
+                    speed={0.15}
+                    amplitude={0.4}
+                    frequencyX={3}
+                    frequencyY={2}
+                    interactive={true}
                 />
-                <div className="absolute inset-0 bg-gradient-to-r from-[#0e0e0e] via-[#0e0e0e]/60 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0e0e0e]/40 to-[#0e0e0e]" />
             </div>
 
             <div className="relative z-10 max-w-4xl">
@@ -15,7 +20,7 @@ export default function HeroSection() {
                     ELEVÁ LA <br />
                     <span className="text-[#8eff71] italic">CULTURA.</span>
                 </h1>
-                <p className="text-xl text-[#adaaaa] max-w-xl mb-10 leading-relaxed">
+                <p className="text-xl text-[#adaaaa] max-w-xl mb-10 leading-relaxed drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
                     Accesorios premium para fumadores, seleccionados para el conocedor.
                     Importados directamente, auténticos sin concesiones.
                 </p>
