@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Facades\Storage;
 
 class ProductMedia extends Model
 {
@@ -19,7 +18,10 @@ class ProductMedia extends Model
 
     public function getUrlAttribute(): string
     {
-        return Storage::disk('public')->url($this->file_path);
+        $urlPath  = config('media.products_images_url_path');
+        $filename = basename($this->file_path);
+
+        return asset($urlPath . '/' . $filename);
     }
 
     public function product(): BelongsTo

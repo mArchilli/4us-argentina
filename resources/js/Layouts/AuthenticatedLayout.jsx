@@ -33,8 +33,17 @@ const navItems = [
 
 export default function AuthenticatedLayout({ header, children }) {
     const user = usePage().props.auth.user;
-    const [collapsed, setCollapsed] = useState(false);
+    const [collapsed, setCollapsed] = useState(
+        () => localStorage.getItem('sidebar-collapsed') === 'true'
+    );
     const [mobileOpen, setMobileOpen] = useState(false);
+
+    const toggleCollapsed = () => {
+        setCollapsed((c) => {
+            localStorage.setItem('sidebar-collapsed', String(!c));
+            return !c;
+        });
+    };
 
     const sidebarW = collapsed ? 'w-[68px]' : 'w-56';
 
@@ -71,7 +80,7 @@ export default function AuthenticatedLayout({ header, children }) {
                     </Link>
                 )}
                 <button
-                    onClick={() => { setCollapsed((c) => !c); closeMobile?.(); }}
+                    onClick={() => { toggleCollapsed(); closeMobile?.(); }}
                     aria-label="Toggle sidebar"
                     className="w-8 h-8 rounded-lg bg-[#1f2020] hover:bg-[#2a2a2a] flex items-center justify-center text-[#adaaaa] hover:text-white transition-colors flex-shrink-0"
                 >
@@ -104,6 +113,16 @@ export default function AuthenticatedLayout({ header, children }) {
                         <p className="text-xs text-[#adaaaa] truncate">{user.email}</p>
                     </div>
                 )}
+                <Link
+                    href="/"
+                    className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-[#adaaaa] hover:text-white hover:bg-[#1f2020] transition-all text-sm font-medium w-full mb-1 ${collapsed ? 'justify-center' : ''}`}
+                    title="Volver al sitio"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                    {!collapsed && <span>Volver al sitio</span>}
+                </Link>
                 <Link
                     href={route('logout')}
                     method="post"

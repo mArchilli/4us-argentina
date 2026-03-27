@@ -6,7 +6,8 @@ use App\Models\Product;
 use App\Models\ProductMedia;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -64,12 +65,18 @@ class ProductController extends Controller
         }
 
         if ($request->hasFile('media')) {
+            $storagePath = config('media.products_images_path');
+            $fullDir     = public_path($storagePath);
+            File::ensureDirectoryExists($fullDir);
+
             $primaryIdx = (int) $request->input('primary_media_index', 0);
             foreach ($request->file('media') as $i => $file) {
-                $path = $file->store(config('media.products_images_path'), 'public');
+                $mimeType = $file->getMimeType();
+                $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
+                $file->move($fullDir, $filename);
                 $product->media()->create([
-                    'file_path'  => $path,
-                    'file_type'  => str_starts_with($file->getMimeType(), 'video') ? 'video' : 'image',
+                    'file_path'  => $storagePath . '/' . $filename,
+                    'file_type'  => str_starts_with($mimeType, 'video') ? 'video' : 'image',
                     'is_primary' => ($i === $primaryIdx),
                     'sort_order' => $i,
                 ]);
@@ -134,7 +141,7 @@ class ProductController extends Controller
                 ->where('product_id', $product->id)
                 ->get();
             foreach ($toDelete as $media) {
-                Storage::disk('public')->delete($media->file_path);
+                File::delete(public_path($media->file_path));
                 $media->delete();
             }
         }
@@ -149,13 +156,19 @@ class ProductController extends Controller
 
         // Upload new media
         if ($request->hasFile('new_media')) {
+            $storagePath   = config('media.products_images_path');
+            $fullDir       = public_path($storagePath);
+            File::ensureDirectoryExists($fullDir);
+
             $existingCount = $product->media()->count();
             $hasPrimary    = $product->media()->where('is_primary', true)->exists();
             foreach ($request->file('new_media') as $i => $file) {
-                $path = $file->store(config('media.products_images_path'), 'public');
+                $mimeType = $file->getMimeType();
+                $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
+                $file->move($fullDir, $filename);
                 $product->media()->create([
-                    'file_path'  => $path,
-                    'file_type'  => str_starts_with($file->getMimeType(), 'video') ? 'video' : 'image',
+                    'file_path'  => $storagePath . '/' . $filename,
+                    'file_type'  => str_starts_with($mimeType, 'video') ? 'video' : 'image',
                     'is_primary' => !$hasPrimary && $i === 0,
                     'sort_order' => $existingCount + $i,
                 ]);
@@ -172,7 +185,7 @@ class ProductController extends Controller
     public function destroy(Product $product): RedirectResponse
     {
         foreach ($product->media as $media) {
-            Storage::disk('public')->delete($media->file_path);
+            File::delete(public_path($media->file_path));
         }
         $product->delete();
 

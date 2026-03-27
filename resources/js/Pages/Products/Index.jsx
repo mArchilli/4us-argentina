@@ -1,12 +1,17 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, router, usePage } from '@inertiajs/react';
+import { useState } from 'react';
 
 export default function Index({ products }) {
     const { flash } = usePage().props;
+    const [deleteModal, setDeleteModal] = useState({ open: false, id: null, title: '' });
 
-    const handleDelete = (id) => {
-        if (!confirm('¿Estás seguro que querés eliminar este producto? Esta acción no se puede deshacer.')) return;
-        router.delete(route('products.destroy', id));
+    const openDelete = (id, title) => setDeleteModal({ open: true, id, title });
+    const closeDelete = () => setDeleteModal({ open: false, id: null, title: '' });
+
+    const confirmDelete = () => {
+        router.delete(route('products.destroy', deleteModal.id));
+        closeDelete();
     };
 
     return (
@@ -47,7 +52,7 @@ export default function Index({ products }) {
             ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                     {products.data.map((product) => (
-                        <ProductCard key={product.id} product={product} onDelete={handleDelete} />
+                        <ProductCard key={product.id} product={product} onDelete={openDelete} />
                     ))}
                 </div>
             )}
@@ -70,6 +75,41 @@ export default function Index({ products }) {
                             dangerouslySetInnerHTML={{ __html: link.label }}
                         />
                     ))}
+                </div>
+            )}
+            {/* Delete confirmation modal */}
+            {deleteModal.open && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+                    <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={closeDelete} />
+                    <div className="relative bg-[#131313] border border-[#2a2a2a] rounded-2xl p-6 w-full max-w-sm shadow-2xl">
+                        <div className="flex items-start gap-4 mb-5">
+                            <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-[#ff7351]/10 flex items-center justify-center">
+                                <span className="material-symbols-outlined text-[#ff7351] text-xl">delete</span>
+                            </div>
+                            <div>
+                                <h3 className="font-bold text-white text-base">Eliminar producto</h3>
+                                <p className="text-sm text-[#adaaaa] mt-1">
+                                    ¿Estás seguro que querés eliminar{' '}
+                                    <span className="text-white font-medium">"{deleteModal.title}"</span>?
+                                    Esta acción no se puede deshacer.
+                                </p>
+                            </div>
+                        </div>
+                        <div className="flex gap-3">
+                            <button
+                                onClick={closeDelete}
+                                className="flex-1 py-2.5 rounded-xl bg-[#1f2020] text-[#adaaaa] hover:text-white text-sm font-medium transition-all"
+                            >
+                                Cancelar
+                            </button>
+                            <button
+                                onClick={confirmDelete}
+                                className="flex-1 py-2.5 rounded-xl bg-[#ff7351] text-white text-sm font-bold hover:bg-[#ff5a35] transition-all"
+                            >
+                                Eliminar
+                            </button>
+                        </div>
+                    </div>
                 </div>
             )}
         </AuthenticatedLayout>
@@ -146,7 +186,7 @@ function ProductCard({ product, onDelete }) {
                     Editar
                 </Link>
                 <button
-                    onClick={() => onDelete(product.id)}
+                    onClick={() => onDelete(product.id, product.title)}
                     className="px-3 py-2 rounded-xl bg-[#ff7351]/10 text-[#ff7351] hover:bg-[#ff7351]/20 text-sm transition-all"
                     title="Eliminar producto"
                 >
