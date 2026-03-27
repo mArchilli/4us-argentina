@@ -38,11 +38,11 @@ export default function HeroSection() {
             </div>
 
             <div ref={contentRef} className="relative z-10 max-w-4xl">
-                <h1 className="text-6xl md:text-8xl font-black tracking-tighter leading-none mb-6">
+                <h1 className="text-6xl md:text-9xl lg:text-[10rem] font-black tracking-tighter leading-none mb-6">
                     ELEVÁ LA <br />
                     <span className="text-[#8eff71] italic">CULTURA.</span>
                 </h1>
-                <p className="text-xl text-[#adaaaa] max-w-xl mb-10 leading-relaxed drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
+                <p className="text-xl md:text-2xl text-[#adaaaa] max-w-xl mb-10 leading-relaxed drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
                     Accesorios premium para fumadores, seleccionados para el conocedor.
                     Importados directamente, auténticos sin concesiones.
                 </p>
