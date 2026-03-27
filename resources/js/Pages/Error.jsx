@@ -1,0 +1,113 @@
+import { Head, Link } from '@inertiajs/react';
+
+const messages = {
+    404: {
+        code: '404',
+        title: 'Se voló el papel.',
+        body: 'La página que buscás se desarmó en el camino. Puede que la hayan movido, eliminado, o simplemente nunca existió — como ese cigarro que jurás que te quedaba uno.',
+        icon: '💨',
+    },
+    403: {
+        code: '403',
+        title: 'Zona restringida.',
+        body: 'No tenés permiso para entrar acá. Como intentar fumar en la fila del banco — los códigos están claros.',
+        icon: '🚫',
+    },
+    500: {
+        code: '500',
+        title: 'El servidor se prendió fuego.',
+        body: 'Algo salió mal de nuestro lado. Le estamos dando una pitada al problema para calmarlo. Volvé en unos minutos.',
+        icon: '🔥',
+    },
+    503: {
+        code: '503',
+        title: 'Estamos en pausa.',
+        body: 'El sitio está en mantenimiento por un momento. Aprovechá para relajarte — nosotros nos encargamos del resto.',
+        icon: '🛠️',
+    },
+};
+
+export default function Error({ status }) {
+    const msg = messages[status] ?? {
+        code: status,
+        title: 'Algo salió mal.',
+        body: 'Ocurrió un error inesperado. Intentá volver al inicio.',
+        icon: '🤔',
+    };
+
+    return (
+        <>
+            <Head title={`${msg.code} · ${msg.title}`} />
+
+            <div className="min-h-screen bg-[#0e0e0e] text-white flex flex-col items-center justify-center px-6 font-['Space_Grotesk',sans-serif] relative overflow-hidden">
+
+                {/* Background glow */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-[#8eff71]/[0.03] blur-3xl pointer-events-none" />
+
+                {/* Smoke rings decoration */}
+                <div className="absolute top-12 right-12 opacity-10 hidden md:block">
+                    {[80, 56, 36].map((size, i) => (
+                        <div
+                            key={i}
+                            className="border border-[#8eff71] rounded-full absolute"
+                            style={{
+                                width: size,
+                                height: size,
+                                top: `${i * 24}px`,
+                                left: `${i * 12}px`,
+                                opacity: 1 - i * 0.25,
+                            }}
+                        />
+                    ))}
+                </div>
+
+                <div className="relative z-10 text-center max-w-lg">
+                    {/* Emoji */}
+                    <div className="text-6xl mb-6 select-none">{msg.icon}</div>
+
+                    {/* Error code */}
+                    <p className="text-[120px] md:text-[160px] font-black leading-none text-[#8eff71] opacity-10 select-none absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/3 pointer-events-none">
+                        {msg.code}
+                    </p>
+
+                    {/* Title */}
+                    <h1 className="text-4xl md:text-5xl font-black tracking-tight mb-4 relative">
+                        {msg.title}
+                    </h1>
+
+                    {/* Body */}
+                    <p className="text-[#adaaaa] text-base leading-relaxed mb-10 relative">
+                        {msg.body}
+                    </p>
+
+                    {/* Code badge */}
+                    <div className="inline-flex items-center gap-2 bg-[#131313] border border-[#2a2a2a] rounded-full px-4 py-1.5 text-sm text-[#484848] mb-8 font-mono">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#ff7351]" />
+                        Error {msg.code}
+                    </div>
+
+                    {/* Actions */}
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+                        <Link
+                            href="/"
+                            className="bg-[#8eff71] text-[#0d6100] px-6 py-3 rounded-full font-bold text-sm hover:shadow-[0_0_24px_rgba(142,255,113,0.3)] transition-all active:scale-95"
+                        >
+                            Volver al inicio
+                        </Link>
+                        <button
+                            onClick={() => window.history.back()}
+                            className="px-6 py-3 rounded-full border border-[#2a2a2a] text-[#adaaaa] hover:text-white hover:border-[#3a3a3a] text-sm font-medium transition-all"
+                        >
+                            Página anterior
+                        </button>
+                    </div>
+                </div>
+
+                {/* Bottom brand */}
+                <p className="absolute bottom-8 text-xs text-[#2a2a2a] tracking-widest uppercase select-none">
+                    4us Argentina
+                </p>
+            </div>
+        </>
+    );
+}
