@@ -4,14 +4,20 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
+use App\Models\Product;
 use Inertia\Inertia;
 
 Route::get('/', function () {
+    $featured = Product::with(['primaryMedia', 'prices'])
+        ->where('is_featured', true)
+        ->latest()
+        ->get();
+
     return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
+        'canLogin'         => Route::has('login'),
+        'laravelVersion'   => Application::VERSION,
+        'phpVersion'       => PHP_VERSION,
+        'featuredProducts' => $featured,
     ]);
 });
 
