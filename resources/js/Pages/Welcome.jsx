@@ -7,7 +7,7 @@ import CommunityPerks from '@/Components/Home/CommunityPerks';
 import ContactSection from '@/Components/Home/ContactSection';
 import HomeFooter from '@/Components/Home/HomeFooter';
 
-export default function Welcome({ auth }) {
+export default function Welcome({ auth, featuredProducts }) {
     return (
         <>
             <Head title="4us Argentina - Premium Smoking Culture" />
@@ -18,7 +18,7 @@ export default function Welcome({ auth }) {
                 <main className="pt-24">
                     <HeroSection />
                     <AboutSection />
-                    <FeaturedSection />
+                    <FeaturedSection products={featuredProducts} />
                     <CommunityPerks />
                     <ContactSection />
                 </main>
