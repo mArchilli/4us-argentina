@@ -5,8 +5,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 const links = [
-    { label: 'Instagram', href: 'https://instagram.com/4us.argentina' },
-    { label: 'WhatsApp', href: 'https://wa.me/5491112345678' },
+    { label: 'Instagram', href: 'https://www.instagram.com/4usargentina/' },
+    { label: 'WhatsApp', href: 'https://wa.me/5491169659907' },
     { label: 'Info de envíos', href: '#' },
     { label: 'Política de privacidad', href: '#' },
 ];
@@ -48,12 +48,6 @@ export default function HomeFooter() {
                         {link.label}
                     </a>
                 ))}
-            </div>
-
-            <div className="flex gap-4">
-                <span className="material-symbols-outlined text-[#8eff71]">eco</span>
-                <span className="material-symbols-outlined text-[#8eff71]">shopping_bag</span>
-                <span className="material-symbols-outlined text-[#8eff71]">public</span>
             </div>
         </footer>
     );
