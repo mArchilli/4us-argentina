@@ -1,17 +1,20 @@
 import { useState, useEffect } from 'react';
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 
-// id: scroll target | href: full navigation
 const navLinks = [
-    { label: 'Inicio', id: 'inicio' },
-    { label: 'Nosotros', id: 'nosotros' },
+    { label: 'Inicio', id: 'inicio', href: '/' },
+    { label: 'Nosotros', id: 'nosotros', href: '/#nosotros' },
     { label: 'Catálogo', href: '/catalogo' },
-    { label: 'Contacto', id: 'contacto' },
+    { label: 'Contacto', id: 'contacto', href: '/#contacto' },
 ];
 
 export default function Navbar({ auth }) {
+    const { url } = usePage();
     const [menuOpen, setMenuOpen] = useState(false);
     const [activeSection, setActiveSection] = useState('inicio');
+    const currentPath = url.split('?')[0];
+    const isHomePage = currentPath === '/';
+    const isCatalogPage = currentPath.startsWith('/catalogo');
 
     // Lock body scroll when mobile menu is open
     useEffect(() => {
@@ -19,8 +22,11 @@ export default function Navbar({ auth }) {
         return () => { document.body.style.overflow = ''; };
     }, [menuOpen]);
 
-    // IntersectionObserver: highlight active nav link
     useEffect(() => {
+        if (!isHomePage) {
+            return undefined;
+        }
+
         const sections = navLinks
             .map(({ id }) => document.getElementById(id))
             .filter(Boolean);
@@ -36,11 +42,38 @@ export default function Navbar({ auth }) {
 
         sections.forEach((s) => observer.observe(s));
         return () => sections.forEach((s) => observer.unobserve(s));
-    }, []);
+    }, [isHomePage]);
 
     const scrollTo = (id) => {
         document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
         setMenuOpen(false);
+    };
+
+    const getNavLinkClassName = (id, href) => {
+        const isActive = isHomePage
+            ? activeSection === id
+            : (href === '/catalogo' && isCatalogPage);
+
+        return `font-['Space_Grotesk'] font-bold tracking-tight transition-colors pb-1 ${
+            isActive
+                ? 'text-[#8eff71] border-b-2 border-[#8eff71]'
+                : 'text-[#adaaaa] hover:text-[#8eff71]'
+        }`;
+    };
+
+    const getMobileNavLinkClassName = (id, href, delay) => {
+        const isActive = isHomePage
+            ? activeSection === id
+            : (href === '/catalogo' && isCatalogPage);
+
+        return {
+            style: { transitionDelay: menuOpen ? `${delay * 60}ms` : '0ms' },
+            className: `text-3xl font-medium tracking-wide transition-all duration-300 ${
+                menuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+            } ${
+                isActive ? 'text-[#8eff71]' : 'text-white hover:text-[#8eff71]'
+            }`,
+        };
     };
 
     return (
@@ -49,36 +82,41 @@ export default function Navbar({ auth }) {
             <nav className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-6 md:px-8 py-3 md:py-4 max-w-7xl mx-4 md:mx-auto bg-[#131313]/70 backdrop-blur-xl rounded-full mt-3 md:mt-4 shadow-[0_20px_40px_rgba(0,0,0,0.4)]">
 
                 {/* Logo */}
-                <button
-                    onClick={() => scrollTo('inicio')}
-                    className="text-xl md:text-2xl font-black text-[#8eff71] tracking-tighter font-['Space_Grotesk']"
-                >
-                    4us Argentina
-                </button>
+                {isHomePage ? (
+                    <button
+                        onClick={() => scrollTo('inicio')}
+                        className="text-xl md:text-2xl font-black text-[#8eff71] tracking-tighter font-['Space_Grotesk']"
+                    >
+                        4us Argentina
+                    </button>
+                ) : (
+                    <Link
+                        href="/"
+                        className="text-xl md:text-2xl font-black text-[#8eff71] tracking-tighter font-['Space_Grotesk']"
+                    >
+                        4us Argentina
+                    </Link>
+                )}
 
                 {/* Desktop links */}
                 <div className="hidden md:flex items-center gap-8">
                     {navLinks.map(({ label, id, href }) =>
-                        href ? (
-                            <Link
-                                key={label}
-                                href={href}
-                                className="font-['Space_Grotesk'] font-bold tracking-tight transition-colors pb-1 text-[#adaaaa] hover:text-[#8eff71]"
-                            >
-                                {label}
-                            </Link>
-                        ) : (
+                        isHomePage && id ? (
                             <button
                                 key={id}
                                 onClick={() => scrollTo(id)}
-                                className={`font-['Space_Grotesk'] font-bold tracking-tight transition-colors pb-1 ${
-                                    activeSection === id
-                                        ? 'text-[#8eff71] border-b-2 border-[#8eff71]'
-                                        : 'text-[#adaaaa] hover:text-[#8eff71]'
-                                }`}
+                                className={getNavLinkClassName(id, href)}
                             >
                                 {label}
                             </button>
+                        ) : (
+                            <Link
+                                key={href ?? label}
+                                href={href}
+                                className={getNavLinkClassName(id, href)}
+                            >
+                                {label}
+                            </Link>
                         )
                     )}
                 </div>
@@ -133,36 +171,30 @@ export default function Navbar({ auth }) {
 
                 {/* Nav links */}
                 <div className="flex flex-col items-center justify-center flex-1 gap-8">
-                    {navLinks.map(({ label, id, href }, i) =>
-                        href ? (
-                            <Link
-                                key={label}
-                                href={href}
-                                onClick={() => setMenuOpen(false)}
-                                style={{ transitionDelay: menuOpen ? `${i * 60}ms` : '0ms' }}
-                                className={`text-3xl font-medium tracking-wide transition-all duration-300 text-white hover:text-[#8eff71] ${
-                                    menuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-                                }`}
-                            >
-                                {label}
-                            </Link>
-                        ) : (
+                    {navLinks.map(({ label, id, href }, i) => {
+                        const mobileLinkProps = getMobileNavLinkClassName(id, href, i);
+
+                        return isHomePage && id ? (
                             <button
                                 key={id}
                                 onClick={() => scrollTo(id)}
-                                style={{ transitionDelay: menuOpen ? `${i * 60}ms` : '0ms' }}
-                                className={`text-3xl font-medium tracking-wide transition-all duration-300 ${
-                                    menuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-                                } ${
-                                    activeSection === id
-                                        ? 'text-[#8eff71]'
-                                        : 'text-white hover:text-[#8eff71]'
-                                }`}
+                                style={mobileLinkProps.style}
+                                className={mobileLinkProps.className}
                             >
                                 {label}
                             </button>
-                        )
-                    )}
+                        ) : (
+                            <Link
+                                key={href ?? label}
+                                href={href}
+                                onClick={() => setMenuOpen(false)}
+                                style={mobileLinkProps.style}
+                                className={mobileLinkProps.className}
+                            >
+                                {label}
+                            </Link>
+                        );
+                    })}
                 </div>
 
                 {/* Bottom CTA */}
