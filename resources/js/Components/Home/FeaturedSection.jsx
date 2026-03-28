@@ -1,37 +1,167 @@
-import { useRef, useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
+function getWrappedIndex(index, length) {
+    return ((index % length) + length) % length;
+}
+
+function ProductCard({
+    product,
+    className = '',
+    imageClassName = '',
+    contentClassName = '',
+    enableHoverZoom = true,
+}) {
+    const image = product.primary_media?.url ?? null;
+
+    return (
+        <article className={`group ${className}`}>
+            <div className={`relative overflow-hidden rounded-[2rem] mb-6 bg-[#131313] aspect-[4/5] ${contentClassName}`}>
+                {image ? (
+                    <img
+                        className={`w-full h-full object-cover transition-transform duration-700 ${enableHoverZoom ? 'group-hover:scale-110' : ''} ${imageClassName}`}
+                        src={image}
+                        alt={product.title}
+                    />
+                ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                        <span className="material-symbols-outlined text-[#2a2a2a] text-6xl">image</span>
+                    </div>
+                )}
+
+                {product.offer_active && (
+                    <div className="absolute top-6 right-6">
+                        <span className="bg-[#ff7351] text-white px-4 py-1 rounded-full text-sm font-bold">
+                            Oferta
+                        </span>
+                    </div>
+                )}
+            </div>
+
+            <div className="flex justify-between items-start gap-4">
+                <h3 className="text-2xl font-bold leading-tight">{product.title}</h3>
+                {product.prices?.length > 0 && (
+                    <div className="text-right flex-shrink-0">
+                        {product.prices.map((price, index) => (
+                            <div key={`${product.id}-price-${index}`} className="flex items-baseline justify-end gap-2">
+                                <p className="text-[#8eff71] text-xl font-bold leading-tight">
+                                    ${Number(price.price).toLocaleString('es-AR')} ARS
+                                </p>
+                                {price.min_quantity > 1 && (
+                                    <span className="text-[#adaaaa] text-xs">×{price.min_quantity}</span>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                )}
+            </div>
+
+            {product.description && (
+                <p className="text-[#adaaaa] mt-2 line-clamp-2">{product.description}</p>
+            )}
+        </article>
+    );
+}
+
 export default function FeaturedSection({ products = [] }) {
     const headerRef = useRef(null);
-    const gridRef = useRef(null);
+    const carouselRef = useRef(null);
+    const touchStartXRef = useRef(null);
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    const productCount = products.length;
+    const desktopVisibleCount = productCount > 1 ? 2 : productCount;
+
+    const goToPrevious = () => {
+        setCurrentIndex((prev) => getWrappedIndex(prev - 1, productCount));
+    };
+
+    const goToNext = () => {
+        setCurrentIndex((prev) => getWrappedIndex(prev + 1, productCount));
+    };
+
+    const handleTouchStart = (event) => {
+        touchStartXRef.current = event.touches[0]?.clientX ?? null;
+    };
+
+    const handleTouchEnd = (event) => {
+        if (touchStartXRef.current === null) return;
+
+        const touchEndX = event.changedTouches[0]?.clientX ?? touchStartXRef.current;
+        const deltaX = touchEndX - touchStartXRef.current;
+
+        touchStartXRef.current = null;
+
+        if (Math.abs(deltaX) < 45) return;
+
+        if (deltaX > 0) {
+            goToPrevious();
+            return;
+        }
+
+        goToNext();
+    };
+
+    const desktopProducts = productCount === 0
+        ? []
+        : Array.from({ length: desktopVisibleCount }, (_, offset) => {
+            const index = getWrappedIndex(currentIndex + offset, productCount);
+            return {
+                product: products[index],
+                index,
+            };
+        });
+
+    const previousProduct = productCount > 0
+        ? products[getWrappedIndex(currentIndex - 1, productCount)]
+        : null;
+    const currentProduct = productCount > 0 ? products[currentIndex] : null;
+    const nextProduct = productCount > 0
+        ? products[getWrappedIndex(currentIndex + 1, productCount)]
+        : null;
 
     useEffect(() => {
-        if (!headerRef.current || !gridRef.current) return;
+        if (productCount === 0) {
+            setCurrentIndex(0);
+            return;
+        }
+
+        if (currentIndex >= productCount) {
+            setCurrentIndex(0);
+        }
+    }, [currentIndex, productCount]);
+
+    useEffect(() => {
+        if (!headerRef.current || !carouselRef.current) return;
+
         const ctx = gsap.context(() => {
-            gsap.fromTo(headerRef.current,
+            gsap.fromTo(
+                headerRef.current,
                 { y: 40, opacity: 0 },
                 {
                     y: 0, opacity: 1, duration: 0.9, ease: 'power3.out',
                     scrollTrigger: { trigger: headerRef.current, start: 'top 85%', once: true },
                 }
             );
+
             gsap.fromTo(
-                Array.from(gridRef.current.children),
+                Array.from(carouselRef.current.querySelectorAll('[data-featured-item]')),
                 { y: 60, opacity: 0 },
                 {
                     y: 0, opacity: 1, duration: 0.8, ease: 'power3.out',
                     stagger: 0.15,
-                    scrollTrigger: { trigger: gridRef.current, start: 'top 80%', once: true },
+                    scrollTrigger: { trigger: carouselRef.current, start: 'top 80%', once: true },
                 }
             );
         });
+
         return () => ctx.revert();
     }, [products]);
 
-    if (products.length === 0) return null;
+    if (productCount === 0) return null;
 
     return (
         <section id="catalogo" className="py-24 px-6 md:px-16">
@@ -45,61 +175,115 @@ export default function FeaturedSection({ products = [] }) {
                 </div>
             </div>
 
-            <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 gap-12">
-                {products.map((product, index) => {
-                    const image  = product.primary_media?.url ?? null;
-                    const isOdd  = index % 2 !== 0;
-
-                    return (
-                        <div
-                            key={product.id}
-                            className={`group cursor-pointer ${isOdd ? 'mt-12 md:mt-24' : ''}`}
-                        >
-                            <div className="relative overflow-hidden rounded-2xl mb-6 bg-[#131313] aspect-[4/5]">
-                                {image ? (
-                                    <img
-                                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                                        src={image}
-                                        alt={product.title}
-                                    />
-                                ) : (
-                                    <div className="w-full h-full flex items-center justify-center">
-                                        <span className="material-symbols-outlined text-[#2a2a2a] text-6xl">image</span>
-                                    </div>
-                                )}
-
-                                {product.offer_active && (
-                                    <div className="absolute top-6 right-6">
-                                        <span className="bg-[#ff7351] text-white px-4 py-1 rounded-full text-sm font-bold">
-                                            Oferta
-                                        </span>
-                                    </div>
-                                )}
-                            </div>
-
-                            <div className="flex justify-between items-start">
-                                <h3 className="text-2xl font-bold">{product.title}</h3>
-                                {product.prices?.length > 0 && (
-                                    <div className="text-right ml-4 flex-shrink-0">
-                                        {product.prices.map((p, i) => (
-                                            <div key={i} className="flex items-baseline justify-end gap-2">
-                                                <p className="text-[#8eff71] text-xl font-bold leading-tight">
-                                                    ${Number(p.price).toLocaleString('es-AR')} ARS
-                                                </p>
-                                                {p.min_quantity > 1 && (
-                                                    <span className="text-[#adaaaa] text-xs">×{p.min_quantity}</span>
-                                                )}
-                                            </div>
-                                        ))}
-                                    </div>
-                                )}
-                            </div>
-                            {product.description && (
-                                <p className="text-[#adaaaa] mt-2 line-clamp-2">{product.description}</p>
-                            )}
+            <div ref={carouselRef}>
+                <div className="hidden md:block">
+                    <div className="flex items-center justify-between gap-6 mb-8">
+                        <div className="text-sm uppercase tracking-[0.35em] text-[#adaaaa]">
+                            {String(currentIndex + 1).padStart(2, '0')} / {String(productCount).padStart(2, '0')}
                         </div>
-                    );
-                })}
+
+                        <div className="flex items-center gap-3">
+                            <button
+                                type="button"
+                                onClick={goToPrevious}
+                                className="h-14 w-14 rounded-full border border-white/15 bg-white/5 text-white transition hover:border-[#8eff71] hover:text-[#8eff71]"
+                                aria-label="Producto anterior"
+                            >
+                                <span className="material-symbols-outlined">arrow_back</span>
+                            </button>
+                            <button
+                                type="button"
+                                onClick={goToNext}
+                                className="h-14 w-14 rounded-full border border-white/15 bg-white/5 text-white transition hover:border-[#8eff71] hover:text-[#8eff71]"
+                                aria-label="Producto siguiente"
+                            >
+                                <span className="material-symbols-outlined">arrow_forward</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 xl:grid-cols-2 gap-10 xl:gap-12">
+                        {desktopProducts.map(({ product, index }, offset) => (
+                            <div
+                                key={`${product.id}-${index}-${offset}`}
+                                data-featured-item
+                                className={offset % 2 !== 0 ? 'xl:mt-20' : ''}
+                            >
+                                <ProductCard
+                                    product={product}
+                                    className="cursor-pointer"
+                                />
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                <div className="md:hidden">
+                    <div
+                        className="relative mx-auto w-full max-w-sm min-h-[38rem]"
+                        onTouchStart={handleTouchStart}
+                        onTouchEnd={handleTouchEnd}
+                        style={{ touchAction: 'pan-y' }}
+                    >
+                        {productCount > 1 && previousProduct && (
+                            <div
+                                data-featured-item
+                                className="absolute inset-x-0 top-10 z-0 scale-[0.9] -translate-x-8 opacity-40 blur-[1px]"
+                                aria-hidden="true"
+                            >
+                                <ProductCard
+                                    product={previousProduct}
+                                    className="pointer-events-none"
+                                    enableHoverZoom={false}
+                                />
+                            </div>
+                        )}
+
+                        <div data-featured-item className="absolute inset-0 z-20">
+                            <ProductCard product={currentProduct} className="cursor-grab active:cursor-grabbing" />
+                        </div>
+
+                        {productCount > 1 && nextProduct && (
+                            <div
+                                data-featured-item
+                                className="absolute inset-x-0 top-10 z-10 scale-[0.9] translate-x-8 opacity-40 blur-[1px]"
+                                aria-hidden="true"
+                            >
+                                <ProductCard
+                                    product={nextProduct}
+                                    className="pointer-events-none"
+                                    enableHoverZoom={false}
+                                />
+                            </div>
+                        )}
+                    </div>
+
+                    {productCount > 1 && (
+                        <div className="flex items-center justify-between gap-4 mt-8">
+                            <button
+                                type="button"
+                                onClick={goToPrevious}
+                                className="h-12 w-12 rounded-full border border-white/15 bg-white/5 text-white"
+                                aria-label="Producto anterior"
+                            >
+                                <span className="material-symbols-outlined">arrow_back</span>
+                            </button>
+
+                            <div className="text-sm uppercase tracking-[0.35em] text-[#adaaaa]">
+                                {String(currentIndex + 1).padStart(2, '0')} / {String(productCount).padStart(2, '0')}
+                            </div>
+
+                            <button
+                                type="button"
+                                onClick={goToNext}
+                                className="h-12 w-12 rounded-full border border-white/15 bg-white/5 text-white"
+                                aria-label="Producto siguiente"
+                            >
+                                <span className="material-symbols-outlined">arrow_forward</span>
+                            </button>
+                        </div>
+                    )}
+                </div>
             </div>
         </section>
     );

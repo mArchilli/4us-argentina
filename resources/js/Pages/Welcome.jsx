@@ -12,7 +12,7 @@ export default function Welcome({ auth, featuredProducts }) {
         <>
             <Head title="4us Argentina - Premium Smoking Culture" />
 
-            <div className="bg-[#0e0e0e] text-white min-h-screen overflow-x-hidden">
+            <div className="bg-[#0e0e0e] text-white min-h-screen">
                 <Navbar auth={auth} />
 
                 <main>

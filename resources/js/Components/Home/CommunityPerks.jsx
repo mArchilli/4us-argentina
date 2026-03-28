@@ -54,7 +54,7 @@ export default function CommunityPerks() {
     }, []);
 
     return (
-        <section id="perks" className="py-24 bg-[#000000]">
+        <section id="perks" className="py-24 bg-[#000000] min-h-screen flex justify-center flex-col">
             <div ref={titleRef} className="max-w-7xl mx-auto px-6 md:px-16 text-center mb-16">
                 <h2 className="text-4xl md:text-6xl font-black italic tracking-tighter mb-4">
                     BENEFICIOS DE COMUNIDAD
