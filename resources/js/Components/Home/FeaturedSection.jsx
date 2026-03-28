@@ -19,7 +19,7 @@ function ProductCard({
 
     return (
         <article className={`group ${className}`}>
-            <div className={`relative overflow-hidden rounded-[2rem] mb-6 bg-[#131313] aspect-[4/5] ${contentClassName}`}>
+            <div className={`relative overflow-hidden rounded-[1.6rem] mb-5 bg-[#131313] aspect-[4/5] ${contentClassName}`}>
                 {image ? (
                     <img
                         className={`w-full h-full object-cover transition-transform duration-700 ${enableHoverZoom ? 'group-hover:scale-110' : ''} ${imageClassName}`}
@@ -41,13 +41,13 @@ function ProductCard({
                 )}
             </div>
 
-            <div className="flex justify-between items-start gap-4">
-                <h3 className="text-2xl font-bold leading-tight">{product.title}</h3>
+            <div className="flex justify-between items-start gap-3">
+                <h3 className="text-xl md:text-2xl font-bold leading-tight">{product.title}</h3>
                 {product.prices?.length > 0 && (
                     <div className="text-right flex-shrink-0">
                         {product.prices.map((price, index) => (
                             <div key={`${product.id}-price-${index}`} className="flex items-baseline justify-end gap-2">
-                                <p className="text-[#8eff71] text-xl font-bold leading-tight">
+                                <p className="text-[#8eff71] text-lg md:text-xl font-bold leading-tight">
                                     ${Number(price.price).toLocaleString('es-AR')} ARS
                                 </p>
                                 {price.min_quantity > 1 && (
@@ -59,8 +59,26 @@ function ProductCard({
                 )}
             </div>
 
+            {product.categories?.length > 0 && (
+                <div className="mt-3 flex flex-wrap gap-1.5">
+                    {product.categories.slice(0, 3).map((cat) => (
+                        <span
+                            key={cat.id}
+                            className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#8eff71]/10 border border-[#8eff71]/25 text-[#9dff88] uppercase tracking-wide"
+                        >
+                            {cat.name}
+                        </span>
+                    ))}
+                    {product.categories.length > 3 && (
+                        <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-white/5 border border-white/10 text-[#adaaaa]">
+                            +{product.categories.length - 3}
+                        </span>
+                    )}
+                </div>
+            )}
+
             {product.description && (
-                <p className="text-[#adaaaa] mt-2 line-clamp-2">{product.description}</p>
+                <p className="text-[#adaaaa] mt-2 text-sm md:text-base line-clamp-2">{product.description}</p>
             )}
         </article>
     );
@@ -164,9 +182,9 @@ export default function FeaturedSection({ products = [] }) {
     if (productCount === 0) return null;
 
     return (
-        <section id="catalogo" className="py-24 px-6 md:px-16">
-            <div ref={headerRef} className="flex justify-between items-end mb-16">
-                <h2 className="text-5xl font-bold tracking-tight">
+        <section id="catalogo" className="py-20 md:py-22 px-6 md:px-16">
+            <div ref={headerRef} className="flex justify-between items-end mb-12 md:mb-14">
+                <h2 className="text-4xl md:text-5xl font-bold tracking-tight">
                     LANZAMIENTO <br />
                     <span className="text-[#8eff71]">DESTACADO.</span>
                 </h2>
@@ -177,7 +195,7 @@ export default function FeaturedSection({ products = [] }) {
 
             <div ref={carouselRef}>
                 <div className="hidden md:block">
-                    <div className="flex items-center justify-between gap-6 mb-8">
+                    <div className="flex items-center justify-between gap-6 mb-6">
                         <div className="text-sm uppercase tracking-[0.35em] text-[#adaaaa]">
                             {String(currentIndex + 1).padStart(2, '0')} / {String(productCount).padStart(2, '0')}
                         </div>
@@ -186,7 +204,7 @@ export default function FeaturedSection({ products = [] }) {
                             <button
                                 type="button"
                                 onClick={goToPrevious}
-                                className="h-14 w-14 rounded-full border border-white/15 bg-white/5 text-white transition hover:border-[#8eff71] hover:text-[#8eff71]"
+                                className="h-12 w-12 rounded-full border border-white/15 bg-white/5 text-white transition hover:border-[#8eff71] hover:text-[#8eff71]"
                                 aria-label="Producto anterior"
                             >
                                 <span className="material-symbols-outlined">arrow_back</span>
@@ -194,7 +212,7 @@ export default function FeaturedSection({ products = [] }) {
                             <button
                                 type="button"
                                 onClick={goToNext}
-                                className="h-14 w-14 rounded-full border border-white/15 bg-white/5 text-white transition hover:border-[#8eff71] hover:text-[#8eff71]"
+                                className="h-12 w-12 rounded-full border border-white/15 bg-white/5 text-white transition hover:border-[#8eff71] hover:text-[#8eff71]"
                                 aria-label="Producto siguiente"
                             >
                                 <span className="material-symbols-outlined">arrow_forward</span>
@@ -202,12 +220,12 @@ export default function FeaturedSection({ products = [] }) {
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-1 xl:grid-cols-2 gap-10 xl:gap-12">
+                    <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 xl:gap-10">
                         {desktopProducts.map(({ product, index }, offset) => (
                             <div
                                 key={`${product.id}-${index}-${offset}`}
                                 data-featured-item
-                                className={offset % 2 !== 0 ? 'xl:mt-20' : ''}
+                                className={offset % 2 !== 0 ? 'xl:mt-14' : ''}
                             >
                                 <ProductCard
                                     product={product}
@@ -220,7 +238,7 @@ export default function FeaturedSection({ products = [] }) {
 
                 <div className="md:hidden">
                     <div
-                        className="relative mx-auto w-full max-w-sm min-h-[38rem]"
+                        className="relative mx-auto w-full max-w-[21rem] min-h-[34rem]"
                         onTouchStart={handleTouchStart}
                         onTouchEnd={handleTouchEnd}
                         style={{ touchAction: 'pan-y' }}
@@ -228,7 +246,7 @@ export default function FeaturedSection({ products = [] }) {
                         {productCount > 1 && previousProduct && (
                             <div
                                 data-featured-item
-                                className="absolute inset-x-0 top-10 z-0 scale-[0.9] -translate-x-8 opacity-40 blur-[1px]"
+                                className="absolute inset-x-0 top-8 z-0 scale-[0.88] -translate-x-7 opacity-40 blur-[1px]"
                                 aria-hidden="true"
                             >
                                 <ProductCard
@@ -246,7 +264,7 @@ export default function FeaturedSection({ products = [] }) {
                         {productCount > 1 && nextProduct && (
                             <div
                                 data-featured-item
-                                className="absolute inset-x-0 top-10 z-10 scale-[0.9] translate-x-8 opacity-40 blur-[1px]"
+                                className="absolute inset-x-0 top-8 z-10 scale-[0.88] translate-x-7 opacity-40 blur-[1px]"
                                 aria-hidden="true"
                             >
                                 <ProductCard
@@ -259,11 +277,11 @@ export default function FeaturedSection({ products = [] }) {
                     </div>
 
                     {productCount > 1 && (
-                        <div className="flex items-center justify-between gap-4 mt-8">
+                        <div className="flex items-center justify-between gap-4 mt-6">
                             <button
                                 type="button"
                                 onClick={goToPrevious}
-                                className="h-12 w-12 rounded-full border border-white/15 bg-white/5 text-white"
+                                className="h-10 w-10 rounded-full border border-white/15 bg-white/5 text-white"
                                 aria-label="Producto anterior"
                             >
                                 <span className="material-symbols-outlined">arrow_back</span>
@@ -276,7 +294,7 @@ export default function FeaturedSection({ products = [] }) {
                             <button
                                 type="button"
                                 onClick={goToNext}
-                                className="h-12 w-12 rounded-full border border-white/15 bg-white/5 text-white"
+                                className="h-10 w-10 rounded-full border border-white/15 bg-white/5 text-white"
                                 aria-label="Producto siguiente"
                             >
                                 <span className="material-symbols-outlined">arrow_forward</span>

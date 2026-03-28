@@ -171,6 +171,23 @@ function ProductCard({ product, onDelete }) {
                         Oferta: ${Number(product.offer_price).toLocaleString('es-AR')} ARS
                     </p>
                 )}
+                {product.categories?.length > 0 && (
+                    <div className="mt-2 flex flex-wrap gap-1.5">
+                        {product.categories.slice(0, 3).map((category) => (
+                            <span
+                                key={category.id}
+                                className="text-[11px] px-2 py-0.5 rounded-full bg-[#8eff71]/10 border border-[#8eff71]/25 text-[#9dff88]"
+                            >
+                                {category.name}
+                            </span>
+                        ))}
+                        {product.categories.length > 3 && (
+                            <span className="text-[11px] px-2 py-0.5 rounded-full bg-[#1f2020] text-[#9b9b9b]">
+                                +{product.categories.length - 3}
+                            </span>
+                        )}
+                    </div>
+                )}
                 <p className="text-xs text-[#484848] mt-1">
                     {product.prices?.length || 0} precio{product.prices?.length !== 1 ? 's' : ''} ·{' '}
                     {product.media?.length ?? 0} archivo{(product.media?.length ?? 0) !== 1 ? 's' : ''}

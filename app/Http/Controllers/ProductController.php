@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductMedia;
 use Illuminate\Http\RedirectResponse;
@@ -15,7 +16,7 @@ class ProductController extends Controller
 {
     public function index(): Response
     {
-        $products = Product::with(['primaryMedia', 'prices'])
+        $products = Product::with(['primaryMedia', 'prices', 'categories'])
             ->latest()
             ->paginate(16);
 
@@ -26,7 +27,11 @@ class ProductController extends Controller
 
     public function create(): Response
     {
-        return Inertia::render('Products/Create');
+        return Inertia::render('Products/Create', [
+            'categories' => Category::query()
+                ->orderBy('name')
+                ->get(['id', 'name', 'slug']),
+        ]);
     }
 
     public function store(Request $request): RedirectResponse
@@ -42,6 +47,8 @@ class ProductController extends Controller
             'prices.*.label'         => 'required|string|max:100',
             'prices.*.min_quantity'  => 'required|integer|min:1',
             'prices.*.price'         => 'required|numeric|min:0',
+            'category_ids'           => 'nullable|array',
+            'category_ids.*'         => 'integer|exists:categories,id',
             'media.*'                => 'nullable|file|mimes:jpg,jpeg,png,gif,webp,mp4,mov,avi,mkv|max:102400',
             'primary_media_index'    => 'nullable|integer|min:0',
         ]);
@@ -63,6 +70,8 @@ class ProductController extends Controller
                 'sort_order'   => $i,
             ]);
         }
+
+        $product->categories()->sync($request->input('category_ids', []));
 
         if ($request->hasFile('media')) {
             $storagePath = config('media.products_images_path');
@@ -89,10 +98,13 @@ class ProductController extends Controller
 
     public function edit(Product $product): Response
     {
-        $product->load(['prices', 'media']);
+        $product->load(['prices', 'media', 'categories']);
 
         return Inertia::render('Products/Edit', [
             'product' => $product,
+            'categories' => Category::query()
+                ->orderBy('name')
+                ->get(['id', 'name', 'slug']),
         ]);
     }
 
@@ -109,6 +121,8 @@ class ProductController extends Controller
             'prices.*.label'         => 'required|string|max:100',
             'prices.*.min_quantity'  => 'required|integer|min:1',
             'prices.*.price'         => 'required|numeric|min:0',
+            'category_ids'           => 'nullable|array',
+            'category_ids.*'         => 'integer|exists:categories,id',
             'new_media.*'            => 'nullable|file|mimes:jpg,jpeg,png,gif,webp,mp4,mov,avi,mkv|max:102400',
             'deleted_media_ids'      => 'nullable|array',
             'deleted_media_ids.*'    => 'integer',
@@ -135,12 +149,15 @@ class ProductController extends Controller
             ]);
         }
 
+        $product->categories()->sync($request->input('category_ids', []));
+
         // Delete marked media files
         if ($request->filled('deleted_media_ids')) {
             $toDelete = ProductMedia::whereIn('id', $request->deleted_media_ids)
                 ->where('product_id', $product->id)
                 ->get();
             foreach ($toDelete as $media) {
+                /** @var ProductMedia $media */
                 File::delete(public_path($media->file_path));
                 $media->delete();
             }
