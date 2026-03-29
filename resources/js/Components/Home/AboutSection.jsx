@@ -1,6 +1,7 @@
 import { useRef, useEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import Logo3D from './Logo3D';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -29,9 +30,9 @@ export default function AboutSection() {
     }, []);
 
     return (
-        <section id="nosotros" className="py-24 px-6 md:px-16 min-h-screen flex flex-col justify-center overflow-hidden">
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
-                <div ref={leftRef} className="md:col-span-7 bg-[#131313] p-12 md:p-20 rounded-2xl flex flex-col justify-center">
+        <section id="nosotros" className="py-16 px-6 md:px-16 overflow-hidden">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-7xl mx-auto">
+                <div ref={leftRef} className="bg-[#131313] p-12 md:p-20 rounded-2xl flex flex-col justify-center">
                     <span className="text-[#8eff71] font-bold tracking-widest uppercase mb-5 block text-sm md:text-base">
                         El Origen
                     </span>
@@ -46,13 +47,11 @@ export default function AboutSection() {
                     </p>
                 </div>
 
-                <div ref={rightRef} className="md:col-span-5 relative h-[400px] md:h-full overflow-hidden rounded-2xl">
-                    <img
-                        className="absolute inset-0 w-full h-full object-cover"
+                <div ref={rightRef} className="relative flex items-center justify-center p-6">
+                    <Logo3D
                         src="/images/logo-4us-nuevo.png"
-                        alt="Bandejas metálicas premium"
+                        alt="Logo 4us Argentina"
                     />
-                    <div className="absolute inset-0 bg-[#8eff71]/10 mix-blend-overlay" />
                 </div>
             </div>
         </section>
