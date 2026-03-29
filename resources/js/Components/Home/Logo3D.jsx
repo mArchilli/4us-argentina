@@ -33,13 +33,13 @@ export default function Logo3D({ src, alt, className = '' }) {
         const shadowX = -rotateY * 1.5;
         const shadowY = rotateX * 1.5;
         const shadowBlur = 40 + Math.abs(rotateY) * 2;
-        img.style.filter = `drop-shadow(${shadowX}px ${shadowY}px ${shadowBlur}px rgba(142, 255, 113, 0.08))`;
+        img.style.filter = `drop-shadow(${shadowX}px ${shadowY}px ${shadowBlur}px rgba(142, 255, 113, 0.12))`;
 
         // Glow follows tilt
         if (glow) {
             const glowX = 50 + rotateY * 2;
             const glowY = 50 - rotateX * 2;
-            const glowIntensity = isHoveringRef.current ? 0.06 : 0.03;
+            const glowIntensity = isHoveringRef.current ? 0.09 : 0.05;
             glow.style.background = `radial-gradient(circle at ${glowX}% ${glowY}%, rgba(142, 255, 113, ${glowIntensity}) 0%, transparent 60%)`;
         }
 
