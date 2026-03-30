@@ -11,6 +11,7 @@ const links = [
     { label: 'Política de privacidad', href: '#' },
 ];
 
+
 export default function HomeFooter() {
     const footerRef = useRef(null);
 
@@ -28,37 +29,82 @@ export default function HomeFooter() {
     }, []);
 
     return (
-        <footer ref={footerRef} className="w-full px-12 py-16 flex flex-col md:flex-row justify-between items-center gap-8 bg-black rounded-t-[3rem] mt-24">
-            <div className="flex flex-col items-center md:items-start">
-                <div className="text-xl font-bold text-[#8eff71] mb-2">4us Argentina</div>
-                <p className="text-[#adaaaa] text-sm tracking-widest uppercase text-center md:text-left">
-                    © {new Date().getFullYear()} 4us Argentina. Cultura Premium.
-                </p>
+        <footer ref={footerRef} className="relative bg-zinc-950 pt-24 pb-10 border-t border-white/5 overflow-hidden min-h-[480px] flex flex-col justify-between mt-24">
+            {/* Fondo decorativo */}
+            <div className="absolute inset-0 pointer-events-none opacity-5" style={{backgroundImage: "url('data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.65\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\'/%3E%3C/svg%3E')"}}></div>
+            <div className="absolute -top-40 -right-40 w-[600px] h-[600px] bg-[#8eff71]/10 blur-[120px] rounded-full pointer-events-none animate-pulse"></div>
+            <div className="absolute top-1/2 -left-40 w-[500px] h-[500px] bg-[#8eff71]/5 blur-[100px] rounded-full pointer-events-none"></div>
+
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-12 px-8 w-full max-w-[1440px] mx-auto relative z-10 flex-grow content-start">
+                {/* Branding & descripción */}
+                <div className="md:col-span-1 space-y-8">
+                    <div className="text-4xl font-black italic tracking-tighter text-[#8eff71]">4US ARGENTINA</div>
+                    <p className="text-zinc-500 text-base leading-relaxed max-w-xs">
+                        Cultura premium desde Buenos Aires. Editorial, drops y comunidad para todo el país.
+                    </p>
+                    <div className="flex space-x-4">
+                        <a className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-zinc-400 hover:text-[#8eff71] hover:border-[#8eff71] transition-all duration-300" href="https://www.instagram.com/4usargentina/" target="_blank" rel="noreferrer">
+                            <span className="material-symbols-outlined">share</span>
+                        </a>
+                        <a className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-zinc-400 hover:text-[#8eff71] hover:border-[#8eff71] transition-all duration-300" href="https://wa.me/5491169659907" target="_blank" rel="noreferrer">
+                            <span className="material-symbols-outlined">public</span>
+                        </a>
+                    </div>
+                </div>
+                {/* Nav 1: Cultura */}
+                <div className="space-y-8">
+                    <h5 className="font-headline font-black italic uppercase tracking-tighter text-white text-xl">Cultura</h5>
+                    <ul className="space-y-4">
+                        <li><a className="text-zinc-500 uppercase text-xs tracking-[0.2em] font-bold hover:text-[#8eff71] hover:italic transition-all duration-300" href="/">Inicio</a></li>
+                        <li><a className="text-zinc-500 uppercase text-xs tracking-[0.2em] font-bold hover:text-[#8eff71] hover:italic transition-all duration-300" href="/catalogo">Catálogo</a></li>
+                        <li><a className="text-zinc-500 uppercase text-xs tracking-[0.2em] font-bold hover:text-[#8eff71] hover:italic transition-all duration-300" href="/retailer">Mayoristas</a></li>
+                    </ul>
+                </div>
+                {/* Nav 2: Comunidad */}
+                <div className="space-y-8">
+                    <h5 className="font-headline font-black italic uppercase tracking-tighter text-white text-xl">Comunidad</h5>
+                    <ul className="space-y-4">
+                        <li><a className="text-zinc-500 uppercase text-xs tracking-[0.2em] font-bold hover:text-[#8eff71] hover:italic transition-all duration-300" href="https://www.instagram.com/4usargentina/" target="_blank" rel="noreferrer">Instagram</a></li>
+                        <li><a className="text-zinc-500 uppercase text-xs tracking-[0.2em] font-bold hover:text-[#8eff71] hover:italic transition-all duration-300" href="https://wa.me/5491169659907" target="_blank" rel="noreferrer">WhatsApp</a></li>
+                        <li><a className="text-zinc-500 uppercase text-xs tracking-[0.2em] font-bold hover:text-[#8eff71] hover:italic transition-all duration-300" href="mailto:contacto@4usargentina.com">Contacto</a></li>
+                    </ul>
+                    <div className="pt-4 border-t border-white/5">
+                        <p className="text-[10px] text-zinc-600 uppercase tracking-[0.3em] mb-2 font-bold">Consultas directas</p>
+                        <a className="text-[#8eff71] font-headline italic uppercase font-black text-2xl hover:underline underline-offset-8 decoration-2" href="mailto:contacto@4usargentina.com">contacto@4usargentina.com</a>
+                    </div>
+                </div>
+                {/* Nav 3: Legal */}
+                <div className="space-y-8">
+                    <h5 className="font-headline font-black italic uppercase tracking-tighter text-white text-xl">Legal</h5>
+                    <ul className="space-y-4">
+                        <li><a className="text-zinc-500 uppercase text-xs tracking-[0.2em] font-bold hover:text-[#8eff71] hover:italic transition-all duration-300" href="#">Política de privacidad</a></li>
+                        <li><a className="text-zinc-500 uppercase text-xs tracking-[0.2em] font-bold hover:text-[#8eff71] hover:italic transition-all duration-300" href="#">Envíos</a></li>
+                    </ul>
+                </div>
             </div>
 
-            <div className="flex flex-wrap justify-center gap-8">
-                {links.map((link) => (
+            {/* Massive Background Text Anchor */}
+            <div className="w-full mt-auto mb-16 overflow-hidden pointer-events-none select-none">
+                <h2 className="text-[14rem] md:text-[24vw] font-black italic leading-none text-zinc-900/40 tracking-tighter whitespace-nowrap text-center translate-y-12">
+                    4US ARGENTINA
+                </h2>
+            </div>
+
+            {/* Copyright Bar */}
+            <div className="border-t border-white/5 pt-10 px-8 w-full max-w-[1440px] mx-auto flex flex-col md:flex-row justify-between items-center gap-4 relative z-10">
+                <p className="text-zinc-600 text-[10px] uppercase tracking-[0.4em] font-bold">© {new Date().getFullYear()} 4US ARGENTINA — TODOS LOS DERECHOS RESERVADOS</p>
+                <div className="flex gap-2 items-center">
+                    <span className="text-zinc-700 text-[10px] uppercase tracking-[0.2em] font-bold">Powered by</span>
                     <a
-                        key={link.label}
-                        href={link.href}
-                        target={link.href.startsWith('http') ? '_blank' : undefined}
-                        rel={link.href.startsWith('http') ? 'noreferrer' : undefined}
-                        className="text-[#adaaaa] hover:text-[#8eff71] transition-colors text-sm tracking-widest uppercase"
+                        href="https://archillimatias.dev"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-[#8eff71] text-[10px] uppercase tracking-[0.2em] font-bold hover:underline"
                     >
-                        {link.label}
+                        Pampa Labs
                     </a>
-                ))}
+                </div>
             </div>
-
-            <a
-                href="https://archillimatias.dev"
-                target="_blank"
-                rel="noreferrer"
-                className="text-sm tracking-widest uppercase hover:opacity-80 transition-opacity"
-            >
-                <span className="text-[#adaaaa]">Powered by </span>
-                <span className="text-[#8eff71]">Pampa Labs</span>
-            </a>
         </footer>
     );
 }
