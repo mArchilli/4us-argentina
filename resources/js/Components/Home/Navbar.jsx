@@ -3,10 +3,8 @@ import { Link, usePage } from '@inertiajs/react';
 
 const navLinks = [
     { label: 'Inicio', id: 'inicio', href: '/' },
-    { label: 'Nosotros', id: 'nosotros', href: '/#nosotros' },
     { label: 'Catálogo', href: '/catalogo' },
     { label: 'Mayoristas', href: '/retailer' },
-    { label: 'Contacto', id: 'contacto', href: '/#contacto' },
 ];
 
 export default function Navbar({ auth }) {
@@ -51,9 +49,7 @@ export default function Navbar({ auth }) {
     };
 
     const getNavLinkClassName = (id, href) => {
-        const isActive = isHomePage
-            ? activeSection === id
-            : (href === '/catalogo' && isCatalogPage);
+        const isActive = isLinkActive(id, href);
 
         return `font-['Space_Grotesk'] font-bold tracking-tight transition-colors pb-1 ${
             isActive
@@ -63,9 +59,7 @@ export default function Navbar({ auth }) {
     };
 
     const getMobileNavLinkClassName = (id, href, delay) => {
-        const isActive = isHomePage
-            ? activeSection === id
-            : (href === '/catalogo' && isCatalogPage);
+        const isActive = isLinkActive(id, href);
 
         return {
             style: { transitionDelay: menuOpen ? `${delay * 60}ms` : '0ms' },
@@ -77,6 +71,14 @@ export default function Navbar({ auth }) {
         };
     };
 
+    // Helper to determine active state for non-home pages
+    const isLinkActive = (id, href) => {
+        if (isHomePage) return activeSection === id;
+        if (!href) return false;
+        if (href === '/') return currentPath === '/';
+        return currentPath.startsWith(href);
+    };
+
     return (
         <>
             {/* ── Desktop / Mobile bar ───────────────────────────── */}
@@ -86,16 +88,16 @@ export default function Navbar({ auth }) {
                 {isHomePage ? (
                     <button
                         onClick={() => scrollTo('inicio')}
-                        className="text-xl md:text-2xl font-black text-[#8eff71] tracking-tighter font-['Space_Grotesk']"
+                        className="text-xl md:text-2xl font-black italic text-[#8eff71] tracking-tighter font-['Space_Grotesk']"
                     >
-                        4us Argentina
+                        4US ARGENTINA
                     </button>
                 ) : (
                     <Link
                         href="/"
-                        className="text-xl md:text-2xl font-black text-[#8eff71] tracking-tighter font-['Space_Grotesk']"
+                        className="text-xl md:text-2xl font-black italic text-[#8eff71] tracking-tighter font-['Space_Grotesk']"
                     >
-                        4us Argentina
+                        4US ARGENTINA
                     </Link>
                 )}
 
