@@ -40,12 +40,12 @@ export default function ContactSection() {
     };
 
     return (
-        <section id="contacto" className="relative min-h-[80vh] py-24 px-6 md:px-16 max-w-7xl mx-auto">
-            <div className="relative z-10 max-w-7xl mx-auto px-0 md:px-8">
+        <section id="contacto" className="relative min-h-[80vh] py-24 px-6 md:px-16  mx-auto">
+            <div className="relative z-10  mx-auto px-0 md:px-8">
                 {/* Heading */}
                 <div className="mb-16">
-                    <h1 className="text-5xl md:text-8xl lg:text-9xl font-black tracking-tighter uppercase leading-[0.85] mb-0">
-                        <span className="text-white">PONETE EN</span><br />
+                    <h1 className="text-5xl md:text-8xl lg:text-9xl font-black tracking-tighter uppercase leading-[0.85] text-center">
+                        <span className="text-white">PONETE EN</span>
                         <span className="text-[#8eff71] italic">CONTACTO</span>
                     </h1>
                 </div>

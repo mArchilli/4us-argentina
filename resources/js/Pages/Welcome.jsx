@@ -82,23 +82,7 @@ export default function Welcome({ auth, featuredProducts }) {
                 </div>
             </div>
 
-            {/* Animación keyframes para fadeInUp y fadeOutDown */}
-            <style>{`
-                @keyframes fadeInUp {
-                    0% { opacity: 0; transform: translateY(40px) scale(0.95); }
-                    100% { opacity: 1; transform: translateY(0) scale(1); }
-                }
-                @keyframes fadeOutDown {
-                    0% { opacity: 1; transform: translateY(0) scale(1); }
-                    100% { opacity: 0; transform: translateY(40px) scale(0.95); }
-                }
-                .animate-fadeInUp {
-                    animation: fadeInUp 0.5s cubic-bezier(0.22,1,0.36,1);
-                }
-                .animate-fadeOutDown {
-                    animation: fadeOutDown 0.4s cubic-bezier(0.22,1,0.36,1);
-                }
-            `}</style>
+            
         </>
     );
 }

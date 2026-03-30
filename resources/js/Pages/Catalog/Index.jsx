@@ -97,17 +97,40 @@ export default function CatalogIndex({ auth, products = [], categories = [], act
             <div className="bg-[#0e0e0e] text-white min-h-screen">
                 <Navbar auth={auth} />
 
-                <main className="pt-32 pb-24 px-6 md:px-10 max-w-7xl mx-auto">
-                    {/* Hero Header */}
-                    <header className="mb-14">
-                        <h1 className="text-5xl md:text-7xl font-black tracking-tighter text-white mb-5 uppercase">
-                            Catálogo <span className="text-[#8eff71] italic">Premium</span>
-                        </h1>
-                        <p className="text-[#adaaaa] text-lg max-w-2xl font-medium">
-                            Explorá nuestra selección exclusiva de accesorios diseñados para elevar tu experiencia.
-                            Estética, cultura y calidad en cada pieza.
-                        </p>
-                    </header>
+                <main className="pt-32 pb-24 px-6 md:px-10 mx-auto">
+                    {/* Hero Header (retailer-like, adapted to catálogo) */}
+                    <section className="relative min-h-[700px] flex flex-col justify-center px-6 md:px-12 lg:px-24 mb-20 overflow-hidden">
+                        <div className="absolute top-0 right-2 h-full opacity-40 z-0 lg:mr-28 lg:pr-28 md:mr-14 md:pr-16">
+                            
+                            <img alt="Catálogo 4US" className="w-full h-full object-cover grayscale contrast-125 " src="/images/catalog-images.png" />
+                        </div>
+                        <div className="relative z-10 max-w-4xl">
+                            <div className="inline-block px-3 py-1 bg-[#8eff71]/10 border border-[#8eff71]/20 rounded-full mb-6">
+                                <span className="text-[#8eff71] text-xs font-black tracking-widest uppercase font-label italic">Catálogo Oficial</span>
+                            </div>
+                            <h1 className="text-5xl md:text-8xl font-headline font-black italic uppercase leading-none tracking-tighter mb-8">
+                                ¿BUSCÁS <span className="text-[#8eff71]">PREMIUM</span>? <br />
+                                ENCONTRÁ LO MEJOR <br />
+                                EN NUESTRO CATÁLOGO
+                            </h1>
+                            <p className="text-[#adaaaa] text-lg md:text-xl max-w-xl mb-12 font-medium leading-relaxed">
+                                Explorá nuestra selección curada de accesorios y piezas exclusivas pensadas para identidad, estética y calidad.
+                            </p>
+                            <div className="flex flex-col sm:flex-row gap-4">
+                                <a
+                                    href="#productos"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        document.getElementById('productos')?.scrollIntoView({ behavior: 'smooth' });
+                                    }}
+                                    className="group bg-[#8eff71] text-[#0d6100] font-headline font-black italic px-8 py-5 rounded-full text-lg uppercase tracking-tight hover:shadow-[0_0_30px_rgba(142,255,113,0.3)] transition-all active:scale-95 flex items-center justify-center gap-2"
+                                >
+                                    EXPLORAR CATÁLOGO
+                                    <span className="material-symbols-outlined font-bold transform transition-transform duration-300 group-hover:rotate-90">arrow_forward</span>
+                                </a>
+                            </div>
+                        </div>
+                    </section>
 
                     {/* Category filter pills */}
                     <div className="flex flex-wrap gap-3 mb-12">
@@ -140,6 +163,7 @@ export default function CatalogIndex({ auth, products = [], categories = [], act
                     </div>
 
                     {/* Product grid */}
+                    <div id="productos">
                     {products.length === 0 ? (
                         <div className="text-center py-24 text-[#adaaaa]">
                             <span className="material-symbols-outlined text-6xl mb-4 block text-[#2a2a2a]">inventory_2</span>
@@ -152,39 +176,22 @@ export default function CatalogIndex({ auth, products = [], categories = [], act
                             ))}
                         </div>
                     )}
+                    </div>
 
-                    {/* CTA section */}
-                    <section className="mt-28 relative rounded-[2rem] bg-[#131313] overflow-hidden p-10 md:p-20">
-                        <div className="absolute top-0 right-0 w-1/2 h-full opacity-20 pointer-events-none">
-                            <div className="w-full h-full bg-gradient-to-l from-[#8eff71] to-transparent" />
-                        </div>
-                        <div className="relative z-10 grid md:grid-cols-2 gap-10 items-center">
-                            <div>
-                                <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter mb-6 text-white">
-                                    ¿Buscás algo <span className="text-[#8eff71]">Específico?</span>
+                    {/* CTA section (styled like retailer) */}
+                    <section className="px-6 md:px-12 lg:px-24 mt-32">
+                        <div className="bg-[#8eff71] p-12 md:p-24 rounded-[3rem] text-center relative overflow-hidden">
+                            <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10"></div>
+                            <div className="relative z-10">
+                                <h2 className="text-[#0d6100] text-5xl md:text-7xl font-headline font-black italic uppercase mb-8 tracking-tighter">
+                                    ¿Buscás algo <span className="text-[#0d6100]">Específico?</span>
                                 </h2>
-                                <p className="text-lg text-[#adaaaa] mb-10 font-medium">
-                                    Realizamos pedidos personalizados y ventas mayoristas para locales y clubes
-                                    de cultivo. Contactanos y armamos tu presupuesto.
+                                <p className="text-[#0d6100]/80 text-xl font-bold uppercase tracking-widest mb-12 max-w-2xl mx-auto">
+                                    Realizamos pedidos personalizados y ventas mayoristas para locales y clubes de cultivo. Contactanos y armamos tu presupuesto.
                                 </p>
-                                <div className="flex flex-col sm:flex-row gap-4">
-                                    <a
-                                        href="https://wa.me/5491169659907"
-                                        target="_blank"
-                                        rel="noreferrer"
-                                        className="px-8 py-4 bg-[#8eff71] text-[#0d6100] rounded-full font-black uppercase tracking-wider hover:scale-105 transition-all shadow-[0_0_20px_rgba(142,255,113,0.3)] text-center"
-                                    >
-                                        Venta Mayorista
-                                    </a>
-                                    <a
-                                        href="https://wa.me/5491169659907"
-                                        target="_blank"
-                                        rel="noreferrer"
-                                        className="px-8 py-4 border-2 border-[#8eff71] text-[#8eff71] rounded-full font-black uppercase tracking-wider hover:bg-[#8eff71]/10 transition-all text-center"
-                                    >
-                                        Contacto Directo
-                                    </a>
-                                </div>
+                                <button className="bg-[#0d6100] text-[#8eff71] font-headline font-black italic px-12 py-6 rounded-full text-2xl uppercase tracking-tight hover:scale-105 transition-all shadow-2xl">
+                                    Contactate
+                                </button>
                             </div>
                         </div>
                     </section>

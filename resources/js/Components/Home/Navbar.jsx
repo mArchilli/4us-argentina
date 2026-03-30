@@ -126,7 +126,7 @@ export default function Navbar({ auth }) {
 
                 {/* Right side */}
                 <div className="flex items-center gap-3">
-                    {auth?.user ? (
+                    {/* {auth?.user ? (
                         <Link
                             href={route('dashboard')}
                             className="bg-[#8eff71] text-[#0d6100] px-5 md:px-6 py-2 rounded-full font-bold text-sm md:text-base hover:scale-105 hover:shadow-[0_0_15px_rgba(142,255,113,0.2)] transition-all active:scale-95 duration-200"
@@ -134,13 +134,14 @@ export default function Navbar({ auth }) {
                             Dashboard
                         </Link>
                     ) : (
-                        <Link
+                        
+                    )} */}
+                    <Link
                             href="/catalogo"
                             className="hidden md:block bg-[#8eff71] text-[#0d6100] px-6 py-2 rounded-full font-bold hover:scale-105 hover:shadow-[0_0_15px_rgba(142,255,113,0.2)] transition-all active:scale-95 duration-200"
                         >
                             Comprar
                         </Link>
-                    )}
 
                     {/* Hamburger — mobile only */}
                     <button
