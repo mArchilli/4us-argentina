@@ -1,9 +1,44 @@
 
 
+
 import Navbar from '@/Components/Home/Navbar';
 import HomeFooter from '@/Components/Home/HomeFooter';
 
+
+
+import { useRef, useEffect, useState } from 'react';
+
 export default function Retailer({ auth }) {
+    const footerRef = useRef(null);
+    const [footerVisible, setFooterVisible] = useState(false);
+
+    useEffect(() => {
+        const observer = new window.IntersectionObserver(
+            ([entry]) => setFooterVisible(entry.intersectionRatio >= 0.8),
+            { threshold: 0.8 }
+        );
+        if (footerRef.current) {
+            observer.observe(footerRef.current);
+        }
+        return () => {
+            if (footerRef.current) observer.unobserve(footerRef.current);
+        };
+    }, []);
+
+    // El efecto debe aplicarse solo cuando el usuario realmente llega al final (footer completamente visible)
+    useEffect(() => {
+        const navbar = document.querySelector('nav');
+        if (navbar) {
+            navbar.style.transition = 'opacity 0.3s';
+            navbar.style.opacity = footerVisible ? '0' : '1';
+            navbar.style.pointerEvents = footerVisible ? 'none' : '';
+        }
+    }, [footerVisible]);
+
+    const scrollToTop = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
     return (
         <div className="bg-[#0e0e0e] text-white font-body min-h-screen flex flex-col justify-between">
             <Navbar auth={auth} />
@@ -82,26 +117,33 @@ export default function Retailer({ auth }) {
                 </section>
             </main>
 
-            {/* BottomNavBar (Mobile Only) */}
-            <nav className="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-6 pt-3 bg-[#141414]/90 backdrop-blur-lg rounded-t-2xl z-50 shadow-[0_-8px_30px_rgb(0,0,0,0.5)]">
-                <a className="flex flex-col items-center justify-center text-zinc-500 px-4 py-2 hover:text-[#b7fc63] transition-all active:scale-90" href="/">
-                    <span className="material-symbols-outlined">grid_view</span>
-                    <span className="text-[10px] uppercase font-bold tracking-widest font-label mt-1">Inicio</span>
-                </a>
-                <a className="flex flex-col items-center justify-center text-zinc-500 px-4 py-2 hover:text-[#b7fc63] transition-all active:scale-90" href="/catalogo">
-                    <span className="material-symbols-outlined">payments</span>
-                    <span className="text-[10px] uppercase font-bold tracking-widest font-label mt-1">Ventas</span>
-                </a>
-                <a className="flex flex-col items-center justify-center text-[#b7fc63] bg-[#b7fc63]/10 rounded-xl px-4 py-2 scale-110" href="/retailer">
-                    <span className="material-symbols-outlined" style={{ fontVariationSettings: '"FILL" 1' }}>group</span>
-                    <span className="text-[10px] uppercase font-bold tracking-widest font-label mt-1">Red</span>
-                </a>
-                <a className="flex flex-col items-center justify-center text-zinc-500 px-4 py-2 hover:text-[#b7fc63] transition-all active:scale-90" href="#">
-                    <span className="material-symbols-outlined">person</span>
-                    <span className="text-[10px] uppercase font-bold tracking-widest font-label mt-1">Perfil</span>
-                </a>
-            </nav>
-            <HomeFooter />
+            {/* Botón flotante cuando el footer es visible */}
+            {footerVisible && (
+                <button
+                    onClick={scrollToTop}
+                    className="fixed bottom-6 right-6 z-[100] bg-[#8eff71] text-[#0d6100] px-4 py-2 rounded-full shadow-2xl flex items-center gap-2 text-base font-black uppercase tracking-tight transition-transform duration-300 animate-fadeInUp hover:scale-110 hover:shadow-[0_0_20px_rgba(142,255,113,0.4)]"
+                    style={{ animation: 'fadeInUp 0.5s cubic-bezier(0.22,1,0.36,1)' }}
+                >
+                    <span className="material-symbols-outlined text-xl">arrow_upward</span>
+                    Volver al inicio
+                </button>
+            )}
+
+            {/* Animación keyframes para fadeInUp */}
+            <style>{`
+                @keyframes fadeInUp {
+                    0% { opacity: 0; transform: translateY(40px) scale(0.95); }
+                    100% { opacity: 1; transform: translateY(0) scale(1); }
+                }
+                .animate-fadeInUp {
+                    animation: fadeInUp 0.5s cubic-bezier(0.22,1,0.36,1);
+                }
+            `}</style>
+
+            {/* Footer con ref para IntersectionObserver */}
+            <div ref={footerRef}>
+                <HomeFooter />
+            </div>
         </div>
     );
 }
