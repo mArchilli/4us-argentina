@@ -17,7 +17,7 @@ function ProductCard({ product }) {
     return (
         <Link
             href={route('catalog.show', product.id)}
-            className="group relative flex flex-col bg-[#131313] rounded-[1.6rem] overflow-hidden hover:scale-[1.02] transition-all duration-500 shadow-xl"
+            className="group relative flex flex-col h-full bg-[#131313] rounded-[1.6rem] overflow-hidden hover:scale-[1.02] transition-all duration-500 shadow-xl"
         >
             <div className="aspect-[4/5] overflow-hidden relative">
                 {image ? (
@@ -49,7 +49,7 @@ function ProductCard({ product }) {
                 )}
             </div>
 
-            <div className="p-6 flex flex-col flex-grow">
+            <div className="p-6 flex flex-col justify-between flex-1">
                 <div className="flex justify-between items-start mb-2 gap-2">
                     <h3 className="text-xl font-bold tracking-tight leading-tight text-white">
                         {product.title}
@@ -68,14 +68,14 @@ function ProductCard({ product }) {
                 )}
 
                 {product.categories?.length > 1 && (
-                    <div className="flex flex-wrap gap-1.5 mt-auto pt-2">
+                    <div className="flex flex-wrap gap-1.5 pt-2">
                         {product.categories.slice(1).map((cat) => (
                             <CategoryBadge key={cat.id} name={cat.name} />
                         ))}
                     </div>
                 )}
 
-                <div className="mt-4">
+                <div className="mt-6">
                     <div className="w-full bg-[#8eff71]/10 border border-[#8eff71]/20 text-[#8eff71] py-3 rounded-full font-black uppercase tracking-tighter flex items-center justify-center gap-2 group-hover:bg-[#8eff71] group-hover:text-[#0d6100] transition-all duration-300 text-sm">
                         <span className="material-symbols-outlined text-base">shopping_cart</span>
                         Ver producto

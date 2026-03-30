@@ -47,10 +47,22 @@ export default function HeroSection() {
                     Importados directamente, auténticos sin concesiones.
                 </p>
                 <div className="flex flex-wrap gap-4">
-                    <button className="bg-gradient-to-br from-[#8eff71] to-[#2ff801] text-[#0d6100] px-10 py-4 rounded-full font-bold text-lg hover:shadow-[0_0_30px_rgba(142,255,113,0.3)] transition-all active:scale-95">
+                    <button
+                        onClick={(e) => {
+                            e.preventDefault();
+                            document.getElementById('catalogo')?.scrollIntoView({ behavior: 'smooth' });
+                        }}
+                        className="bg-gradient-to-br from-[#8eff71] to-[#2ff801] text-[#0d6100] px-10 py-4 rounded-full font-bold text-lg hover:shadow-[0_0_30px_rgba(142,255,113,0.3)] transition-all active:scale-95"
+                    >
                         Ver Catálogo
                     </button>
-                    <button className="border border-[#484848] text-white px-10 py-4 rounded-full font-bold text-lg hover:bg-[#262626] transition-all active:scale-95">
+                    <button
+                        onClick={(e) => {
+                            e.preventDefault();
+                            document.getElementById('nosotros')?.scrollIntoView({ behavior: 'smooth' });
+                        }}
+                        className=" text-white px-10 py-4 rounded-full font-bold text-lg hover:bg-[#262626] transition-all active:scale-95"
+                    >
                         Nuestra Historia
                     </button>
                 </div>

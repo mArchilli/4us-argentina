@@ -32,15 +32,15 @@ export default function AboutSection() {
     return (
         <section id="nosotros" className="py-16 px-6 md:px-16 overflow-hidden">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6  mx-auto">
-                <div ref={leftRef} className=" p-12 md:p-20 rounded-2xl flex flex-col justify-center">
-                    <span className="text-[#8eff71] font-bold tracking-widest uppercase mb-5 block text-sm md:text-base">
+                <div ref={leftRef} className="px-0 py-20 md:px-0 md:py-20 rounded-2xl flex flex-col justify-center">
+                    <span className="text-[#8eff71] font-bold tracking-widest uppercase mb-6 block text-lg md:text-2xl">
                         El Origen
                     </span>
-                    <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-8 tracking-tight">
+                    <h2 className="text-6xl md:text-9xl font-bold mb-8 tracking-tight">
                         De <span className="text-[#8eff71] italic">India</span> a <br />
                         <span className="text-[#8eff71] italic">Buenos Aires.</span>
                     </h2>
-                    <p className="text-[#adaaaa] text-lg md:text-xl leading-relaxed">
+                    <p className="text-[#adaaaa] text-xl md:text-2xl leading-relaxed md:leading-loose">
                         Conectamos el arte global con la cultura local.
                         Importando directamente desde el corazón de la producción en <span className="text-[#8eff71] italic">India</span>,
                         4us Argentina garantiza que cada papel, bandeja y accesorio cumpla
@@ -48,7 +48,7 @@ export default function AboutSection() {
                     </p>
                 </div>
 
-                <div ref={rightRef} className="relative flex items-center justify-center p-6">
+                <div ref={rightRef} className="relative flex items-center justify-center p-8 md:p-16">
                     <Logo3D
                         src="/images/logo-4us-nuevo.png"
                         alt="Logo 4us Argentina"

@@ -18,8 +18,8 @@ function ProductCard({
     const image = product.primary_media?.url ?? null;
 
     return (
-        <article className={`group ${className}`}>
-            <div className={`relative overflow-hidden rounded-[1.6rem] mb-5 bg-[#131313] aspect-[4/5] ${contentClassName}`}>
+        <article className={`group ${className} h-full flex flex-col`}>
+            <div className={`relative overflow-hidden rounded-[1.6rem] mb-5 bg-[#131313] ${contentClassName} flex-1`}>
                 {image ? (
                     <img
                         className={`w-full h-full object-cover transition-transform duration-700 ${enableHoverZoom ? 'group-hover:scale-110' : ''} ${imageClassName}`}
@@ -78,7 +78,7 @@ function ProductCard({
             )}
 
             {product.description && (
-                <p className="text-[#adaaaa] mt-2 text-sm md:text-base line-clamp-2">{product.description}</p>
+                <p className="text-[#adaaaa] mt-2 text-sm md:text-base line-clamp-2 flex-none">{product.description}</p>
             )}
         </article>
     );
@@ -91,7 +91,7 @@ export default function FeaturedSection({ products = [] }) {
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const productCount = products.length;
-    const desktopVisibleCount = productCount > 1 ? 2 : productCount;
+    const desktopVisibleCount = productCount > 3 ? 4 : productCount;
 
     const goToPrevious = () => {
         setCurrentIndex((prev) => getWrappedIndex(prev - 1, productCount));
@@ -184,12 +184,12 @@ export default function FeaturedSection({ products = [] }) {
     return (
         <section id="catalogo" className="py-20 md:py-22 px-6 md:px-16">
             <div ref={headerRef} className="flex justify-between items-end mb-12 md:mb-14">
-                <h2 className="text-4xl md:text-5xl font-bold tracking-tight">
-                    LANZAMIENTO <br />
+                <h2 className="text-4xl md:text-7xl font-bold tracking-tight">
+                    LANZAMIENTOS <br />
                     <span className="text-[#8eff71]">DESTACADO.</span>
                 </h2>
                 <div className="text-[#adaaaa] text-sm tracking-widest uppercase mb-2">
-                    Colección 2024
+                    Colección 2026
                 </div>
             </div>
 
@@ -220,87 +220,27 @@ export default function FeaturedSection({ products = [] }) {
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 xl:gap-10">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 xl:gap-10 h-full">
                         {desktopProducts.map(({ product, index }, offset) => (
                             <div
                                 key={`${product.id}-${index}-${offset}`}
                                 data-featured-item
-                                className={offset % 2 !== 0 ? 'xl:mt-14' : ''}
+                                className={`h-full ${offset % 2 !== 0 ? 'xl:mt-14' : ''}`}
                             >
                                 <ProductCard
                                     product={product}
-                                    className="cursor-pointer"
+                                    className="cursor-pointer h-full"
                                 />
                             </div>
                         ))}
                     </div>
                 </div>
-
-                <div className="md:hidden">
-                    <div
-                        className="relative mx-auto w-full max-w-[21rem] min-h-[34rem]"
-                        onTouchStart={handleTouchStart}
-                        onTouchEnd={handleTouchEnd}
-                        style={{ touchAction: 'pan-y' }}
-                    >
-                        {productCount > 1 && previousProduct && (
-                            <div
-                                data-featured-item
-                                className="absolute inset-x-0 top-8 z-0 scale-[0.88] -translate-x-7 opacity-40 blur-[1px]"
-                                aria-hidden="true"
-                            >
-                                <ProductCard
-                                    product={previousProduct}
-                                    className="pointer-events-none"
-                                    enableHoverZoom={false}
-                                />
-                            </div>
-                        )}
-
-                        <div data-featured-item className="absolute inset-0 z-20">
-                            <ProductCard product={currentProduct} className="cursor-grab active:cursor-grabbing" />
+                <div className="md:hidden flex flex-col gap-6">
+                    {products.map((product) => (
+                        <div key={product.id} data-featured-item>
+                            <ProductCard product={product} />
                         </div>
-
-                        {productCount > 1 && nextProduct && (
-                            <div
-                                data-featured-item
-                                className="absolute inset-x-0 top-8 z-10 scale-[0.88] translate-x-7 opacity-40 blur-[1px]"
-                                aria-hidden="true"
-                            >
-                                <ProductCard
-                                    product={nextProduct}
-                                    className="pointer-events-none"
-                                    enableHoverZoom={false}
-                                />
-                            </div>
-                        )}
-                    </div>
-
-                    {productCount > 1 && (
-                        <div className="flex items-center justify-between gap-4 mt-6">
-                            <button
-                                type="button"
-                                onClick={goToPrevious}
-                                className="h-10 w-10 rounded-full border border-white/15 bg-white/5 text-white"
-                                aria-label="Producto anterior"
-                            >
-                                <span className="material-symbols-outlined">arrow_back</span>
-                            </button>
-
-                            <div className="text-sm uppercase tracking-[0.35em] text-[#adaaaa]">
-                                {String(currentIndex + 1).padStart(2, '0')} / {String(productCount).padStart(2, '0')}
-                            </div>
-
-                            <button
-                                type="button"
-                                onClick={goToNext}
-                                className="h-10 w-10 rounded-full border border-white/15 bg-white/5 text-white"
-                                aria-label="Producto siguiente"
-                            >
-                                <span className="material-symbols-outlined">arrow_forward</span>
-                            </button>
-                        </div>
-                    )}
+                    ))}
                 </div>
             </div>
         </section>
