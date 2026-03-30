@@ -1,12 +1,10 @@
 import { useState, useRef, useEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
 gsap.registerPlugin(ScrollTrigger);
 
 export default function ContactSection() {
     const [form, setForm] = useState({ name: '', email: '', message: '' });
-
     const infoRef = useRef(null);
     const formRef = useRef(null);
 
@@ -42,81 +40,88 @@ export default function ContactSection() {
     };
 
     return (
-        <section id="contacto" className="py-24 px-6 md:px-16 max-w-7xl mx-auto">
-            <div className="bg-[#262626] rounded-2xl p-10 md:p-20 grid grid-cols-1 md:grid-cols-2 gap-16">
-                {/* Left: info */}
-                <div ref={infoRef}>
-                    <h2 className="text-4xl font-bold mb-6 tracking-tight">
-                        PONETE EN <br />
-                        <span className="text-[#8eff71]">CONTACTO.</span>
-                    </h2>
-                    <p className="text-[#adaaaa] mb-12">
-                        ¿Querés vender 4us o tenés alguna consulta? Nuestro equipo en Buenos Aires está listo para ayudarte.
-                    </p>
-
-                    <div className="space-y-6">
-                        <a className="flex items-center gap-4 group" href="https://wa.me/5491169659907" target="_blank" rel="noreferrer">
-                            <div className="w-12 h-12 rounded-full bg-[#8eff71]/10 flex items-center justify-center group-hover:bg-[#8eff71] transition-all">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-6 h-6 fill-[#8eff71] group-hover:fill-[#0d6100] transition-all">
-                                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/>
-                                </svg>
+        <section id="contacto" className="relative min-h-[80vh] py-24 px-6 md:px-16 max-w-7xl mx-auto">
+            <div className="relative z-10 max-w-7xl mx-auto px-0 md:px-8">
+                {/* Heading */}
+                <div className="mb-16">
+                    <h1 className="text-5xl md:text-8xl lg:text-9xl font-black tracking-tighter uppercase leading-[0.85] mb-0">
+                        <span className="text-white">PONETE EN</span><br />
+                        <span className="text-[#8eff71] italic">CONTACTO</span>
+                    </h1>
+                </div>
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+                    {/* Left: Info & links */}
+                    <div ref={infoRef} className="lg:col-span-5 space-y-12">
+                        <div className="space-y-6">
+                            <p className="text-2xl md:text-3xl font-headline font-bold italic uppercase leading-tight text-white">
+                                ¿Querés vender 4us o tenés alguna consulta?
+                            </p>
+                            <p className="text-[#adaaaa] text-lg max-w-md leading-relaxed">
+                                Estamos buscando expandir nuestra cultura. Si sos un retailer o simplemente querés charlar sobre un drop, escribinos. La respuesta es inmediata.
+                            </p>
+                        </div>
+                        <div className="space-y-4">
+                            <p className="font-label text-xs uppercase tracking-widest text-[#8eff71] font-bold">Conectá con el equipo</p>
+                            <div className="flex flex-col gap-4">
+                                <a className="flex items-center gap-4 group" href="https://wa.me/5491169659907" target="_blank" rel="noreferrer">
+                                    <div className="w-12 h-12 rounded-full bg-[#262626] flex items-center justify-center group-hover:bg-[#8eff71] group-hover:text-[#0d6100] transition-all duration-300">
+                                        {/* WhatsApp SVG */}
+                                        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-7 h-7"><circle cx="16" cy="16" r="16" fill="currentColor" className="text-[#8eff71] group-hover:text-[#0d6100]"/><path d="M23.47 19.7c-.33-.17-1.95-.96-2.25-1.07-.3-.11-.52-.17-.74.17-.22.33-.87 1.07-1.07 1.29-.2.22-.39.25-.72.09-.33-.16-1.4-.52-2.67-1.65-.99-.89-1.66-2-1.85-2.33-.19-.33-.02-.5.14-.66.15-.15.33-.39.5-.59.17-.2.22-.34.33-.56.11-.22.06-.41-.03-.59-.09-.18-.77-1.87-1.05-2.56-.28-.67-.56-.58-.77-.59-.2-.01-.41-.01-.63-.01-.22 0-.59.09-.9.41-.31.32-1.18 1.15-1.18 2.8 0 1.65 1.21 3.24 1.38 3.48.17.24 2.39 3.62 5.8 5.08.81.35 1.44.56 1.93.72.81.26 1.55.22 2.13.13.65-.1 2-.81 2.28-1.59.28-.78.28-1.45.19-1.59-.09-.14-.31-.22-.65-.39z" fill="#262626"/></svg>
+                                    </div>
+                                    <span className="text-lg font-bold group-hover:text-[#8eff71] transition-colors">WhatsApp</span>
+                                </a>
+                                <a className="flex items-center gap-4 group" href="https://www.instagram.com/4usargentina/" target="_blank" rel="noreferrer">
+                                    <div className="w-12 h-12 rounded-full bg-[#262626] flex items-center justify-center group-hover:bg-[#8eff71] group-hover:text-[#0d6100] transition-all duration-300">
+                                        {/* Instagram SVG */}
+                                        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-7 h-7"><rect x="6" y="6" width="20" height="20" rx="6" fill="currentColor" className="text-[#8eff71] group-hover:text-[#0d6100]"/><circle cx="16" cy="16" r="5" fill="#262626"/><circle cx="22.2" cy="9.8" r="1.2" fill="#262626"/></svg>
+                                    </div>
+                                    <span className="text-lg font-bold group-hover:text-[#8eff71] transition-colors">@4us_arg</span>
+                                </a>
+                                <a className="flex items-center gap-4 group" href="mailto:contacto@4usargentina.com" target="_blank" rel="noreferrer">
+                                    <div className="w-12 h-12 rounded-full bg-[#262626] flex items-center justify-center group-hover:bg-[#8eff71] group-hover:text-[#0d6100] transition-all duration-300">
+                                        {/* Email SVG */}
+                                        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-7 h-7">
+                                            <rect x="6" y="8" width="20" height="16" rx="4" fill="currentColor" className="text-[#8eff71] group-hover:text-[#0d6100]"/>
+                                            <path d="M8 10l8 7 8-7" stroke="#262626" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                        </svg>
+                                    </div>
+                                    <span className="text-lg font-bold group-hover:text-[#8eff71] transition-colors">contacto@4usargentina.com</span>
+                                </a>
                             </div>
-                            <div>
-                                <p className="text-sm text-[#adaaaa]">WhatsApp</p>
-                                <p className="font-bold">+54 11 6965 9907</p>
-                            </div>
-                        </a>
-
-                        <a className="flex items-center gap-4 group" href="https://www.instagram.com/4usargentina/" target="_blank" rel="noreferrer">
-                            <div className="w-12 h-12 rounded-full bg-[#8eff71]/10 flex items-center justify-center group-hover:bg-[#8eff71] transition-all">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-6 h-6 fill-[#8eff71] group-hover:fill-[#0d6100] transition-all">
-                                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/>
-                                </svg>
-                            </div>
-                            <div>
-                                <p className="text-sm text-[#adaaaa]">Instagram</p>
-                                <p className="font-bold">@4usargentina</p>
-                            </div>
-                        </a>
+                        </div>
+                    </div>
+                    {/* Right: Form */}
+                    <div ref={formRef} className="lg:col-span-7">
+                        <div className="glass-card bg-[#1a1919]/60 backdrop-blur-xl p-8 md:p-12 rounded-2xl border border-[#484847]/10 shadow-2xl">
+                            <form className="space-y-8" onSubmit={handleSubmit}>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                    <div className="space-y-2">
+                                        <label className="font-label text-[10px] uppercase tracking-[0.2em] text-[#adaaaa] ml-1">Tu Nombre</label>
+                                        <input name="name" value={form.name} onChange={handleChange} required
+                                            className="w-full bg-[#000] border border-[#484847]/20 rounded-xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-[#8eff71] focus:border-[#8eff71] transition-all placeholder:text-[#767575]"
+                                            placeholder="Nombre completo" type="text" />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="font-label text-[10px] uppercase tracking-[0.2em] text-[#adaaaa] ml-1">Tu Email</label>
+                                        <input name="email" value={form.email} onChange={handleChange} required
+                                            className="w-full bg-[#000] border border-[#484847]/20 rounded-xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-[#8eff71] focus:border-[#8eff71] transition-all placeholder:text-[#767575]"
+                                            placeholder="email@ejemplo.com" type="email" />
+                                    </div>
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="font-label text-[10px] uppercase tracking-[0.2em] text-[#adaaaa] ml-1">Mensaje</label>
+                                    <textarea name="message" value={form.message} onChange={handleChange} required
+                                        className="w-full bg-[#000] border border-[#484847]/20 rounded-xl px-6 py-4 text-white focus:outline-none focus:ring-1 focus:ring-[#8eff71] focus:border-[#8eff71] transition-all placeholder:text-[#767575] resize-none"
+                                        placeholder="¿En qué podemos ayudarte?" rows={6}></textarea>
+                                </div>
+                                <button type="submit"
+                                    className="w-full py-5 bg-[#8eff71] text-[#0d6100] font-bold tracking-tight italic uppercase text-xl rounded-xl hover:scale-[1.02] active:scale-95 transition-all duration-300">
+                                    Enviar consulta
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
-
-                {/* Right: form */}
-                <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
-                    <input
-                        name="name"
-                        type="text"
-                        placeholder="Nombre completo"
-                        value={form.name}
-                        onChange={handleChange}
-                        required
-                        className="w-full bg-[#262626] border border-[#484848] rounded-2xl p-4 focus:ring-2 focus:ring-[#8eff71]/40 focus:outline-none transition-all placeholder:text-[#adaaaa] text-white"
-                    />
-                    <input
-                        name="email"
-                        type="email"
-                        placeholder="Correo electrónico"
-                        value={form.email}
-                        onChange={handleChange}
-                        required
-                        className="w-full bg-[#262626] border border-[#484848] rounded-2xl p-4 focus:ring-2 focus:ring-[#8eff71]/40 focus:outline-none transition-all placeholder:text-[#adaaaa] text-white"
-                    />
-                    <textarea
-                        name="message"
-                        placeholder="Tu mensaje"
-                        rows={4}
-                        value={form.message}
-                        onChange={handleChange}
-                        required
-                        className="w-full bg-[#262626] border border-[#484848] rounded-2xl p-4 focus:ring-2 focus:ring-[#8eff71]/40 focus:outline-none transition-all placeholder:text-[#adaaaa] text-white resize-none"
-                    />
-                    <button
-                        type="submit"
-                        className="w-full bg-[#8eff71] text-[#0d6100] font-bold py-4 rounded-full hover:shadow-[0_0_20px_rgba(142,255,113,0.4)] transition-all active:scale-95"
-                    >
-                        Enviar consulta
-                    </button>
-                </form>
             </div>
         </section>
     );
