@@ -5,6 +5,7 @@ const navLinks = [
     { label: 'Inicio', id: 'inicio', href: '/' },
     { label: 'Nosotros', id: 'nosotros', href: '/#nosotros' },
     { label: 'Catálogo', href: '/catalogo' },
+    { label: 'Revendedores', href: '/retailer' },
     { label: 'Contacto', id: 'contacto', href: '/#contacto' },
 ];
 

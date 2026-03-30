@@ -26,6 +26,9 @@ Route::get('/', function () {
 Route::get('/catalogo', [CatalogController::class, 'index'])->name('catalog.index');
 Route::get('/catalogo/{product}', [CatalogController::class, 'show'])->name('catalog.show');
 
+        Route::get('/retailer', function () {
+            return Inertia::render('retailer');
+        });
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
