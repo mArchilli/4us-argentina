@@ -12,7 +12,6 @@ function CategoryBadge({ name }) {
 
 function ProductCard({ product }) {
     const image = product.primary_media?.url ?? null;
-    const firstPrice = product.prices?.[0];
 
     return (
         <Link
@@ -51,14 +50,38 @@ function ProductCard({ product }) {
 
             <div className="p-6 flex flex-col justify-between flex-1">
                 <div className="flex justify-between items-start mb-2 gap-2">
-                    <h3 className="text-xl font-bold tracking-tight leading-tight text-white">
-                        {product.title}
-                    </h3>
-                    {firstPrice && (
-                        <span className="text-[#8eff71] font-black text-lg flex-shrink-0">
-                            ${Number(firstPrice.price).toLocaleString('es-AR')}
-                        </span>
-                    )}
+                    <div className="flex-1 pr-4">
+                        <h3 className="text-xl font-bold tracking-tight leading-tight text-white">
+                            {product.title}
+                        </h3>
+                        {product.categories?.length > 1 && (
+                            <div className="mt-2 flex flex-wrap gap-2">
+                                {product.categories.slice(1).map((cat) => (
+                                    <CategoryBadge key={cat.id} name={cat.name} />
+                                ))}
+                            </div>
+                        )}
+                    </div>
+
+                    <div className="text-right flex-shrink-0">
+                        {product.prices?.length > 0 ? (
+                            product.prices
+                                .slice()
+                                .sort((a, b) => (a.min_quantity || 1) - (b.min_quantity || 1))
+                                .map((price, i) => (
+                                    <div key={i} className="flex flex-col items-end">
+                                        <span className="text-[#8eff71] font-black text-lg md:text-xl">
+                                            ${Number(price.price).toLocaleString('es-AR')}
+                                        </span>
+                                        {price.min_quantity > 1 && (
+                                            <span className="text-[#adaaaa] text-xs">x{price.min_quantity}</span>
+                                        )}
+                                    </div>
+                                ))
+                        ) : (
+                            <div className="text-[#adaaaa] text-sm">Consultar</div>
+                        )}
+                    </div>
                 </div>
 
                 {product.description && (
@@ -67,13 +90,7 @@ function ProductCard({ product }) {
                     </p>
                 )}
 
-                {product.categories?.length > 1 && (
-                    <div className="flex flex-wrap gap-1.5 pt-2">
-                        {product.categories.slice(1).map((cat) => (
-                            <CategoryBadge key={cat.id} name={cat.name} />
-                        ))}
-                    </div>
-                )}
+                {/* secondary categories already shown above, no duplicate needed */}
 
                 <div className="mt-6">
                     <div className="w-full bg-[#8eff71]/10 border border-[#8eff71]/20 text-[#8eff71] py-3 rounded-full font-black uppercase tracking-tighter flex items-center justify-center gap-2 group-hover:bg-[#8eff71] group-hover:text-[#0d6100] transition-all duration-300 text-sm">
