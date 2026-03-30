@@ -31,8 +31,8 @@ export default function AboutSection() {
 
     return (
         <section id="nosotros" className="py-16 px-6 md:px-16 overflow-hidden">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-7xl mx-auto">
-                <div ref={leftRef} className="bg-[#131313] p-12 md:p-20 rounded-2xl flex flex-col justify-center">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6  mx-auto">
+                <div ref={leftRef} className=" p-12 md:p-20 rounded-2xl flex flex-col justify-center">
                     <span className="text-[#8eff71] font-bold tracking-widest uppercase mb-5 block text-sm md:text-base">
                         El Origen
                     </span>
