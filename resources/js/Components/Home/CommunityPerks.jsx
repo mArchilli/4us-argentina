@@ -1,4 +1,7 @@
 
+import PrimaryButton from '../PrimaryButton';
+import { router } from '@inertiajs/react';
+
 const perks = [
     {
         icon: 'bolt',
@@ -34,19 +37,18 @@ export default function CommunityPerks() {
     return (
         <section id="perks" className="relative py-16 md:py-28 bg-background min-h-screen flex flex-col items-center justify-center overflow-x-hidden">
             {/* Headline */}
-            <div className="w-full max-w-7xl px-6 md:px-16 text-center mb-10 md:mb-20">
-                <span className="text-primary font-bold uppercase tracking-[0.3em] text-xs md:text-sm mb-4 block">MEMBERS ONLY</span>
+            <div className="w-full max-w-7xl px-6 md:px-16 text-center mb-10 md:mb-15">
                 <h2 className="font-headline font-black italic uppercase text-3xl sm:text-5xl md:text-7xl lg:text-8xl leading-none tracking-tighter text-on-surface mb-2">
-                    BENEFICIOS DE <span className="text-primary">COMUNIDAD</span>
+                    BENEFICIOS DE <span className="text-primary text-[#8eff71]">COMUNIDAD</span>
                 </h2>
             </div>
 
             {/* Grid de beneficios */}
-            <div className="w-full max-w-7xl px-6 md:px-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+            <div className="w-full px-6 md:px-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
                 {perks.map((perk, idx) => (
                     <div
                         key={perk.title}
-                        className={`relative overflow-hidden rounded-xl bg-surface-container-low min-h-[220px] flex flex-col justify-end p-6 md:p-8 border border-outline-variant/20 transition-colors duration-300 group ${perk.highlight ? 'lg:col-span-2' : ''}`}
+                        className={`relative overflow-hidden rounded-xl bg-surface-container-low min-h-[250px] flex flex-col justify-end p-6 md:p-8 transition-colors duration-300 group ${perk.highlight ? 'lg:col-span-2' : ''}`}
                     >
                         {/* Imagen de fondo para desktop y highlight */}
                         {perk.bg && (
@@ -60,7 +62,7 @@ export default function CommunityPerks() {
                         )}
                         <div className="relative z-10 flex flex-col gap-2">
                             <div className="flex items-center gap-4 mb-2">
-                                <span className="material-symbols-outlined text-primary text-3xl md:text-4xl">
+                                <span className="material-symbols-outlined text-3xl md:text-4xl" style={{ color: '#8eff71' }}>
                                     {perk.icon}
                                 </span>
                                 <h3 className="font-headline font-bold md:font-black italic uppercase tracking-tight text-lg md:text-2xl">
@@ -77,9 +79,12 @@ export default function CommunityPerks() {
 
             {/* Botón CTA */}
             <div className="flex justify-center w-full px-6 md:px-0">
-                <button className="w-full md:w-auto bg-primary text-on-primary-container px-8 md:px-12 py-4 md:py-6 rounded-full font-headline font-black italic uppercase tracking-widest text-base md:text-lg hover:scale-105 active:opacity-80 transition-all duration-300 shadow-[0_0_20px_rgba(183,252,99,0.2)]">
+                <PrimaryButton
+                    className="w-full md:w-auto px-8 md:px-12 py-4 md:py-6 text-base md:text-lg tracking-widest hover:scale-105 active:opacity-80 shadow-[0_0_20px_rgba(183,252,99,0.2)]"
+                    onClick={() => router.visit('/retailer')}
+                >
                     UNIRSE AHORA
-                </button>
+                </PrimaryButton>
             </div>
 
             {/* Fondos decorativos para mobile */}

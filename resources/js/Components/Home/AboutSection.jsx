@@ -36,11 +36,11 @@ export default function AboutSection() {
                     <span className="text-[#8eff71] font-bold tracking-widest uppercase mb-6 block text-lg md:text-2xl">
                         El Origen
                     </span>
-                    <h2 className="text-6xl md:text-9xl font-bold mb-8 tracking-tight">
-                        De <span className="text-[#8eff71] italic">India</span> a <br />
-                        <span className="text-[#8eff71] italic">Buenos Aires.</span>
+                    <h2 className="text-6xl md:text-[8rem] font-bold mb-8 tracking-tight">
+                        DE <span className="text-[#8eff71] italic">INDIA</span> A <br />
+                        <span className="text-[#8eff71] italic">BUENOS AIRES.</span>
                     </h2>
-                    <p className="text-[#adaaaa] text-xl md:text-2xl leading-relaxed md:leading-loose">
+                    <p className="text-[#adaaaa] text-xl md:text-3xl leading-relaxed">
                         Conectamos el arte global con la cultura local.
                         Importando directamente desde el corazón de la producción en <span className="text-[#8eff71] italic">India</span>,
                         4us Argentina garantiza que cada papel, bandeja y accesorio cumpla
