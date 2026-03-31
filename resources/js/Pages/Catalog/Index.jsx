@@ -1,6 +1,7 @@
 import { Head, Link, router } from '@inertiajs/react';
 import Navbar from '@/Components/Home/Navbar';
 import HomeFooter from '@/Components/Home/HomeFooter';
+import SecondaryButton from '@/Components/SecondaryButton';
 
 function CategoryBadge({ name }) {
     return (
@@ -114,7 +115,7 @@ export default function CatalogIndex({ auth, products = [], categories = [], act
             <div className="bg-[#0e0e0e] text-white min-h-screen">
                 <Navbar auth={auth} />
 
-                <main className="pt-32 pb-24 px-6 md:px-10 mx-auto">
+                <main className="pt-24 pb-32 flex-1">
                     {/* Hero Header (retailer-like, adapted to catálogo) */}
                     <section className="relative min-h-[700px] flex flex-col justify-center px-6 md:px-12 lg:px-24 mb-20 overflow-hidden">
                         <div className="absolute top-0 right-2 h-full opacity-40 z-0 lg:mr-28 lg:pr-28 md:mr-14 md:pr-16">
@@ -206,9 +207,9 @@ export default function CatalogIndex({ auth, products = [], categories = [], act
                                 <p className="text-[#0d6100]/80 text-xl font-bold uppercase tracking-widest mb-12 max-w-2xl mx-auto">
                                     Realizamos pedidos personalizados y ventas mayoristas para locales y clubes de cultivo. Contactanos y armamos tu presupuesto.
                                 </p>
-                                <button className="bg-[#0d6100] text-[#8eff71] font-headline font-black italic px-12 py-6 rounded-full text-2xl uppercase tracking-tight hover:scale-105 transition-all shadow-2xl">
+                                <SecondaryButton>
                                     Contactate
-                                </button>
+                                </SecondaryButton>
                             </div>
                         </div>
                     </section>

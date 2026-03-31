@@ -1,6 +1,7 @@
 import { useRef, useEffect } from 'react';
 import gsap from 'gsap';
 import LiquidChrome from './LiquidChrome';
+import PrimaryButton from '../PrimaryButton';
 
 export default function HeroSection() {
     const contentRef = useRef(null);
@@ -47,7 +48,7 @@ export default function HeroSection() {
                     Importados directamente, auténticos sin concesiones.
                 </p>
                 <div className="flex flex-wrap gap-4">
-                    <button
+                    <PrimaryButton
                         onClick={(e) => {
                             e.preventDefault();
                             document.getElementById('catalogo')?.scrollIntoView({ behavior: 'smooth' });
@@ -55,7 +56,7 @@ export default function HeroSection() {
                         className="bg-gradient-to-br from-[#8eff71] to-[#2ff801] text-[#0d6100] px-10 py-4 rounded-full font-bold text-lg hover:shadow-[0_0_30px_rgba(142,255,113,0.3)] transition-all active:scale-95"
                     >
                         Ver Catálogo
-                    </button>
+                    </PrimaryButton>
                     <button
                         onClick={(e) => {
                             e.preventDefault();

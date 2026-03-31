@@ -56,7 +56,7 @@ export default function Welcome({ auth, featuredProducts }) {
             <div className="bg-[#0e0e0e] text-white min-h-screen">
                 <Navbar auth={auth} />
 
-                <main>
+                <main className='pb-32 flex-1'>
                     <HeroSection />
                     <AboutSection />
                     <FeaturedSection products={featuredProducts} />
