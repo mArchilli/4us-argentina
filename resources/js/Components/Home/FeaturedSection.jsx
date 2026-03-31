@@ -186,7 +186,7 @@ export default function FeaturedSection({ products = [] }) {
             <div ref={headerRef} className="flex justify-between items-end mb-12 md:mb-14">
                 <h2 className="text-4xl md:text-7xl font-bold tracking-tight">
                     LANZAMIENTOS <br />
-                    <span className="text-[#8eff71]">DESTACADO.</span>
+                    <span className="text-[#8eff71]">DESTACADOS.</span>
                 </h2>
                 <div className="text-[#adaaaa] text-sm tracking-widest uppercase mb-2">
                     Colección 2026
