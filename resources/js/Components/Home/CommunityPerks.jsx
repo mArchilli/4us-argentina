@@ -14,21 +14,21 @@ const perks = [
         icon: 'new_releases',
         title: 'DROPS EXCLUSIVOS',
         description: 'Acceso anticipado a lanzamientos limitados y colaboraciones especiales de 4US.',
-        bg: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDVY1TA3t5nQWT97kNwX4fl6VZYdW8UMHhMEoDHIUGFvb5ED-cmEm7EINU-NzRhKQINg4-qBrZR-TvKTysUNApAc8a2YWL6bGeQaW-knuO05iD4bpvqSEDe93Eq8MX9D-RFWfdwSj588v68jPXWJUotvOfuq21PRFeUVSaBIzvMQV1GMfmtmhvL5-k8ytpUqGZW_oHZRaXvCcoIrq63Jmy8TMlouulHGeI_RK650w2H8ArxoVjbOqlkwk5yW0pdfQiKCn3YNaGgiPM3',
+        bg: '/images/image1-comunidad.jpg',
         highlight: false,
     },
     {
         icon: 'payments',
-        title: 'CASHBACK CULTURA',
-        description: 'Sumá créditos con cada compra y canjealos por beneficios en eventos de cultura urbana.',
-        bg: '',
+        title: 'EL MEJOR MARGEN GANANCIA',
+        description: 'Nuestros precios y ofertas por mayor estan pensandos para que tengas los mejores margenes de ganancia con productos de calidad.',
+        bg: '/images/image3-comunidad.jpg',
         highlight: false,
     },
     {
         icon: 'groups',
         title: 'COMUNIDAD VIP',
         description: 'Invitaciones a fiestas privadas, showrooms exclusivos y sorteos mensuales.',
-        bg: 'https://lh3.googleusercontent.com/aida-public/AB6AXuA5VHtnuwihED463p-WHgfaNXFH3CELXp-xdYEkD4AMtPApKpBlBqpCQABD5gk1dDmzuARCaW4o6lSEPyofX_FUkjqc6FIVD3yAbwwi5fgIwfwSsbboqEN7E1So4X5YMsmOYFaYr2oPiAre3v2Tx06EzBJOZdsEGrMhO4tYJszcZRHp8ob6Wv1fyTE6iw86NLEnir1XSO4d2BSXOpIBZXhcizO2SuOLbu_MzWLZTjQJpwoF-PY2J5bQRNhlKct2rK_3zCF3aWNvsw0A',
+        bg: '/images/image2-comunidad.jpg',
         highlight: true,
     },
 ];
@@ -44,7 +44,7 @@ export default function CommunityPerks() {
             </div>
 
             {/* Grid de beneficios */}
-            <div className="w-full px-6 md:px-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+            <div className="w-full px-6 md:px-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-4">
                 {perks.map((perk, idx) => (
                     <div
                         key={perk.title}
@@ -78,12 +78,12 @@ export default function CommunityPerks() {
             </div>
 
             {/* Botón CTA */}
-            <div className="flex justify-center w-full px-6 md:px-0">
+            <div className="flex justify-center w-full px-6 md:px-0 mt-6">
                 <PrimaryButton
                     className="w-full md:w-auto px-8 md:px-12 py-4 md:py-6 text-base md:text-lg tracking-widest hover:scale-105 active:opacity-80 shadow-[0_0_20px_rgba(183,252,99,0.2)]"
                     onClick={() => router.visit('/retailer')}
                 >
-                    UNIRSE AHORA
+                    CONOCER MÁS
                 </PrimaryButton>
             </div>
 
