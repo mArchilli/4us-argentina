@@ -43,14 +43,14 @@ export default function Retailer({ auth }) {
         <div className="bg-[#0e0e0e] text-white font-body min-h-screen flex flex-col justify-between">
             <Navbar auth={auth} />
 
-            <main className="pt-24 pb-32 flex-1">
+            <main className="pb-32 flex-1">
                 {/* Hero Section */}
-                <section className="relative min-h-[700px] flex flex-col justify-center px-6 md:px-12 lg:px-24 mb-20 overflow-hidden">
+                <section className="relative min-h-screen flex flex-col justify-center px-6 md:px-12 lg:px-24 mb-20 overflow-hidden">
                     <div className="absolute top-0 right-0 w-2/3 h-full opacity-40 z-0 pointer-events-none select-none">
                         <div className="w-full h-full bg-gradient-to-l from-[#8eff71]/20 to-transparent absolute"></div>
                         <img alt="Mayoristas 4US" className="w-full h-full object-cover grayscale contrast-125" src="/images/retailer-image.png" />
                     </div>
-                    <div className="relative z-10 max-w-4xl">
+                    <div className="relative z-10 max-w-4xl pt-24">
                         <div className="inline-block px-3 py-1 bg-[#8eff71]/10 border border-[#8eff71]/20 rounded-full mb-6">
                             <span className="text-[#8eff71] text-xs font-black tracking-widest uppercase font-label italic">Ecosistema Mayorista</span>
                         </div>
