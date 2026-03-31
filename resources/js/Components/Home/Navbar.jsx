@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react';
 import { Link, usePage } from '@inertiajs/react';
 
 const navLinks = [
-    { label: 'Inicio', id: 'inicio', href: '/' },
-    { label: 'Catálogo', href: '/catalogo' },
-    { label: 'Mayoristas', href: '/retailer' },
+    { label: 'INICIO', id: 'inicio', href: '/' },
+    { label: 'CATÁLOGO', href: '/catalogo' },
+    { label: 'MAYORISTAS', href: '/retailer' },
 ];
 
 export default function Navbar({ auth }) {
