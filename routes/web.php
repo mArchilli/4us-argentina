@@ -3,6 +3,8 @@
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CatalogController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -25,6 +27,15 @@ Route::get('/', function () {
 
 Route::get('/catalogo', [CatalogController::class, 'index'])->name('catalog.index');
 Route::get('/catalogo/{product}', [CatalogController::class, 'show'])->name('catalog.show');
+
+Route::get('/carrito', [CartController::class, 'index'])->name('cart.index');
+Route::post('/carrito/agregar', [CartController::class, 'add'])->name('cart.add');
+Route::patch('/carrito/actualizar', [CartController::class, 'update'])->name('cart.update');
+Route::delete('/carrito/eliminar', [CartController::class, 'remove'])->name('cart.remove');
+Route::get('/carrito/count', [CartController::class, 'count'])->name('cart.count');
+
+Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
 
         Route::get('/retailer', function () {
             return Inertia::render('retailer');

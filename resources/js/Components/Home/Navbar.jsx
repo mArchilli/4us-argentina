@@ -143,6 +143,14 @@ export default function Navbar({ auth, hidden = false }) {
                             Comprar
                         </Link>
 
+                    <Link
+                        href="/carrito"
+                        className="relative w-10 h-10 rounded-full bg-[#1f2020] border border-[#484848]/40 flex items-center justify-center text-[#adaaaa] hover:text-[#8eff71] hover:border-[#8eff71]/40 transition-all"
+                        aria-label="Carrito"
+                    >
+                        <span className="material-symbols-outlined text-xl">shopping_cart</span>
+                    </Link>
+
                     {/* Hamburger — mobile only */}
                     <button
                         onClick={() => setMenuOpen(true)}

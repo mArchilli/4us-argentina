@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
 import Navbar from '@/Components/Home/Navbar';
 import HomeFooter from '@/Components/Home/HomeFooter';
 
@@ -230,24 +230,22 @@ export default function CatalogShow({ auth, product, featured = [], onOffer = []
                             <div className="border-t border-[#1f2020] mb-8" />
 
                             {/* CTA */}
-                            <a
-                                href={`https://wa.me/5491169659907?text=${encodeURIComponent(`Hola! Me interesa el producto: ${product.title}`)}`}
-                                target="_blank"
-                                rel="noreferrer"
+                            <button
+                                onClick={() => router.post(route('cart.add'), { product_id: product.id, quantity: 1 })}
                                 className="flex items-center justify-center gap-3 w-full bg-[#8eff71] text-[#0d6100] py-4 rounded-full font-black uppercase tracking-widest hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(142,255,113,0.4)] transition-all text-base"
                             >
-                                <span className="material-symbols-outlined">shopping_cart</span>
-                                Comprar por WhatsApp
-                            </a>
+                                <span className="material-symbols-outlined">add_shopping_cart</span>
+                                Agregar al carrito
+                            </button>
 
                             <a
-                                href="https://wa.me/5491169659907"
+                                href={`https://wa.me/5491169659907?text=${encodeURIComponent(`Hola! Me interesa el producto: ${product.title}`)}`}
                                 target="_blank"
                                 rel="noreferrer"
                                 className="flex items-center justify-center gap-3 w-full mt-3 border border-white/15 bg-white/5 text-white py-3.5 rounded-full font-bold uppercase tracking-wider hover:border-white/30 transition-all text-sm"
                             >
                                 <span className="material-symbols-outlined text-base">forum</span>
-                                Consultar disponibilidad
+                                Consultar por WhatsApp
                             </a>
 
                             {/* Offer badge */}
