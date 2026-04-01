@@ -169,51 +169,54 @@ export default function CatalogIndex({ auth, products = [], categories = [], act
                         </div>
                     </section>
 
-                    {/* Category filter pills */}
-                    <div className="flex flex-wrap gap-3 mb-12">
-                        <button
-                            onClick={() => handleCategory(null)}
-                            className={`px-7 py-2.5 rounded-full font-bold transition-all text-sm ${
-                                !activeCategory
-                                    ? 'bg-[#8eff71] text-[#0d6100] shadow-lg'
-                                    : 'bg-[#1f2020] text-[#adaaaa] border border-[#484848]/40 hover:bg-[#262626] hover:text-[#8eff71]'
-                            }`}
-                        >
-                            Todos
-                        </button>
-                        {categories.map((cat) => (
+                    {/* Catalog section */}
+                    <section className="px-6 md:px-12 lg:px-24 mb-16">
+                        {/* Category filter pills */}
+                        <div className="flex flex-wrap gap-3 mb-12">
                             <button
-                                key={cat.id}
-                                onClick={() => handleCategory(cat.slug)}
+                                onClick={() => handleCategory(null)}
                                 className={`px-7 py-2.5 rounded-full font-bold transition-all text-sm ${
-                                    activeCategory === cat.slug
+                                    !activeCategory
                                         ? 'bg-[#8eff71] text-[#0d6100] shadow-lg'
                                         : 'bg-[#1f2020] text-[#adaaaa] border border-[#484848]/40 hover:bg-[#262626] hover:text-[#8eff71]'
                                 }`}
                             >
-                                {cat.name}
-                                {cat.products_count > 0 && (
-                                    <span className="ml-2 text-xs opacity-60">({cat.products_count})</span>
-                                )}
+                                Todos
                             </button>
-                        ))}
-                    </div>
-
-                    {/* Product grid */}
-                    <div id="productos">
-                    {products.length === 0 ? (
-                        <div className="text-center py-24 text-[#adaaaa]">
-                            <span className="material-symbols-outlined text-6xl mb-4 block text-[#2a2a2a]">inventory_2</span>
-                            <p className="text-xl font-medium">No hay productos en esta categoría todavía.</p>
-                        </div>
-                    ) : (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                            {products.map((product) => (
-                                <ProductCard key={product.id} product={product} />
+                            {categories.map((cat) => (
+                                <button
+                                    key={cat.id}
+                                    onClick={() => handleCategory(cat.slug)}
+                                    className={`px-7 py-2.5 rounded-full font-bold transition-all text-sm ${
+                                        activeCategory === cat.slug
+                                            ? 'bg-[#8eff71] text-[#0d6100] shadow-lg'
+                                            : 'bg-[#1f2020] text-[#adaaaa] border border-[#484848]/40 hover:bg-[#262626] hover:text-[#8eff71]'
+                                    }`}
+                                >
+                                    {cat.name}
+                                    {cat.products_count > 0 && (
+                                        <span className="ml-2 text-xs opacity-60">({cat.products_count})</span>
+                                    )}
+                                </button>
                             ))}
                         </div>
-                    )}
-                    </div>
+
+                        {/* Product grid */}
+                        <div id="productos">
+                            {products.length === 0 ? (
+                                <div className="text-center py-24 text-[#adaaaa]">
+                                    <span className="material-symbols-outlined text-6xl mb-4 block text-[#2a2a2a]">inventory_2</span>
+                                    <p className="text-xl font-medium">No hay productos en esta categoría todavía.</p>
+                                </div>
+                            ) : (
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                                    {products.map((product) => (
+                                        <ProductCard key={product.id} product={product} />
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    </section>
 
                     {/* CTA section (styled like retailer) */}
                     <section className="px-6 md:px-12 lg:px-24 mt-32">
