@@ -45,7 +45,7 @@ export default function ContactSection() {
                 {/* Heading y Formulario alineados arriba */}
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-stretch">
                     {/* Título */}
-                    <div className="lg:col-span-5 flex flex-col justify-start">
+                    <div ref={infoRef} className="lg:col-span-5 flex flex-col justify-start">
                         <div className="mb-16">
                             <h1 className="text-5xl md:text-8xl lg:text-9xl font-black tracking-tighter uppercase leading-[0.85] text-left">
                                 <span className="block text-white">PONETE EN</span>
