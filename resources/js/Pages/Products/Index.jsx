@@ -84,14 +84,15 @@ export default function Index({ products, categories = [], filters = {} }) {
             )}
 
             {/* Header row */}
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex items-start justify-between mb-6 gap-4">
                 <div>
-                    <h1 className="text-2xl font-black text-white">Productos</h1>
-                    <p className="text-sm text-[#adaaaa] mt-0.5">{products.total} producto{products.total !== 1 ? 's' : ''} en total</p>
+                    <p className="text-[10px] uppercase tracking-[0.3em] text-[#6f6f6f] font-bold mb-1">Catálogo de productos</p>
+                    <h1 className="text-3xl font-black tracking-tight text-white uppercase italic">Productos</h1>
+                    <p className="text-xs text-[#6f6f6f] mt-1">{products.total} producto{products.total !== 1 ? 's' : ''} en total</p>
                 </div>
                 <Link
                     href={route('products.create')}
-                    className="bg-[#8eff71] text-[#0d6100] px-5 py-2.5 rounded-full font-bold text-sm hover:shadow-[0_0_20px_rgba(142,255,113,0.25)] transition-all active:scale-95 flex items-center gap-1.5"
+                    className="bg-[#8eff71] text-[#0d6100] px-5 py-2.5 rounded-full font-black text-sm uppercase tracking-tight hover:shadow-[0_0_20px_rgba(142,255,113,0.25)] transition-all active:scale-95 flex items-center gap-1.5 whitespace-nowrap"
                 >
                     <span className="material-symbols-outlined text-base">add</span>
                     Nuevo producto
@@ -347,7 +348,7 @@ export default function Index({ products, categories = [], filters = {} }) {
                                 <span className="material-symbols-outlined text-[#ff7351] text-xl">delete</span>
                             </div>
                             <div>
-                                <h3 className="font-bold text-white text-base">Eliminar producto</h3>
+                                <h3 className="font-black text-white text-base uppercase tracking-tight">Eliminar producto</h3>
                                 <p className="text-sm text-[#adaaaa] mt-1">
                                     ¿Estás seguro que querés eliminar{' '}
                                     <span className="text-white font-medium">"{deleteModal.title}"</span>?
@@ -417,7 +418,7 @@ function ProductCard({ product, onDelete }) {
 
             {/* Info */}
             <div className="p-4 flex-1">
-                <h3 className="font-bold text-white truncate">{product.title}</h3>
+                <h3 className="font-bold text-sm tracking-tight text-white truncate">{product.title}</h3>
                 {basePrice && (
                     <p className="text-[#8eff71] font-bold mt-1 text-sm">
                         ${Number(basePrice.price).toLocaleString('es-AR')} ARS
@@ -458,7 +459,7 @@ function ProductCard({ product, onDelete }) {
             <div className="px-4 pb-4 flex gap-2">
                 <Link
                     href={route('products.edit', product.id)}
-                    className="flex-1 text-center py-2 rounded-xl bg-[#1f2020] text-[#adaaaa] hover:text-white text-sm font-medium transition-all"
+                    className="flex-1 text-center py-2 rounded-xl bg-[#1f2020] text-[#adaaaa] hover:text-white text-sm font-semibold transition-all"
                 >
                     Editar
                 </Link>

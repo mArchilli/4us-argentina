@@ -23,12 +23,22 @@ export default function Edit({ discountCode }) {
             <Head title="Editar código de descuento" />
 
             <div className="max-w-2xl">
-                <div className="flex items-center gap-3 mb-6">
-                    <Link href={route('discount-codes.index')} className="text-[#adaaaa] hover:text-[#8eff71] transition-colors">
-                        <span className="material-symbols-outlined">arrow_back</span>
+                <div className="mb-4">
+                    <Link href={route('discount-codes.index')} className="text-[#adaaaa] hover:text-white text-sm flex items-center gap-1.5 transition-colors w-fit">
+                        <span className="material-symbols-outlined text-base">arrow_back</span>
+                        Volver a descuentos
                     </Link>
-                    <h1 className="text-2xl font-black text-white">Editar código</h1>
-                    <span className="font-mono text-[#8eff71] text-lg font-bold">{discountCode.code}</span>
+                </div>
+
+                {/* Page header */}
+                <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#131313] to-[#0e0e0e] border border-[#2a2a2a] px-6 py-5 mb-6">
+                    <div className="absolute -top-8 -right-8 w-32 h-32 bg-[#88f6ff]/8 blur-[60px] rounded-full pointer-events-none" />
+                    <div className="relative">
+                        <p className="text-[10px] uppercase tracking-[0.3em] text-[#6f6f6f] font-bold mb-1">Promociones</p>
+                        <h1 className="text-2xl font-black tracking-tight text-white uppercase italic">
+                            Editar <span className="text-[#88f6ff]">{discountCode.code}</span>
+                        </h1>
+                    </div>
                 </div>
 
                 <form onSubmit={handleSubmit} className="bg-[#131313] rounded-2xl p-6 space-y-5">
@@ -159,7 +169,7 @@ export default function Edit({ discountCode }) {
                         <button
                             type="submit"
                             disabled={processing}
-                            className="px-5 py-2.5 rounded-full bg-[#8eff71] text-[#0d6100] font-bold text-sm hover:shadow-[0_0_20px_rgba(142,255,113,0.25)] transition-all active:scale-95 disabled:opacity-50"
+                            className="px-5 py-2.5 rounded-full bg-[#8eff71] text-[#0d6100] font-black text-sm uppercase tracking-tight hover:shadow-[0_0_20px_rgba(142,255,113,0.25)] transition-all active:scale-95 disabled:opacity-50"
                         >
                             {processing ? 'Guardando...' : 'Guardar cambios'}
                         </button>

@@ -19,7 +19,7 @@ export default function Edit({ category }) {
         <AuthenticatedLayout header="Editar Categoria">
             <Head title={`Editar categoria · ${category.name}`} />
 
-            <div className="mb-6">
+            <div className="mb-4">
                 <Link
                     href={route('categories.index')}
                     className="text-[#adaaaa] hover:text-white text-sm flex items-center gap-1.5 transition-colors w-fit"
@@ -29,9 +29,20 @@ export default function Edit({ category }) {
                 </Link>
             </div>
 
+            {/* Page header */}
+            <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#131313] to-[#0e0e0e] border border-[#2a2a2a] px-6 py-5 mb-6">
+                <div className="absolute -top-8 -right-8 w-32 h-32 bg-[#8eff71]/8 blur-[60px] rounded-full pointer-events-none" />
+                <div className="relative">
+                    <p className="text-[10px] uppercase tracking-[0.3em] text-[#6f6f6f] font-bold mb-1">Catálogo</p>
+                    <h1 className="text-2xl font-black tracking-tight text-white uppercase italic">
+                        Editar <span className="text-[#8eff71]">{category.name}</span>
+                    </h1>
+                </div>
+            </div>
+
             <form onSubmit={submit} className="max-w-xl">
                 <div className="bg-[#131313] border border-[#2a2a2a] rounded-2xl p-5 space-y-4">
-                    <h2 className="text-sm font-bold text-white">Informacion de categoria</h2>
+                    <h2 className="text-[10px] uppercase tracking-[0.25em] text-[#6f6f6f] font-bold">Informacion de categoria</h2>
 
                     <div>
                         <label className="block text-xs font-medium text-[#adaaaa] mb-1.5">
@@ -64,7 +75,7 @@ export default function Edit({ category }) {
                     <button
                         type="submit"
                         disabled={processing}
-                        className="bg-[#8eff71] text-[#0d6100] px-5 py-2.5 rounded-xl font-bold text-sm hover:shadow-[0_0_20px_rgba(142,255,113,0.25)] transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="bg-[#8eff71] text-[#0d6100] px-5 py-2.5 rounded-xl font-black text-sm uppercase tracking-tight hover:shadow-[0_0_20px_rgba(142,255,113,0.25)] transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         {processing ? 'Guardando...' : 'Guardar cambios'}
                     </button>

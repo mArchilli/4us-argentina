@@ -56,16 +56,17 @@ export default function Index({ categories, filters = {} }) {
                 </div>
             )}
 
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex items-start justify-between mb-6 gap-4">
                 <div>
-                    <h1 className="text-2xl font-black text-white">Categorias</h1>
-                    <p className="text-sm text-[#adaaaa] mt-0.5">
+                    <p className="text-[10px] uppercase tracking-[0.3em] text-[#6f6f6f] font-bold mb-1">Catálogo</p>
+                    <h1 className="text-3xl font-black tracking-tight text-white uppercase italic">Categorías</h1>
+                    <p className="text-xs text-[#6f6f6f] mt-1">
                         {categories.total} categoria{categories.total !== 1 ? 's' : ''} registradas
                     </p>
                 </div>
                 <Link
                     href={route('categories.create')}
-                    className="bg-[#8eff71] text-[#0d6100] px-5 py-2.5 rounded-full font-bold text-sm hover:shadow-[0_0_20px_rgba(142,255,113,0.25)] transition-all active:scale-95 flex items-center gap-1.5"
+                    className="bg-[#8eff71] text-[#0d6100] px-5 py-2.5 rounded-full font-black text-sm uppercase tracking-tight hover:shadow-[0_0_20px_rgba(142,255,113,0.25)] transition-all active:scale-95 flex items-center gap-1.5 whitespace-nowrap"
                 >
                     <span className="material-symbols-outlined text-base">add</span>
                     Nueva categoria
@@ -129,8 +130,8 @@ export default function Index({ categories, filters = {} }) {
                     {categories.data.map((category) => (
                         <article key={category.id} className="bg-[#131313] border border-[#2a2a2a] rounded-2xl p-5 hover:border-[#8eff71]/25 transition-all">
                             <div className="mb-4">
-                                <p className="text-[10px] uppercase tracking-[0.2em] text-[#6f6f6f]">Categoría</p>
-                                <h3 className="text-white font-bold text-xl mt-1 leading-tight">{category.name}</h3>
+                                <p className="text-[10px] uppercase tracking-[0.2em] text-[#6f6f6f] font-bold">Categoría</p>
+                                <h3 className="text-white font-black text-xl tracking-tight leading-tight mt-1">{category.name}</h3>
                             </div>
 
                             <div className="space-y-2 text-sm mb-5">
@@ -147,7 +148,7 @@ export default function Index({ categories, filters = {} }) {
                             <div className="flex items-center justify-end gap-2">
                                 <Link
                                     href={route('categories.edit', category.id)}
-                                    className="px-3 py-1.5 rounded-lg bg-[#1f2020] text-[#adaaaa] hover:text-white text-sm transition-all"
+                                    className="px-3 py-1.5 rounded-lg bg-[#1f2020] text-[#adaaaa] hover:text-white text-sm font-semibold transition-all"
                                 >
                                     Editar
                                 </Link>
@@ -193,7 +194,7 @@ export default function Index({ categories, filters = {} }) {
                                 <span className="material-symbols-outlined text-[#ff7351] text-xl">delete</span>
                             </div>
                             <div>
-                                <h3 className="font-bold text-white text-base">Eliminar categoria</h3>
+                                <h3 className="font-black text-white text-base uppercase tracking-tight">Eliminar categoria</h3>
                                 <p className="text-sm text-[#adaaaa] mt-1">
                                     Vas a eliminar <span className="text-white font-medium">&quot;{deleteModal.name}&quot;</span>.
                                     Esta accion no se puede deshacer.

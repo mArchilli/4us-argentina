@@ -35,14 +35,15 @@ export default function Index({ codes }) {
                 </div>
             )}
 
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex items-start justify-between mb-6 gap-4">
                 <div>
-                    <h1 className="text-2xl font-black text-white">Códigos de descuento</h1>
-                    <p className="text-sm text-[#adaaaa] mt-0.5">{codes.total} código{codes.total !== 1 ? 's' : ''} en total</p>
+                    <p className="text-[10px] uppercase tracking-[0.3em] text-[#6f6f6f] font-bold mb-1">Promociones</p>
+                    <h1 className="text-3xl font-black tracking-tight text-white uppercase italic">Descuentos</h1>
+                    <p className="text-xs text-[#6f6f6f] mt-1">{codes.total} código{codes.total !== 1 ? 's' : ''} en total</p>
                 </div>
                 <Link
                     href={route('discount-codes.create')}
-                    className="bg-[#8eff71] text-[#0d6100] px-5 py-2.5 rounded-full font-bold text-sm hover:shadow-[0_0_20px_rgba(142,255,113,0.25)] transition-all active:scale-95 flex items-center gap-1.5"
+                    className="bg-[#8eff71] text-[#0d6100] px-5 py-2.5 rounded-full font-black text-sm uppercase tracking-tight hover:shadow-[0_0_20px_rgba(142,255,113,0.25)] transition-all active:scale-95 flex items-center gap-1.5 whitespace-nowrap"
                 >
                     <span className="material-symbols-outlined text-base">add</span>
                     Nuevo código
@@ -104,7 +105,7 @@ export default function Index({ codes }) {
                             <div className="flex items-center justify-end gap-2">
                                 <Link
                                     href={route('discount-codes.edit', code.id)}
-                                    className="px-3 py-1.5 rounded-lg bg-[#1f2020] text-[#adaaaa] hover:text-white text-sm transition-all"
+                                    className="px-3 py-1.5 rounded-lg bg-[#1f2020] text-[#adaaaa] hover:text-white text-sm font-semibold transition-all"
                                 >
                                     Editar
                                 </Link>
@@ -144,7 +145,7 @@ export default function Index({ codes }) {
             {deleteModal.open && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
                     <div className="bg-[#191a1a] rounded-2xl p-6 max-w-sm w-full mx-4 shadow-2xl">
-                        <h3 className="text-lg font-bold text-white mb-2">Eliminar código</h3>
+                        <h3 className="text-base font-black text-white uppercase tracking-tight mb-2">Eliminar código</h3>
                         <p className="text-sm text-[#adaaaa] mb-6">
                             ¿Estás seguro de eliminar el código <span className="font-mono text-[#ff7351] font-bold">{deleteModal.code}</span>? Esta acción no se puede deshacer.
                         </p>

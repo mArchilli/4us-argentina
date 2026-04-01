@@ -38,7 +38,7 @@ export default function UpdatePasswordForm() {
     return (
         <section>
             <header className="mb-6">
-                <h2 className="text-base font-bold text-white">Cambiar contraseña</h2>
+                <h2 className="text-[10px] uppercase tracking-[0.25em] text-[#6f6f6f] font-bold">Cambiar contraseña</h2>
                 <p className="mt-1 text-sm text-[#adaaaa]">
                     Usá una contraseña larga y aleatoria para mantener tu cuenta segura.
                 </p>
@@ -90,7 +90,7 @@ export default function UpdatePasswordForm() {
                     <button
                         type="submit"
                         disabled={processing}
-                        className="bg-[#8eff71] text-[#0d6100] px-6 py-2.5 rounded-full font-bold text-sm hover:shadow-[0_0_20px_rgba(142,255,113,0.25)] transition-all active:scale-95 disabled:opacity-50"
+                        className="bg-[#8eff71] text-[#0d6100] px-6 py-2.5 rounded-full font-black text-sm uppercase tracking-tight hover:shadow-[0_0_20px_rgba(142,255,113,0.25)] transition-all active:scale-95 disabled:opacity-50"
                     >
                         Actualizar contraseña
                     </button>

@@ -88,7 +88,7 @@ export default function Create({ categories = [] }) {
             <Head title="Nuevo Producto" />
 
             {/* Back link */}
-            <div className="mb-6">
+            <div className="mb-4">
                 <Link
                     href={route('products.index')}
                     className="text-[#adaaaa] hover:text-white text-sm flex items-center gap-1.5 transition-colors w-fit"
@@ -96,6 +96,17 @@ export default function Create({ categories = [] }) {
                     <span className="material-symbols-outlined text-base">arrow_back</span>
                     Volver a productos
                 </Link>
+            </div>
+
+            {/* Page header */}
+            <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#131313] to-[#0e0e0e] border border-[#2a2a2a] px-6 py-5 mb-6">
+                <div className="absolute -top-8 -right-8 w-32 h-32 bg-[#8eff71]/8 blur-[60px] rounded-full pointer-events-none" />
+                <div className="relative">
+                    <p className="text-[10px] uppercase tracking-[0.3em] text-[#6f6f6f] font-bold mb-1">Catálogo de productos</p>
+                    <h1 className="text-2xl font-black tracking-tight text-white uppercase italic">
+                        Nuevo <span className="text-[#8eff71]">Producto</span>
+                    </h1>
+                </div>
             </div>
 
             <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -261,7 +272,7 @@ export default function Create({ categories = [] }) {
                     <button
                         type="submit"
                         disabled={processing}
-                        className="w-full bg-[#8eff71] text-[#0d6100] py-3 rounded-xl font-bold hover:shadow-[0_0_20px_rgba(142,255,113,0.25)] transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-full bg-[#8eff71] text-[#0d6100] py-3 rounded-xl font-black uppercase tracking-tight hover:shadow-[0_0_20px_rgba(142,255,113,0.25)] transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         {processing ? 'Creando...' : 'Crear producto'}
                     </button>
@@ -276,7 +287,7 @@ export default function Create({ categories = [] }) {
 function Card({ title, children }) {
     return (
         <div className="bg-[#131313] border border-[#2a2a2a] rounded-2xl p-5">
-            <h2 className="text-sm font-bold text-white mb-4">{title}</h2>
+            <h2 className="text-[10px] uppercase tracking-[0.25em] text-[#6f6f6f] font-bold mb-4">{title}</h2>
             {children}
         </div>
     );
@@ -299,7 +310,7 @@ function Toggle({ label, description, checked, onChange }) {
     return (
         <div className="flex items-center justify-between gap-3">
             <div>
-                <p className="text-sm font-medium text-white">{label}</p>
+                <p className="text-sm font-semibold text-white">{label}</p>
                 {description && <p className="text-xs text-[#adaaaa] mt-0.5">{description}</p>}
             </div>
             <button
@@ -328,7 +339,7 @@ function PriceTier({ price, index, onChange, onRemove, canRemove, errors }) {
     return (
         <div className="bg-[#0e0e0e] border border-[#2a2a2a] rounded-xl p-3 space-y-2">
             <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold text-[#adaaaa]">
+                <span className="text-[10px] uppercase tracking-[0.2em] text-[#6f6f6f] font-bold">
                     {index === 0 ? 'Precio base' : `Precio ${index + 1}`}
                 </span>
                 {canRemove && (

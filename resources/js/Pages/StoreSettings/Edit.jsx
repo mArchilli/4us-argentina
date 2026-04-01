@@ -18,7 +18,16 @@ export default function Edit({ settings }) {
             <Head title="Configuración de la tienda" />
 
             <div className="max-w-2xl">
-                <h1 className="text-2xl font-black text-white mb-6">Configuración de la tienda</h1>
+                {/* Page header */}
+                <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#131313] to-[#0e0e0e] border border-[#2a2a2a] px-6 py-5 mb-6">
+                    <div className="absolute -top-8 -right-8 w-32 h-32 bg-[#8eff71]/8 blur-[60px] rounded-full pointer-events-none" />
+                    <div className="relative">
+                        <p className="text-[10px] uppercase tracking-[0.3em] text-[#6f6f6f] font-bold mb-1">Tienda</p>
+                        <h1 className="text-2xl font-black tracking-tight text-white uppercase italic">
+                            <span className="text-[#8eff71]">Configuración</span>
+                        </h1>
+                    </div>
+                </div>
 
                 {flash?.success && (
                     <div className="mb-6 bg-[#8eff71]/10 border border-[#8eff71]/30 text-[#8eff71] px-4 py-3 rounded-xl text-sm">
@@ -65,7 +74,7 @@ export default function Edit({ settings }) {
                         <button
                             type="submit"
                             disabled={processing}
-                            className="px-5 py-2.5 rounded-full bg-[#8eff71] text-[#0d6100] font-bold text-sm hover:shadow-[0_0_20px_rgba(142,255,113,0.25)] transition-all active:scale-95 disabled:opacity-50"
+                            className="px-5 py-2.5 rounded-full bg-[#8eff71] text-[#0d6100] font-black text-sm uppercase tracking-tight hover:shadow-[0_0_20px_rgba(142,255,113,0.25)] transition-all active:scale-95 disabled:opacity-50"
                         >
                             {processing ? 'Guardando...' : 'Guardar configuración'}
                         </button>

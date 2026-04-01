@@ -2,7 +2,19 @@ import { useState, useEffect, useCallback } from 'react';
 import { Link, router } from '@inertiajs/react';
 import { subscribeCartChanged } from '@/utils/cartEvents';
 
+const ADMIN_PREFIXES = ['Dashboard', 'Products/', 'Categories/', 'DiscountCodes/', 'StoreSettings/', 'Profile/'];
+
+function checkIsAdmin(component) {
+    return ADMIN_PREFIXES.some((prefix) =>
+        component === prefix.replace('/', '') || component.startsWith(prefix)
+    );
+}
+
 export default function FloatingButtons() {
+    const [isAdmin, setIsAdmin] = useState(() =>
+        checkIsAdmin(window._inertia?.page?.component ?? '')
+    );
+
     const [cartCount, setCartCount] = useState(0);
 
     const fetchCartCount = useCallback(() => {
@@ -15,7 +27,8 @@ export default function FloatingButtons() {
     useEffect(() => {
         fetchCartCount();
 
-        const removeListener = router.on('navigate', () => {
+        const removeListener = router.on('navigate', (event) => {
+            setIsAdmin(checkIsAdmin(event.detail.page.component));
             fetchCartCount();
         });
 
@@ -28,6 +41,8 @@ export default function FloatingButtons() {
             unsubscribe();
         };
     }, [fetchCartCount]);
+
+    if (isAdmin) return null;
 
     return (
         <div className="fixed bottom-6 right-6 z-50 flex flex-col items-center gap-3">
