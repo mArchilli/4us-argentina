@@ -7,7 +7,7 @@ const navLinks = [
     { label: 'MAYORISTAS', href: '/retailer' },
 ];
 
-export default function Navbar({ auth }) {
+export default function Navbar({ auth, hidden = false }) {
     const { url } = usePage();
     const [menuOpen, setMenuOpen] = useState(false);
     const [activeSection, setActiveSection] = useState('inicio');
@@ -82,7 +82,7 @@ export default function Navbar({ auth }) {
     return (
         <>
             {/* ── Desktop / Mobile bar ───────────────────────────── */}
-            <nav id="main-navbar" className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-6 md:px-8 py-3 md:py-4 max-w-7xl mx-4 md:mx-auto bg-[#131313]/70 backdrop-blur-xl rounded-full mt-3 md:mt-4 shadow-[0_20px_40px_rgba(0,0,0,0.4)]">
+            <nav id="main-navbar" className={`fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-6 md:px-8 py-3 md:py-4 max-w-7xl mx-4 md:mx-auto bg-[#131313]/70 backdrop-blur-xl rounded-full mt-3 md:mt-4 shadow-[0_20px_40px_rgba(0,0,0,0.4)] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${hidden ? 'opacity-0 -translate-y-full pointer-events-none' : 'opacity-100 translate-y-0'}`}>
 
                 {/* Logo */}
                 {isHomePage ? (

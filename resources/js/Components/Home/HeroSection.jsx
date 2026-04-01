@@ -48,21 +48,23 @@ export default function HeroSection() {
                     Importados directamente, auténticos sin concesiones.
                 </p>
                 <div className="flex flex-wrap gap-4">
-                    <PrimaryButton
+                    <a
+                        href="#catalogo"
                         onClick={(e) => {
                             e.preventDefault();
                             document.getElementById('catalogo')?.scrollIntoView({ behavior: 'smooth' });
                         }}
-                        className="bg-gradient-to-br from-[#8eff71] to-[#2ff801] text-[#0d6100] px-10 py-4 rounded-full font-bold text-lg hover:shadow-[0_0_30px_rgba(142,255,113,0.3)] transition-all active:scale-95"
+                        className="group bg-[#8eff71] text-[#0d6100] font-headline font-black italic px-8 py-5 rounded-full text-lg uppercase tracking-tight hover:shadow-[0_0_30px_rgba(142,255,113,0.3)] transition-all active:scale-95 flex items-center justify-center gap-2"
                     >
-                        Ver Catálogo
-                    </PrimaryButton>
+                        VER CATÁLOGO
+                        <span className="material-symbols-outlined font-bold transform transition-transform duration-300 group-hover:rotate-90">arrow_forward</span>
+                    </a>
                     <button
                         onClick={(e) => {
                             e.preventDefault();
                             document.getElementById('nosotros')?.scrollIntoView({ behavior: 'smooth' });
                         }}
-                        className=" text-white px-10 py-4 rounded-full font-bold text-lg hover:bg-[#262626] transition-all active:scale-95"
+                        className="border border-[#adaaaa] text-white px-10 py-4 rounded-full font-headline font-black italic text-lg uppercase tracking-tight hover:bg-[#262626] transition-all active:scale-95"
                     >
                         Nuestra Historia
                     </button>
