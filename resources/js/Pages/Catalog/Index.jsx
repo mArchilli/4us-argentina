@@ -17,18 +17,17 @@ function CategoryBadge({ name }) {
 function ProductCard({ product }) {
     const image = product.primary_media?.url ?? null;
     const sortedPrices = [...(product.prices ?? [])].sort((a, b) => (a.min_quantity || 1) - (b.min_quantity || 1));
-    const initialQuantity = sortedPrices[0]?.min_quantity ?? 1;
-    const [quantity, setQuantity] = useState(initialQuantity);
+    const [quantity, setQuantity] = useState(sortedPrices[0]?.min_quantity ?? 1);
 
-    const getTierForQuantity = (value) => {
-        if (!sortedPrices.length) return null;
-        return sortedPrices.reduce(
-            (selected, price) => (value >= (price.min_quantity || 1) ? price : selected),
-            sortedPrices[0]
-        );
+    const findTierForQuantity = (qty) => {
+        for (let i = sortedPrices.length - 1; i >= 0; i--) {
+            if ((sortedPrices[i].min_quantity || 1) <= qty) return i;
+        }
+        return 0;
     };
 
-    const activeTier = getTierForQuantity(quantity);
+    const activeTierIndex = findTierForQuantity(quantity);
+    const activeTier = sortedPrices[activeTierIndex] ?? sortedPrices[0];
     const unitPrice = activeTier ? Number(activeTier.price) : 0;
     const totalPrice = unitPrice * quantity;
     const baseUnitPrice = sortedPrices[0] ? Number(sortedPrices[0].price) : 0;
@@ -42,7 +41,8 @@ function ProductCard({ product }) {
             setQuantity(1);
             return;
         }
-        setQuantity(Math.max(1, Math.floor(parsed)));
+        const qty = Math.max(1, Math.floor(parsed));
+        setQuantity(qty);
     };
 
     const handleAddToCart = () => {
@@ -138,18 +138,18 @@ function ProductCard({ product }) {
 
                 {sortedPrices.length > 1 && (
                     <div className="mt-3 flex flex-wrap gap-1.5">
-                        {sortedPrices.map((price) => (
+                        {sortedPrices.map((price, i) => (
                             <button
                                 key={price.id}
                                 type="button"
                                 onClick={() => setQuantity(price.min_quantity || 1)}
                                 className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide transition-all ${
-                                    activeTier?.id === price.id
+                                    activeTierIndex === i
                                         ? 'bg-[#8eff71] text-[#0d6100]'
                                         : 'bg-[#1a1a1a] text-[#adaaaa] border border-[#2a2a2a] hover:border-[#8eff71]/40 hover:text-white'
                                 }`}
                             >
-                                {price.min_quantity}+ u
+                                {price.label || `${price.min_quantity}+ u`}
                             </button>
                         ))}
                     </div>

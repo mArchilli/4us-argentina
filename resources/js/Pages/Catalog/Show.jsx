@@ -83,15 +83,15 @@ export default function CatalogShow({ auth, product, featured = [], onOffer = []
     const hasMultiplePrices = sortedPrices.length > 1;
     const [quantity, setQuantity] = useState(firstPrice?.min_quantity ?? 1);
 
-    const getTierForQuantity = (value) => {
-        if (!sortedPrices.length) return null;
-        return sortedPrices.reduce(
-            (selected, price) => (value >= price.min_quantity ? price : selected),
-            sortedPrices[0]
-        );
+    const findTierForQuantity = (qty) => {
+        for (let i = sortedPrices.length - 1; i >= 0; i--) {
+            if ((sortedPrices[i].min_quantity || 1) <= qty) return i;
+        }
+        return 0;
     };
 
-    const activeTier = getTierForQuantity(quantity);
+    const activeTierIndex = findTierForQuantity(quantity);
+    const activeTier = sortedPrices[activeTierIndex] ?? sortedPrices[0];
     const unitPrice = activeTier ? Number(activeTier.price) : 0;
     const totalPrice = unitPrice * quantity;
 
@@ -101,7 +101,8 @@ export default function CatalogShow({ auth, product, featured = [], onOffer = []
             setQuantity(1);
             return;
         }
-        setQuantity(Math.max(1, Math.floor(parsed)));
+        const qty = Math.max(1, Math.floor(parsed));
+        setQuantity(qty);
     };
 
     const handleAddToCart = () => {
@@ -233,23 +234,20 @@ export default function CatalogShow({ auth, product, featured = [], onOffer = []
 
                                         {hasMultiplePrices && (
                                             <div className="flex flex-wrap gap-2">
-                                                {sortedPrices.map((price) => {
-                                                    const isActive = price.id === activeTier?.id;
-                                                    return (
-                                                        <button
-                                                            key={price.id}
-                                                            type="button"
-                                                            onClick={() => setQuantity(price.min_quantity)}
-                                                            className={`px-3 py-2 rounded-full text-xs font-bold uppercase tracking-wide transition-all ${
-                                                                isActive
-                                                                    ? 'bg-[#8eff71] text-[#0d6100]'
-                                                                    : 'bg-[#1a1a1a] text-[#adaaaa] border border-[#2a2a2a] hover:border-[#8eff71]/40 hover:text-white'
-                                                            }`}
-                                                        >
-                                                            {price.min_quantity}+ u · ${Number(price.price).toLocaleString('es-AR')} c/u
-                                                        </button>
-                                                    );
-                                                })}
+                                                {sortedPrices.map((price, i) => (
+                                                    <button
+                                                        key={price.id}
+                                                        type="button"
+                                                        onClick={() => setQuantity(price.min_quantity || 1)}
+                                                        className={`px-3 py-2 rounded-full text-xs font-bold uppercase tracking-wide transition-all ${
+                                                            activeTierIndex === i
+                                                                ? 'bg-[#8eff71] text-[#0d6100]'
+                                                                : 'bg-[#1a1a1a] text-[#adaaaa] border border-[#2a2a2a] hover:border-[#8eff71]/40 hover:text-white'
+                                                        }`}
+                                                    >
+                                                        {price.label || `${price.min_quantity}+ u`} · ${Number(price.price).toLocaleString('es-AR')} c/u
+                                                    </button>
+                                                ))}
                                             </div>
                                         )}
                                     </div>

@@ -39,9 +39,13 @@ export default function Create({ categories = [] }) {
         }
     };
 
-    const updatePrice = (i, field, value) => {
+    const updatePrice = (i, fieldOrObj, value) => {
         const updated = [...data.prices];
-        updated[i] = { ...updated[i], [field]: value };
+        if (typeof fieldOrObj === 'object') {
+            updated[i] = { ...updated[i], ...fieldOrObj };
+        } else {
+            updated[i] = { ...updated[i], [fieldOrObj]: value };
+        }
         setData('prices', updated);
     };
 
@@ -336,6 +340,12 @@ function PriceTier({ price, index, onChange, onRemove, canRemove, errors }) {
     const cls =
         'w-full rounded-xl bg-[#0a0a0a] border border-[#2a2a2a] text-white placeholder:text-[#484848] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#8eff71]/40 transition-all';
 
+    const handleQuantityChange = (value) => {
+        const qty = Number(value);
+        const label = qty === 1 ? 'Por unidad' : qty > 1 ? `x${qty} unidades` : price.label;
+        onChange(index, { min_quantity: value, label });
+    };
+
     return (
         <div className="bg-[#0e0e0e] border border-[#2a2a2a] rounded-xl p-3 space-y-2">
             <div className="flex items-center justify-between">
@@ -352,21 +362,15 @@ function PriceTier({ price, index, onChange, onRemove, canRemove, errors }) {
                     </button>
                 )}
             </div>
-            <input
-                type="text"
-                value={price.label}
-                onChange={(e) => onChange(index, 'label', e.target.value)}
-                placeholder="Etiqueta (ej: x10 unidades)"
-                className={cls}
-            />
             <div className="grid grid-cols-2 gap-2">
                 <div>
+                    <label className="block text-[10px] uppercase tracking-wider text-[#484848] mb-1">Cantidad</label>
                     <input
                         type="number"
                         min="1"
                         value={price.min_quantity}
-                        onChange={(e) => onChange(index, 'min_quantity', e.target.value)}
-                        placeholder="Cant. mínima"
+                        onChange={(e) => handleQuantityChange(e.target.value)}
+                        placeholder="1"
                         className={cls}
                     />
                     {errors?.[`prices.${index}.min_quantity`] && (
@@ -376,13 +380,14 @@ function PriceTier({ price, index, onChange, onRemove, canRemove, errors }) {
                     )}
                 </div>
                 <div>
+                    <label className="block text-[10px] uppercase tracking-wider text-[#484848] mb-1">Precio (ARS)</label>
                     <input
                         type="number"
                         step="0.01"
                         min="0"
                         value={price.price}
                         onChange={(e) => onChange(index, 'price', e.target.value)}
-                        placeholder="Precio (ARS)"
+                        placeholder="0.00"
                         className={cls}
                     />
                     {errors?.[`prices.${index}.price`] && (
@@ -391,6 +396,16 @@ function PriceTier({ price, index, onChange, onRemove, canRemove, errors }) {
                         </p>
                     )}
                 </div>
+            </div>
+            <div>
+                <label className="block text-[10px] uppercase tracking-wider text-[#484848] mb-1">Etiqueta</label>
+                <input
+                    type="text"
+                    value={price.label}
+                    onChange={(e) => onChange(index, 'label', e.target.value)}
+                    placeholder="Se genera automáticamente"
+                    className={cls}
+                />
             </div>
         </div>
     );
