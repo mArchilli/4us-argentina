@@ -3,7 +3,6 @@ import { Head, Link, router } from '@inertiajs/react';
 import toast from 'react-hot-toast';
 import Navbar from '@/Components/Home/Navbar';
 import HomeFooter from '@/Components/Home/HomeFooter';
-import SecondaryButton from '@/Components/SecondaryButton';
 import { emitCartChanged } from '@/utils/cartEvents';
 
 function CategoryBadge({ name }) {
@@ -332,9 +331,12 @@ export default function CatalogIndex({ auth, products = [], categories = [], act
                                 <p className="text-[#0d6100]/80 text-xl font-bold uppercase tracking-widest mb-12 max-w-2xl mx-auto">
                                     Realizamos pedidos personalizados y ventas mayoristas para locales y clubes de cultivo. Contactanos y armamos tu presupuesto.
                                 </p>
-                                <SecondaryButton>
+                                <Link
+                                    href="/#contacto"
+                                    className="inline-flex items-center justify-center rounded-full bg-[#0d6100] text-[#8eff71] font-headline font-black italic px-12 py-6 text-2xl uppercase tracking-tight transition-all hover:scale-105 shadow-2xl"
+                                >
                                     Contactate
-                                </SecondaryButton>
+                                </Link>
                             </div>
                         </div>
                     </section>

@@ -63,10 +63,14 @@ export default function Retailer({ auth }) {
                             Sé parte de la cultura. Llevá 4us a tu zona con descuentos exclusivos para mayoristas y beneficios únicos.
                         </p>
                         <div className="flex flex-col sm:flex-row gap-4">
-                            <button className="bg-[#8eff71] text-[#0d6100] font-headline font-black italic px-8 py-5 rounded-full text-lg uppercase tracking-tight hover:shadow-[0_0_30px_rgba(142,255,113,0.3)] transition-all active:scale-95 flex items-center justify-center gap-2">
-                                SOLICITAR CATÁLOGO MAYORISTA
-                                <span className="material-symbols-outlined font-bold">arrow_forward</span>
-                            </button>
+                            <a
+                                href="/catalogo/catalogo.pdf"
+                                download
+                                className="bg-[#8eff71] text-[#0d6100] font-headline font-black italic px-8 py-5 rounded-full text-lg uppercase tracking-tight hover:shadow-[0_0_30px_rgba(142,255,113,0.3)] transition-all active:scale-95 flex items-center justify-center gap-2"
+                            >
+                                OBTENER CATÁLOGO MAYORISTA
+                                <span className="material-symbols-outlined font-bold">download</span>
+                            </a>
                         </div>
                     </div>
                 </section>
@@ -109,9 +113,13 @@ export default function Retailer({ auth }) {
                             <p className="text-[#0d6100]/80 text-xl font-bold uppercase tracking-widest mb-12 max-w-2xl mx-auto">
                                 EL PRÓXIMO DROP PUEDE SER TU MEJOR VENTA. SUMATE A 4US HOY MISMO.
                             </p>
-                            <button className="bg-[#0d6100] text-[#8eff71] font-headline font-black italic px-12 py-6 rounded-full text-2xl uppercase tracking-tight hover:scale-105 transition-all shadow-2xl">
-                                SOLICITAR CATÁLOGO
-                            </button>
+                            <a
+                                href="/catalogo/catalogo.pdf"
+                                download
+                                className="inline-block bg-[#0d6100] text-[#8eff71] font-headline font-black italic px-12 py-6 rounded-full text-2xl uppercase tracking-tight hover:scale-105 transition-all shadow-2xl"
+                            >
+                                OBTENER CATÁLOGO
+                            </a>
                         </div>
                     </div>
                 </section>

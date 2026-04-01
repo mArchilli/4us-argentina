@@ -1,16 +1,32 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm, usePage } from '@inertiajs/react';
 
-export default function Edit({ settings }) {
+export default function Edit({ settings, catalog }) {
     const { flash } = usePage().props;
 
     const { data, setData, put, processing, errors } = useForm({
         free_shipping_threshold: settings.free_shipping_threshold || '20000',
     });
 
+    const {
+        data: catalogData,
+        setData: setCatalogData,
+        post: postCatalog,
+        processing: catalogProcessing,
+        errors: catalogErrors,
+        reset: resetCatalog,
+    } = useForm({ catalog: null });
+
     const handleSubmit = (e) => {
         e.preventDefault();
         put(route('store-settings.update'));
+    };
+
+    const handleCatalogSubmit = (e) => {
+        e.preventDefault();
+        postCatalog(route('store-settings.catalog'), {
+            onSuccess: () => resetCatalog(),
+        });
     };
 
     return (
@@ -35,7 +51,7 @@ export default function Edit({ settings }) {
                     </div>
                 )}
 
-                <form onSubmit={handleSubmit} className="bg-[#131313] rounded-2xl p-6 space-y-6">
+                <form onSubmit={handleSubmit} className="bg-[#131313] rounded-2xl p-6 space-y-6 mb-6">
                     {/* Free shipping section */}
                     <div>
                         <div className="flex items-center gap-3 mb-4">
@@ -77,6 +93,60 @@ export default function Edit({ settings }) {
                             className="px-5 py-2.5 rounded-full bg-[#8eff71] text-[#0d6100] font-black text-sm uppercase tracking-tight hover:shadow-[0_0_20px_rgba(142,255,113,0.25)] transition-all active:scale-95 disabled:opacity-50"
                         >
                             {processing ? 'Guardando...' : 'Guardar configuración'}
+                        </button>
+                    </div>
+                </form>
+
+                {/* Catalog section */}
+                <form onSubmit={handleCatalogSubmit} className="bg-[#131313] rounded-2xl p-6 space-y-6">
+                    <div>
+                        <div className="flex items-center gap-3 mb-4">
+                            <span className="material-symbols-outlined text-[#8eff71] text-2xl">picture_as_pdf</span>
+                            <h2 className="text-lg font-bold text-white uppercase tracking-tight">Catálogo PDF</h2>
+                        </div>
+                        <p className="text-sm text-[#adaaaa] mb-4">
+                            Subí el catálogo en formato PDF. Este archivo estará disponible para que los clientes lo descarguen desde la tienda.
+                        </p>
+
+                        {catalog.exists && (
+                            <div className="flex items-center gap-3 mb-4 bg-[#262626] rounded-xl px-4 py-3">
+                                <span className="material-symbols-outlined text-[#8eff71] text-xl">check_circle</span>
+                                <span className="text-sm text-white flex-1">Catálogo actual disponible</span>
+                                <a
+                                    href={catalog.url}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="text-xs text-[#8eff71] hover:underline flex items-center gap-1"
+                                >
+                                    <span className="material-symbols-outlined text-sm">open_in_new</span>
+                                    Ver
+                                </a>
+                            </div>
+                        )}
+
+                        <div>
+                            <label className="block text-xs uppercase tracking-widest text-[#adaaaa] mb-1.5 font-medium">
+                                {catalog.exists ? 'Reemplazar catálogo' : 'Subir catálogo'} (PDF, máx. 20 MB)
+                            </label>
+                            <input
+                                type="file"
+                                accept=".pdf,application/pdf"
+                                onChange={(e) => setCatalogData('catalog', e.target.files[0] ?? null)}
+                                className="w-full bg-[#262626] border-none rounded-xl py-3 px-4 text-sm text-white focus:outline-none focus:ring-1 focus:ring-[#8eff71]/40 file:mr-4 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-[#8eff71] file:text-[#0d6100] hover:file:opacity-80 cursor-pointer"
+                            />
+                            {catalogErrors.catalog && (
+                                <p className="text-[#ff7351] text-xs mt-1">{catalogErrors.catalog}</p>
+                            )}
+                        </div>
+                    </div>
+
+                    <div className="flex justify-end pt-4 border-t border-[#2a2a2a]">
+                        <button
+                            type="submit"
+                            disabled={catalogProcessing || !catalogData.catalog}
+                            className="px-5 py-2.5 rounded-full bg-[#8eff71] text-[#0d6100] font-black text-sm uppercase tracking-tight hover:shadow-[0_0_20px_rgba(142,255,113,0.25)] transition-all active:scale-95 disabled:opacity-50"
+                        >
+                            {catalogProcessing ? 'Subiendo...' : catalog.exists ? 'Reemplazar catálogo' : 'Subir catálogo'}
                         </button>
                     </div>
                 </form>

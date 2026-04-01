@@ -70,6 +70,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/store-settings', [StoreSettingController::class, 'edit'])->name('store-settings.edit');
     Route::put('/store-settings', [StoreSettingController::class, 'update'])->name('store-settings.update');
+    Route::post('/store-settings/catalog', [StoreSettingController::class, 'uploadCatalog'])->name('store-settings.catalog');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
