@@ -1,13 +1,45 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, router, usePage } from '@inertiajs/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-export default function Index({ categories }) {
+export default function Index({ categories, filters = {} }) {
     const { flash } = usePage().props;
     const [deleteModal, setDeleteModal] = useState({ open: false, id: null, name: '' });
+    const [search, setSearch] = useState(filters.search ?? '');
+    const [sort, setSort] = useState(filters.sort ?? 'az');
 
     const openDelete = (id, name) => setDeleteModal({ open: true, id, name });
     const closeDelete = () => setDeleteModal({ open: false, id: null, name: '' });
+
+    const applyFilters = (overrides = {}) => {
+        const next = {
+            search,
+            sort,
+            ...overrides,
+        };
+
+        router.get(
+            route('categories.index'),
+            {
+                search: next.search || undefined,
+                sort: next.sort || 'az',
+            },
+            {
+                preserveState: true,
+                preserveScroll: true,
+                replace: true,
+            }
+        );
+    };
+
+    useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            if (search === (filters.search ?? '')) return;
+            applyFilters({ search });
+        }, 350);
+
+        return () => clearTimeout(timeoutId);
+    }, [search]);
 
     const confirmDelete = () => {
         router.delete(route('categories.destroy', deleteModal.id));
@@ -38,6 +70,50 @@ export default function Index({ categories }) {
                     <span className="material-symbols-outlined text-base">add</span>
                     Nueva categoria
                 </Link>
+            </div>
+
+            <div className="bg-[#131313] border border-[#2a2a2a] rounded-2xl p-4 mb-6">
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-3">
+                    <div className="md:col-span-8">
+                        <input
+                            type="text"
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                            placeholder="Buscar por nombre o slug..."
+                            className="w-full bg-[#1f2020] border border-[#2a2a2a] rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-[#6f6f6f] focus:outline-none focus:border-[#8eff71]/50"
+                        />
+                    </div>
+                    <div className="md:col-span-4 flex gap-2">
+                        <button
+                            type="button"
+                            onClick={() => {
+                                setSort('az');
+                                applyFilters({ sort: 'az' });
+                            }}
+                            className={`flex-1 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all ${
+                                sort === 'az'
+                                    ? 'bg-[#8eff71] text-[#0d6100]'
+                                    : 'bg-[#1f2020] text-[#adaaaa] hover:text-white'
+                            }`}
+                        >
+                            A-Z
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => {
+                                setSort('za');
+                                applyFilters({ sort: 'za' });
+                            }}
+                            className={`flex-1 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all ${
+                                sort === 'za'
+                                    ? 'bg-[#8eff71] text-[#0d6100]'
+                                    : 'bg-[#1f2020] text-[#adaaaa] hover:text-white'
+                            }`}
+                        >
+                            Z-A
+                        </button>
+                    </div>
+                </div>
             </div>
 
             {categories.data.length === 0 ? (

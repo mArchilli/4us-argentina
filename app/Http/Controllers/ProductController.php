@@ -14,14 +14,68 @@ use Inertia\Response;
 
 class ProductController extends Controller
 {
-    public function index(): Response
+    public function index(Request $request): Response
     {
-        $products = Product::with(['primaryMedia', 'prices', 'categories'])
-            ->latest()
-            ->paginate(16);
+        $search = trim((string) $request->string('search'));
+        $sort = $request->input('sort', 'az');
+        $categoryId = $request->integer('category_id');
+        $featured = $request->input('featured', 'all');
+        $offer = $request->input('offer', 'all');
+
+        $productsQuery = Product::with(['primaryMedia', 'prices', 'categories']);
+
+        if ($search !== '') {
+            $productsQuery->where(function ($query) use ($search) {
+                $query->where('title', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
+            });
+        }
+
+        if ($categoryId > 0) {
+            $productsQuery->whereHas('categories', function ($query) use ($categoryId) {
+                $query->where('categories.id', $categoryId);
+            });
+        }
+
+        if ($featured === '1') {
+            $productsQuery->where('is_featured', true);
+        }
+
+        if ($featured === '0') {
+            $productsQuery->where('is_featured', false);
+        }
+
+        if ($offer === '1') {
+            $productsQuery->where('offer_active', true);
+        }
+
+        if ($offer === '0') {
+            $productsQuery->where('offer_active', false);
+        }
+
+        if ($sort === 'za') {
+            $productsQuery->orderBy('title', 'desc');
+        } else {
+            $sort = 'az';
+            $productsQuery->orderBy('title', 'asc');
+        }
+
+        $products = $productsQuery
+            ->paginate(16)
+            ->withQueryString();
 
         return Inertia::render('Products/Index', [
             'products' => $products,
+            'categories' => Category::query()
+                ->orderBy('name')
+                ->get(['id', 'name']),
+            'filters' => [
+                'search' => $search,
+                'sort' => $sort,
+                'category_id' => $categoryId > 0 ? (string) $categoryId : '',
+                'featured' => in_array($featured, ['0', '1'], true) ? $featured : 'all',
+                'offer' => in_array($offer, ['0', '1'], true) ? $offer : 'all',
+            ],
         ]);
     }
 

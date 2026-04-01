@@ -1,13 +1,71 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, router, usePage } from '@inertiajs/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-export default function Index({ products }) {
+export default function Index({ products, categories = [], filters = {} }) {
     const { flash } = usePage().props;
     const [deleteModal, setDeleteModal] = useState({ open: false, id: null, title: '' });
+    const [search, setSearch] = useState(filters.search ?? '');
+    const [sort, setSort] = useState(filters.sort ?? 'az');
+    const [categoryId, setCategoryId] = useState(filters.category_id ?? '');
+    const [featured, setFeatured] = useState(filters.featured ?? 'all');
+    const [offer, setOffer] = useState(filters.offer ?? 'all');
+    const selectedCategory = categories.find((category) => String(category.id) === String(categoryId));
+    const activeFilterCount = [
+        search.trim() !== '',
+        sort === 'za',
+        categoryId !== '',
+        featured === '1',
+        offer === '1',
+    ].filter(Boolean).length;
 
     const openDelete = (id, title) => setDeleteModal({ open: true, id, title });
     const closeDelete = () => setDeleteModal({ open: false, id: null, title: '' });
+
+    const applyFilters = (overrides = {}) => {
+        const next = {
+            search,
+            sort,
+            category_id: categoryId,
+            featured,
+            offer,
+            ...overrides,
+        };
+
+        router.get(
+            route('products.index'),
+            {
+                search: next.search || undefined,
+                sort: next.sort || 'az',
+                category_id: next.category_id || undefined,
+                featured: next.featured !== 'all' ? next.featured : undefined,
+                offer: next.offer !== 'all' ? next.offer : undefined,
+            },
+            {
+                preserveState: true,
+                preserveScroll: true,
+                replace: true,
+            }
+        );
+    };
+
+    const handleResetFilters = () => {
+        setSearch('');
+        setSort('az');
+        setCategoryId('');
+        setFeatured('all');
+        setOffer('all');
+        applyFilters({ search: '', sort: 'az', category_id: '', featured: 'all', offer: 'all' });
+    };
+
+    useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            if (search === (filters.search ?? '')) return;
+            applyFilters({ search });
+        }, 350);
+
+        return () => clearTimeout(timeoutId);
+    }, [search]);
 
     const confirmDelete = () => {
         router.delete(route('products.destroy', deleteModal.id));
@@ -40,43 +98,245 @@ export default function Index({ products }) {
                 </Link>
             </div>
 
-            {/* Empty state */}
-            {products.data.length === 0 ? (
-                <div className="bg-[#131313] border border-[#2a2a2a] rounded-2xl p-16 flex flex-col items-center gap-3">
-                    <span className="material-symbols-outlined text-[#2a2a2a] text-6xl">inventory_2</span>
-                    <p className="text-[#adaaaa]">No hay productos todavía</p>
-                    <Link href={route('products.create')} className="text-[#8eff71] text-sm hover:underline">
-                        Crear el primero
-                    </Link>
-                </div>
-            ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                    {products.data.map((product) => (
-                        <ProductCard key={product.id} product={product} onDelete={openDelete} />
-                    ))}
-                </div>
-            )}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                <div className="lg:col-span-8 xl:col-span-9 order-2 lg:order-1">
+                    {/* Empty state */}
+                    {products.data.length === 0 ? (
+                        <div className="bg-[#131313] border border-[#2a2a2a] rounded-2xl p-16 flex flex-col items-center gap-3">
+                            <span className="material-symbols-outlined text-[#2a2a2a] text-6xl">inventory_2</span>
+                            <p className="text-[#adaaaa]">No hay productos todavía</p>
+                            <Link href={route('products.create')} className="text-[#8eff71] text-sm hover:underline">
+                                Crear el primero
+                            </Link>
+                        </div>
+                    ) : (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+                            {products.data.map((product) => (
+                                <ProductCard key={product.id} product={product} onDelete={openDelete} />
+                            ))}
+                        </div>
+                    )}
 
-            {/* Pagination */}
-            {products.last_page > 1 && (
-                <div className="mt-8 flex flex-wrap justify-center gap-2">
-                    {products.links.map((link, i) => (
-                        <Link
-                            key={i}
-                            href={link.url || '#'}
-                            preserveScroll
-                            className={`px-3 py-1.5 rounded-lg text-sm transition-all ${
-                                link.active
-                                    ? 'bg-[#8eff71] text-[#0d6100] font-bold'
-                                    : link.url
-                                    ? 'bg-[#1f2020] text-[#adaaaa] hover:text-white'
-                                    : 'bg-[#131313] text-[#484848] pointer-events-none'
-                            }`}
-                            dangerouslySetInnerHTML={{ __html: link.label }}
-                        />
-                    ))}
+                    {/* Pagination */}
+                    {products.last_page > 1 && (
+                        <div className="mt-8 flex flex-wrap justify-center gap-2">
+                            {products.links.map((link, i) => (
+                                <Link
+                                    key={i}
+                                    href={link.url || '#'}
+                                    preserveScroll
+                                    className={`px-3 py-1.5 rounded-lg text-sm transition-all ${
+                                        link.active
+                                            ? 'bg-[#8eff71] text-[#0d6100] font-bold'
+                                            : link.url
+                                            ? 'bg-[#1f2020] text-[#adaaaa] hover:text-white'
+                                            : 'bg-[#131313] text-[#484848] pointer-events-none'
+                                    }`}
+                                    dangerouslySetInnerHTML={{ __html: link.label }}
+                                />
+                            ))}
+                        </div>
+                    )}
                 </div>
-            )}
+
+                <aside className="lg:col-span-4 xl:col-span-3 order-1 lg:order-2">
+                    <div className="bg-[#131313] border border-[#2a2a2a] rounded-2xl p-4 space-y-4 lg:self-start">
+                        <div className="flex items-center justify-between">
+                            <p className="text-xs uppercase tracking-[0.2em] text-[#6f6f6f]">Filtros activos</p>
+                            <span className="px-2 py-0.5 rounded-full bg-[#1f2020] text-[#8eff71] text-xs font-bold">
+                                {activeFilterCount}
+                            </span>
+                        </div>
+
+                        {activeFilterCount > 0 && (
+                            <div className="flex flex-wrap gap-1.5">
+                                {search.trim() !== '' && (
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            setSearch('');
+                                            applyFilters({ search: '' });
+                                        }}
+                                        className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#1f2020] border border-[#2a2a2a] text-[#adaaaa] text-[11px] hover:text-white transition-colors"
+                                    >
+                                        Busqueda
+                                        <span className="material-symbols-outlined text-xs">close</span>
+                                    </button>
+                                )}
+
+                                {sort === 'za' && (
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            setSort('az');
+                                            applyFilters({ sort: 'az' });
+                                        }}
+                                        className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#1f2020] border border-[#2a2a2a] text-[#adaaaa] text-[11px] hover:text-white transition-colors"
+                                    >
+                                        Orden Z-A
+                                        <span className="material-symbols-outlined text-xs">close</span>
+                                    </button>
+                                )}
+
+                                {categoryId !== '' && (
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            setCategoryId('');
+                                            applyFilters({ category_id: '' });
+                                        }}
+                                        className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#1f2020] border border-[#2a2a2a] text-[#adaaaa] text-[11px] hover:text-white transition-colors"
+                                    >
+                                        {selectedCategory ? `Categoria: ${selectedCategory.name}` : 'Categoria'}
+                                        <span className="material-symbols-outlined text-xs">close</span>
+                                    </button>
+                                )}
+
+                                {featured === '1' && (
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            setFeatured('all');
+                                            applyFilters({ featured: 'all' });
+                                        }}
+                                        className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#1f2020] border border-[#2a2a2a] text-[#adaaaa] text-[11px] hover:text-white transition-colors"
+                                    >
+                                        Solo destacados
+                                        <span className="material-symbols-outlined text-xs">close</span>
+                                    </button>
+                                )}
+
+                                {offer === '1' && (
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            setOffer('all');
+                                            applyFilters({ offer: 'all' });
+                                        }}
+                                        className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#1f2020] border border-[#2a2a2a] text-[#adaaaa] text-[11px] hover:text-white transition-colors"
+                                    >
+                                        Solo en oferta
+                                        <span className="material-symbols-outlined text-xs">close</span>
+                                    </button>
+                                )}
+                            </div>
+                        )}
+
+                        <div>
+                            <p className="text-xs uppercase tracking-[0.2em] text-[#6f6f6f] mb-2">Buscar</p>
+                            <input
+                                type="text"
+                                value={search}
+                                onChange={(e) => setSearch(e.target.value)}
+                                placeholder="Nombre o descripcion..."
+                                className="w-full bg-[#1f2020] border border-[#2a2a2a] rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-[#6f6f6f] focus:outline-none focus:border-[#8eff71]/50"
+                            />
+                        </div>
+
+                        <div>
+                            <p className="text-xs uppercase tracking-[0.2em] text-[#6f6f6f] mb-2">Orden</p>
+                            <div className="grid grid-cols-2 gap-2">
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setSort('az');
+                                        applyFilters({ sort: 'az' });
+                                    }}
+                                    className={`px-3 py-2.5 rounded-xl text-sm font-semibold transition-all ${
+                                        sort === 'az'
+                                            ? 'bg-[#8eff71] text-[#0d6100]'
+                                            : 'bg-[#1f2020] text-[#adaaaa] hover:text-white'
+                                    }`}
+                                >
+                                    A-Z
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setSort('za');
+                                        applyFilters({ sort: 'za' });
+                                    }}
+                                    className={`px-3 py-2.5 rounded-xl text-sm font-semibold transition-all ${
+                                        sort === 'za'
+                                            ? 'bg-[#8eff71] text-[#0d6100]'
+                                            : 'bg-[#1f2020] text-[#adaaaa] hover:text-white'
+                                    }`}
+                                >
+                                    Z-A
+                                </button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label className="block text-xs uppercase tracking-[0.2em] text-[#6f6f6f] mb-2">Categoria</label>
+                            <select
+                                value={categoryId}
+                                onChange={(e) => {
+                                    setCategoryId(e.target.value);
+                                    applyFilters({ category_id: e.target.value });
+                                }}
+                                className="w-full bg-[#1f2020] border border-[#2a2a2a] rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-[#8eff71]/50"
+                            >
+                                <option value="">Todas</option>
+                                {categories.map((category) => (
+                                    <option key={category.id} value={category.id}>{category.name}</option>
+                                ))}
+                            </select>
+                        </div>
+
+                        <div>
+                            <p className="text-xs uppercase tracking-[0.2em] text-[#6f6f6f] mb-2">Flags</p>
+                            <div className="space-y-2">
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        const next = featured === '1' ? 'all' : '1';
+                                        setFeatured(next);
+                                        applyFilters({ featured: next });
+                                    }}
+                                    className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl border text-sm font-semibold transition-all ${
+                                        featured === '1'
+                                            ? 'bg-[#8eff71]/10 border-[#8eff71]/40 text-[#8eff71]'
+                                            : 'bg-[#1f2020] border-[#2a2a2a] text-[#adaaaa] hover:text-white'
+                                    }`}
+                                >
+                                    <span className="font-['Space_Grotesk'] tracking-tight">Solo destacados</span>
+                                    <span className={`w-5 h-5 rounded-md border flex items-center justify-center ${featured === '1' ? 'border-[#8eff71] bg-[#8eff71]/20' : 'border-[#5a5a5a]'}`}>
+                                        {featured === '1' && <span className="material-symbols-outlined text-sm">check</span>}
+                                    </span>
+                                </button>
+
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        const next = offer === '1' ? 'all' : '1';
+                                        setOffer(next);
+                                        applyFilters({ offer: next });
+                                    }}
+                                    className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl border text-sm font-semibold transition-all ${
+                                        offer === '1'
+                                            ? 'bg-[#8eff71]/10 border-[#8eff71]/40 text-[#8eff71]'
+                                            : 'bg-[#1f2020] border-[#2a2a2a] text-[#adaaaa] hover:text-white'
+                                    }`}
+                                >
+                                    <span className="font-['Space_Grotesk'] tracking-tight">Solo en oferta</span>
+                                    <span className={`w-5 h-5 rounded-md border flex items-center justify-center ${offer === '1' ? 'border-[#8eff71] bg-[#8eff71]/20' : 'border-[#5a5a5a]'}`}>
+                                        {offer === '1' && <span className="material-symbols-outlined text-sm">check</span>}
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <button
+                            type="button"
+                            onClick={handleResetFilters}
+                            className="w-full px-3 py-2.5 rounded-xl bg-[#1f2020] text-[#adaaaa] hover:text-white text-sm font-medium transition-all"
+                        >
+                            Limpiar filtros
+                        </button>
+                    </div>
+                </aside>
+            </div>
             {/* Delete confirmation modal */}
             {deleteModal.open && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4">

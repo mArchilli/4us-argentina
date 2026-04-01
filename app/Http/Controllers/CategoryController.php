@@ -11,14 +11,37 @@ use Inertia\Response;
 
 class CategoryController extends Controller
 {
-    public function index(): Response
+    public function index(Request $request): Response
     {
-        $categories = Category::withCount('products')
-            ->orderBy('name')
-            ->paginate(20);
+        $search = trim((string) $request->string('search'));
+        $sort = $request->input('sort', 'az');
+
+        $categoriesQuery = Category::withCount('products');
+
+        if ($search !== '') {
+            $categoriesQuery->where(function ($query) use ($search) {
+                $query->where('name', 'like', "%{$search}%")
+                    ->orWhere('slug', 'like', "%{$search}%");
+            });
+        }
+
+        if ($sort === 'za') {
+            $categoriesQuery->orderBy('name', 'desc');
+        } else {
+            $sort = 'az';
+            $categoriesQuery->orderBy('name', 'asc');
+        }
+
+        $categories = $categoriesQuery
+            ->paginate(20)
+            ->withQueryString();
 
         return Inertia::render('Categories/Index', [
             'categories' => $categories,
+            'filters' => [
+                'search' => $search,
+                'sort' => $sort,
+            ],
         ]);
     }
 
