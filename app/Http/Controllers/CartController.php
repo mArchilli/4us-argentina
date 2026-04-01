@@ -85,6 +85,15 @@ class CartController extends Controller
         ]);
     }
 
+    public function clear()
+    {
+        session()->forget('cart');
+
+        return response()->json([
+            'message' => 'Carrito vaciado correctamente.',
+        ]);
+    }
+
     private function resolveCartItems(array $cart): array
     {
         if (empty($cart)) {

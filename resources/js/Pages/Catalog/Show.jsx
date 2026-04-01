@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Head, Link, router } from '@inertiajs/react';
+import toast from 'react-hot-toast';
 import Navbar from '@/Components/Home/Navbar';
 import HomeFooter from '@/Components/Home/HomeFooter';
 
@@ -78,6 +79,18 @@ export default function CatalogShow({ auth, product, featured = [], onOffer = []
 
     const firstPrice = product.prices?.[0];
     const hasMultiplePrices = product.prices?.length > 1;
+
+    const handleAddToCart = () => {
+        router.post(
+            route('cart.add'),
+            { product_id: product.id, quantity: 1 },
+            {
+                preserveScroll: true,
+                onSuccess: () => toast.success('Producto agregado al carrito.'),
+                onError: () => toast.error('No se pudo agregar el producto.'),
+            }
+        );
+    };
 
     return (
         <>
@@ -231,7 +244,7 @@ export default function CatalogShow({ auth, product, featured = [], onOffer = []
 
                             {/* CTA */}
                             <button
-                                onClick={() => router.post(route('cart.add'), { product_id: product.id, quantity: 1 })}
+                                onClick={handleAddToCart}
                                 className="flex items-center justify-center gap-3 w-full bg-[#8eff71] text-[#0d6100] py-4 rounded-full font-black uppercase tracking-widest hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(142,255,113,0.4)] transition-all text-base"
                             >
                                 <span className="material-symbols-outlined">add_shopping_cart</span>

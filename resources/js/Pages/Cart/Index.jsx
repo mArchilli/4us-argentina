@@ -1,16 +1,17 @@
 import { useState } from 'react';
 import { Head, Link, router } from '@inertiajs/react';
+import toast from 'react-hot-toast';
 import Navbar from '@/Components/Home/Navbar';
 import HomeFooter from '@/Components/Home/HomeFooter';
 
 function CartItem({ item, onUpdate, onRemove }) {
     const decrease = () => {
         if (item.quantity <= 1) return;
-        onUpdate(item.product_id, item.quantity - 1);
+        onUpdate(item.product_id, item.quantity - 1, 'decrease');
     };
 
     const increase = () => {
-        onUpdate(item.product_id, item.quantity + 1);
+        onUpdate(item.product_id, item.quantity + 1, 'increase');
     };
 
     return (
@@ -82,12 +83,28 @@ function CartItem({ item, onUpdate, onRemove }) {
 export default function CartIndex({ auth, items = [], subtotal = 0 }) {
     const [promoCode, setPromoCode] = useState('');
 
-    const handleUpdate = (productId, quantity) => {
-        router.patch(route('cart.update'), { product_id: productId, quantity }, { preserveScroll: true });
+    const handleUpdate = (productId, quantity, action) => {
+        router.patch(
+            route('cart.update'),
+            { product_id: productId, quantity },
+            {
+                preserveScroll: true,
+                onSuccess: () => {
+                    if (action === 'increase') toast.success('Cantidad aumentada.');
+                    if (action === 'decrease') toast.success('Cantidad reducida.');
+                },
+                onError: () => toast.error('No se pudo actualizar la cantidad.'),
+            }
+        );
     };
 
     const handleRemove = (productId) => {
-        router.delete(route('cart.remove'), { data: { product_id: productId }, preserveScroll: true });
+        router.delete(route('cart.remove'), {
+            data: { product_id: productId },
+            preserveScroll: true,
+            onSuccess: () => toast.success('Producto eliminado del carrito.'),
+            onError: () => toast.error('No se pudo eliminar el producto.'),
+        });
     };
 
     const freeShipping = subtotal >= 20000;

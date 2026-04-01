@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Head, Link, useForm } from '@inertiajs/react';
+import toast from 'react-hot-toast';
 import Navbar from '@/Components/Home/Navbar';
 import HomeFooter from '@/Components/Home/HomeFooter';
 
@@ -153,24 +154,48 @@ export default function CheckoutIndex({ auth, items = [], subtotal = 0 }) {
         return lines.join('\n');
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (!items.length) {
             setSubmitError('Tu carrito está vacío. Agregá productos antes de finalizar.');
+            toast.error('Tu carrito está vacío.');
             return;
         }
 
         if (!validateForWhatsApp()) {
             setSubmitError('Completá los datos obligatorios para generar el pedido por WhatsApp.');
+            toast.error('Completá los datos obligatorios del envío.');
             return;
         }
 
         setSubmitError('');
 
-        const message = buildWhatsAppMessage();
-        const waUrl = `https://wa.me/5491169659907?text=${encodeURIComponent(message)}`;
-        window.open(waUrl, '_blank');
+        try {
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+            const response = await fetch(route('cart.clear'), {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                    'X-CSRF-TOKEN': csrfToken || '',
+                },
+                body: JSON.stringify({}),
+            });
+
+            if (!response.ok) {
+                throw new Error('No se pudo vaciar el carrito.');
+            }
+
+            const message = buildWhatsAppMessage();
+            const waUrl = `https://wa.me/5491169659907?text=${encodeURIComponent(message)}`;
+            window.open(waUrl, '_blank');
+            toast.success('Pedido generado. Te redirigimos a WhatsApp.');
+        } catch {
+            setSubmitError('No se pudo preparar el pedido. Intentá nuevamente.');
+            toast.error('No se pudo vaciar el carrito antes de enviar.');
+        }
     };
 
     return (

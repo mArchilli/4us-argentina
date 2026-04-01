@@ -24,6 +24,7 @@
     },
     "dependencies": {
         "gsap": "^3.14.2",
-        "ogl": "^1.0.11"
+        "ogl": "^1.0.11",
+        "react-hot-toast": "^2.6.0"
     }
 }
