@@ -33,9 +33,9 @@ export default function HomeFooter() {
             {/* Fondo decorativo */}
             <div className="absolute inset-0 pointer-events-none opacity-5" style={{backgroundImage: "url('data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.65\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\'/%3E%3C/svg%3E')"}}></div>
             <div className="absolute -top-40 -right-40 w-[600px] h-[600px] bg-[#8eff71]/10 blur-[120px] rounded-full pointer-events-none animate-pulse"></div>
-            <div className="absolute top-1/2 -left-40 w-[500px] h-[500px] bg-[#8eff71]/5 blur-[100px] rounded-full pointer-events-none"></div>
 
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-12 px-8 w-full max-w-[1440px] mx-auto relative z-10 flex-grow content-start">
+
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-12 px-6 md:px-16 w-full mx-auto relative z-10 flex-grow content-start">
                 {/* Branding & descripción */}
                 <div className="md:col-span-1 space-y-8">
                     <div className="text-4xl font-black italic tracking-tighter text-[#8eff71]">4US ARGENTINA</div>
@@ -61,25 +61,30 @@ export default function HomeFooter() {
                     </ul>
                 </div>
                 {/* Nav 2: Comunidad */}
-                <div className="space-y-8">
+                <div className="space-y-8 order-3 md:order-none">
                     <h5 className="font-headline font-black italic uppercase tracking-tighter text-white text-xl">Comunidad</h5>
                     <ul className="space-y-4">
                         <li><a className="text-zinc-500 uppercase text-xs tracking-[0.2em] font-bold hover:text-[#8eff71] hover:italic transition-all duration-300" href="https://www.instagram.com/4usargentina/" target="_blank" rel="noreferrer">Instagram</a></li>
                         <li><a className="text-zinc-500 uppercase text-xs tracking-[0.2em] font-bold hover:text-[#8eff71] hover:italic transition-all duration-300" href="https://wa.me/5491169659907" target="_blank" rel="noreferrer">WhatsApp</a></li>
                         <li><a className="text-zinc-500 uppercase text-xs tracking-[0.2em] font-bold hover:text-[#8eff71] hover:italic transition-all duration-300" href="mailto:contacto@4usargentina.com">Contacto</a></li>
                     </ul>
-                    <div className="pt-4 border-t border-white/5">
+                    <div className="hidden md:block pt-4 border-t border-white/5">
                         <p className="text-[10px] text-zinc-600 uppercase tracking-[0.3em] mb-2 font-bold">Consultas directas</p>
                         <a className="text-[#8eff71] font-headline italic uppercase font-black text-2xl hover:underline underline-offset-8 decoration-2" href="mailto:contacto@4usargentina.com">contacto@4usargentina.com</a>
                     </div>
                 </div>
                 {/* Nav 3: Legal */}
-                <div className="space-y-8">
+                <div className="space-y-8 order-4 md:order-none">
                     <h5 className="font-headline font-black italic uppercase tracking-tighter text-white text-xl">Legal</h5>
                     <ul className="space-y-4">
                         <li><a className="text-zinc-500 uppercase text-xs tracking-[0.2em] font-bold hover:text-[#8eff71] hover:italic transition-all duration-300" href="#">Política de privacidad</a></li>
                         <li><a className="text-zinc-500 uppercase text-xs tracking-[0.2em] font-bold hover:text-[#8eff71] hover:italic transition-all duration-300" href="#">Envíos</a></li>
                     </ul>
+                </div>
+                {/* Mail - mobile only (separate block) */}
+                <div className="md:hidden order-5 pt-4 border-t border-white/5">
+                    <p className="text-[10px] text-zinc-600 uppercase tracking-[0.3em] mb-2 font-bold">Consultas directas</p>
+                    <a className="text-[#8eff71] font-headline italic uppercase font-black text-2xl hover:underline underline-offset-8 decoration-2" href="mailto:contacto@4usargentina.com">contacto@4usargentina.com</a>
                 </div>
             </div>
 
@@ -91,15 +96,15 @@ export default function HomeFooter() {
             </div>
 
             {/* Copyright Bar */}
-            <div className="border-t border-white/5 pt-10 px-8 w-full max-w-[1440px] mx-auto flex flex-col md:flex-row justify-between items-center gap-4 relative z-10">
-                <p className="text-zinc-600 text-[10px] uppercase tracking-[0.4em] font-bold">© {new Date().getFullYear()} 4US ARGENTINA — TODOS LOS DERECHOS RESERVADOS</p>
+            <div className="border-t border-white/5 pt-10 px-6 md:px-16 w-full mx-auto flex flex-col md:flex-row justify-between items-center gap-4 relative z-10">
+                <p className="text-zinc-600 text-[10px] uppercase tracking-[0.4em] font-bold text-center md:text-left">© {new Date().getFullYear()} 4US ARGENTINA — TODOS LOS DERECHOS RESERVADOS</p>
                 <div className="flex gap-2 items-center">
-                    <span className="text-zinc-700 text-[10px] uppercase tracking-[0.2em] font-bold">Powered by</span>
+                    <span className="text-zinc-700 text-xs uppercase tracking-[0.2em] font-bold">Powered by</span>
                     <a
                         href="https://archillimatias.dev"
                         target="_blank"
                         rel="noreferrer"
-                        className="text-[#8eff71] text-[10px] uppercase tracking-[0.2em] font-bold hover:underline"
+                        className="text-[#8eff71] text-xs uppercase tracking-[0.2em] font-bold hover:underline"
                     >
                         Pampa Labs
                     </a>
