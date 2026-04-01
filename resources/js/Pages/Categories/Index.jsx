@@ -125,20 +125,26 @@ export default function Index({ categories, filters = {} }) {
                     </Link>
                 </div>
             ) : (
-                <div className="bg-[#131313] border border-[#2a2a2a] rounded-2xl overflow-hidden">
-                    <div className="grid grid-cols-12 px-4 py-3 text-xs uppercase tracking-wider text-[#6f6f6f] border-b border-[#222]">
-                        <div className="col-span-4">Nombre</div>
-                        <div className="col-span-4">Slug</div>
-                        <div className="col-span-2">Productos</div>
-                        <div className="col-span-2 text-right">Acciones</div>
-                    </div>
-
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
                     {categories.data.map((category) => (
-                        <div key={category.id} className="grid grid-cols-12 px-4 py-3 border-b border-[#1f2020] last:border-b-0 items-center">
-                            <div className="col-span-4 text-white font-medium">{category.name}</div>
-                            <div className="col-span-4 text-[#adaaaa] text-sm">{category.slug}</div>
-                            <div className="col-span-2 text-[#8eff71] text-sm font-semibold">{category.products_count}</div>
-                            <div className="col-span-2 flex justify-end gap-2">
+                        <article key={category.id} className="bg-[#131313] border border-[#2a2a2a] rounded-2xl p-5 hover:border-[#8eff71]/25 transition-all">
+                            <div className="mb-4">
+                                <p className="text-[10px] uppercase tracking-[0.2em] text-[#6f6f6f]">Categoría</p>
+                                <h3 className="text-white font-bold text-xl mt-1 leading-tight">{category.name}</h3>
+                            </div>
+
+                            <div className="space-y-2 text-sm mb-5">
+                                <div className="flex justify-between text-[#adaaaa]">
+                                    <span>Slug</span>
+                                    <span className="text-white font-mono">{category.slug}</span>
+                                </div>
+                                <div className="flex justify-between text-[#adaaaa]">
+                                    <span>Productos</span>
+                                    <span className="text-[#8eff71] font-semibold">{category.products_count}</span>
+                                </div>
+                            </div>
+
+                            <div className="flex items-center justify-end gap-2">
                                 <Link
                                     href={route('categories.edit', category.id)}
                                     className="px-3 py-1.5 rounded-lg bg-[#1f2020] text-[#adaaaa] hover:text-white text-sm transition-all"
@@ -147,13 +153,13 @@ export default function Index({ categories, filters = {} }) {
                                 </Link>
                                 <button
                                     onClick={() => openDelete(category.id, category.name)}
-                                    className="px-2.5 py-1.5 rounded-lg bg-[#ff7351]/10 text-[#ff7351] hover:bg-[#ff7351]/20 text-sm transition-all"
+                                    className="px-3 py-1.5 rounded-lg bg-[#ff7351]/10 text-[#ff7351] hover:bg-[#ff7351]/20 text-sm transition-all"
                                     title="Eliminar categoria"
                                 >
-                                    <span className="material-symbols-outlined text-base leading-none">delete</span>
+                                    Eliminar
                                 </button>
                             </div>
-                        </div>
+                        </article>
                     ))}
                 </div>
             )}

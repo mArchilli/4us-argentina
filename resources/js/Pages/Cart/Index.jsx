@@ -81,8 +81,9 @@ function CartItem({ item, onUpdate, onRemove }) {
     );
 }
 
-export default function CartIndex({ auth, items = [], subtotal = 0 }) {
+export default function CartIndex({ auth, items = [], subtotal = 0, freeShippingThreshold = 20000, discount = null }) {
     const [promoCode, setPromoCode] = useState('');
+    const [applyingCode, setApplyingCode] = useState(false);
 
     const handleUpdate = (productId, quantity, action) => {
         router.patch(
@@ -112,8 +113,34 @@ export default function CartIndex({ auth, items = [], subtotal = 0 }) {
         });
     };
 
-    const freeShipping = subtotal >= 20000;
-    const freeShippingProgress = Math.min((subtotal / 20000) * 100, 100);
+    const handleApplyDiscount = () => {
+        if (!promoCode.trim()) return;
+        setApplyingCode(true);
+        router.post(route('cart.applyDiscount'), { code: promoCode }, {
+            preserveScroll: true,
+            onSuccess: () => {
+                toast.success('Código de descuento aplicado.');
+                setPromoCode('');
+                setApplyingCode(false);
+            },
+            onError: (errors) => {
+                toast.error(errors.discount || 'Código inválido.');
+                setApplyingCode(false);
+            },
+        });
+    };
+
+    const handleRemoveDiscount = () => {
+        router.post(route('cart.removeDiscount'), {}, {
+            preserveScroll: true,
+            onSuccess: () => toast.success('Código de descuento removido.'),
+            onError: () => toast.error('No se pudo remover el código.'),
+        });
+    };
+
+    const freeShipping = freeShippingThreshold > 0 && subtotal >= freeShippingThreshold;
+    const freeShippingProgress = freeShippingThreshold > 0 ? Math.min((subtotal / freeShippingThreshold) * 100, 100) : 0;
+    const total = discount ? discount.total : subtotal;
 
     return (
         <>
@@ -177,7 +204,9 @@ export default function CartIndex({ auth, items = [], subtotal = 0 }) {
                                                 <p className="text-[#adaaaa] text-xs mt-1">
                                                     {freeShipping
                                                         ? '¡Calificás para envío gratis!'
-                                                        : `Te faltan $${Number(20000 - subtotal).toLocaleString('es-AR')} para envío gratis.`}
+                                                        : freeShippingThreshold > 0
+                                                        ? `Te faltan $${Number(freeShippingThreshold - subtotal).toLocaleString('es-AR')} para envío gratis.`
+                                                        : 'Envío gratis no disponible actualmente.'}
                                                 </p>
                                             </div>
                                             <div className="mt-4 bg-[#131313] rounded-full h-1.5 w-full overflow-hidden">
@@ -219,6 +248,15 @@ export default function CartIndex({ auth, items = [], subtotal = 0 }) {
                                                 <span className="text-sm font-medium uppercase tracking-widest">Subtotal</span>
                                                 <span className="font-['Space_Grotesk'] font-bold text-white">${Number(subtotal).toLocaleString('es-AR')}</span>
                                             </div>
+                                            {discount && (
+                                                <div className="flex justify-between items-center text-[#adaaaa]">
+                                                    <span className="text-sm font-medium uppercase tracking-widest flex items-center gap-1">
+                                                        Descuento
+                                                        <span className="text-[10px] font-mono text-[#8eff71] bg-[#8eff71]/10 px-1.5 py-0.5 rounded">{discount.code}</span>
+                                                    </span>
+                                                    <span className="font-['Space_Grotesk'] font-bold text-[#8eff71]">-${Number(discount.amount).toLocaleString('es-AR')}</span>
+                                                </div>
+                                            )}
                                             <div className="flex justify-between items-center text-[#adaaaa]">
                                                 <span className="text-sm font-medium uppercase tracking-widest">Envío</span>
                                                 <span className={`font-['Space_Grotesk'] font-bold ${freeShipping ? 'text-[#8eff71]' : 'text-[#adaaaa]'}`}>
@@ -228,7 +266,7 @@ export default function CartIndex({ auth, items = [], subtotal = 0 }) {
                                             <div className="h-px bg-[#484848]/20 my-4" />
                                             <div className="flex justify-between items-center">
                                                 <span className="text-lg font-bold uppercase tracking-widest">Total</span>
-                                                <span className="font-['Space_Grotesk'] text-3xl font-bold text-[#8eff71]">${Number(subtotal).toLocaleString('es-AR')}</span>
+                                                <span className="font-['Space_Grotesk'] text-3xl font-bold text-[#8eff71]">${Number(total).toLocaleString('es-AR')}</span>
                                             </div>
                                         </div>
 
@@ -237,18 +275,40 @@ export default function CartIndex({ auth, items = [], subtotal = 0 }) {
                                             <label className="block text-[10px] uppercase tracking-[0.2em] font-bold text-[#adaaaa] mb-3">
                                                 CÓDIGO DE DESCUENTO
                                             </label>
-                                            <div className="relative">
-                                                <input
-                                                    type="text"
-                                                    value={promoCode}
-                                                    onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
-                                                    placeholder="VIBE444"
-                                                    className="w-full bg-[#262626] border-none rounded-[1rem] py-4 px-6 text-sm focus:outline-none focus:ring-1 focus:ring-[#8eff71]/40 transition-all placeholder:text-[#484848] uppercase text-white"
-                                                />
-                                                <button className="absolute right-2 top-2 bottom-2 bg-[#131313] text-[#8eff71] px-4 rounded-[0.75rem] text-[10px] font-bold uppercase tracking-widest hover:bg-[#8eff71] hover:text-[#0d6100] transition-all">
-                                                    APLICAR
-                                                </button>
-                                            </div>
+                                            {discount ? (
+                                                <div className="flex items-center justify-between bg-[#8eff71]/10 border border-[#8eff71]/30 rounded-[1rem] py-3 px-5">
+                                                    <div className="flex items-center gap-2">
+                                                        <span className="material-symbols-outlined text-[#8eff71] text-lg">check_circle</span>
+                                                        <span className="font-mono font-bold text-[#8eff71] text-sm">{discount.code}</span>
+                                                        <span className="text-[#adaaaa] text-xs">
+                                                            ({discount.type === 'percentage' ? `${discount.value}%` : `$${Number(discount.value).toLocaleString('es-AR')}`})
+                                                        </span>
+                                                    </div>
+                                                    <button
+                                                        onClick={handleRemoveDiscount}
+                                                        className="text-[#ff7351] hover:text-[#ff5a33] transition-colors"
+                                                    >
+                                                        <span className="material-symbols-outlined text-lg">close</span>
+                                                    </button>
+                                                </div>
+                                            ) : (
+                                                <div className="relative">
+                                                    <input
+                                                        type="text"
+                                                        value={promoCode}
+                                                        onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
+                                                        placeholder="VIBE444"
+                                                        className="w-full bg-[#262626] border-none rounded-[1rem] py-4 px-6 text-sm focus:outline-none focus:ring-1 focus:ring-[#8eff71]/40 transition-all placeholder:text-[#484848] uppercase text-white"
+                                                    />
+                                                    <button
+                                                        onClick={handleApplyDiscount}
+                                                        disabled={applyingCode || !promoCode.trim()}
+                                                        className="absolute right-2 top-2 bottom-2 bg-[#131313] text-[#8eff71] px-4 rounded-[0.75rem] text-[10px] font-bold uppercase tracking-widest hover:bg-[#8eff71] hover:text-[#0d6100] transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                                                    >
+                                                        {applyingCode ? '...' : 'APLICAR'}
+                                                    </button>
+                                                </div>
+                                            )}
                                         </div>
 
                                         {/* Checkout CTA */}

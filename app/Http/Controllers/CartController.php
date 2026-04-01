@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DiscountCode;
 use App\Models\Product;
+use App\Models\StoreSetting;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -13,10 +15,17 @@ class CartController extends Controller
     {
         $cart = session()->get('cart', []);
         $items = $this->resolveCartItems($cart);
+        $subtotal = collect($items)->sum('line_total');
+        $freeShippingThreshold = (float) StoreSetting::get('free_shipping_threshold', 20000);
+
+        // Check for applied discount code
+        $discountData = $this->resolveDiscount($subtotal);
 
         return Inertia::render('Cart/Index', [
-            'items'    => $items,
-            'subtotal' => collect($items)->sum('line_total'),
+            'items'                 => $items,
+            'subtotal'              => $subtotal,
+            'freeShippingThreshold' => $freeShippingThreshold,
+            'discount'              => $discountData,
         ]);
     }
 
@@ -88,10 +97,70 @@ class CartController extends Controller
     public function clear()
     {
         session()->forget('cart');
+        session()->forget('discount_code');
 
         return response()->json([
             'message' => 'Carrito vaciado correctamente.',
         ]);
+    }
+
+    public function applyDiscount(Request $request)
+    {
+        $request->validate([
+            'code' => 'required|string|max:50',
+        ]);
+
+        $code = strtoupper(trim($request->code));
+        $discountCode = DiscountCode::where('code', $code)->first();
+
+        if (!$discountCode) {
+            return back()->withErrors(['discount' => 'El código de descuento no existe.']);
+        }
+
+        $cart = session()->get('cart', []);
+        $items = $this->resolveCartItems($cart);
+        $subtotal = collect($items)->sum('line_total');
+
+        if (!$discountCode->isValid($subtotal)) {
+            return back()->withErrors(['discount' => 'El código de descuento no es válido o no cumple las condiciones.']);
+        }
+
+        session()->put('discount_code', $code);
+
+        return back()->with('success', 'Código de descuento aplicado correctamente.');
+    }
+
+    public function removeDiscount()
+    {
+        session()->forget('discount_code');
+
+        return back()->with('success', 'Código de descuento removido.');
+    }
+
+    private function resolveDiscount(float $subtotal): ?array
+    {
+        $code = session()->get('discount_code');
+
+        if (!$code) {
+            return null;
+        }
+
+        $discountCode = DiscountCode::where('code', $code)->first();
+
+        if (!$discountCode || !$discountCode->isValid($subtotal)) {
+            session()->forget('discount_code');
+            return null;
+        }
+
+        $amount = $discountCode->calculateDiscount($subtotal);
+
+        return [
+            'code'   => $discountCode->code,
+            'type'   => $discountCode->type,
+            'value'  => (float) $discountCode->value,
+            'amount' => $amount,
+            'total'  => $subtotal - $amount,
+        ];
     }
 
     private function resolveCartItems(array $cart): array

@@ -59,11 +59,12 @@ function FormSelect({ label, id, value, onChange, error, options, placeholder, c
     );
 }
 
-export default function CheckoutIndex({ auth, items = [], subtotal = 0 }) {
+export default function CheckoutIndex({ auth, items = [], subtotal = 0, freeShippingThreshold = 20000, discount = null }) {
     const [shippingMethod, setShippingMethod] = useState('domicilio');
     const [submitError, setSubmitError] = useState('');
     const [localErrors, setLocalErrors] = useState({});
-    const freeShipping = subtotal >= 20000;
+    const freeShipping = freeShippingThreshold > 0 && subtotal >= freeShippingThreshold;
+    const total = discount ? discount.total : subtotal;
 
     const { data, setData, processing, errors } = useForm({
         shipping_method: 'domicilio',
@@ -125,8 +126,15 @@ export default function CheckoutIndex({ auth, items = [], subtotal = 0 }) {
             ...items.map((item, index) => `${index + 1}. ${item.title} x${item.quantity} - ${formatArs(item.line_total)}`),
             '',
             `*Subtotal:* ${formatArs(subtotal)}`,
+        ];
+
+        if (discount) {
+            lines.push(`*Descuento (${discount.code}):* -${formatArs(discount.amount)}`);
+        }
+
+        lines.push(
             `*Envío:* ${freeShipping ? 'Gratis' : 'A confirmar'}`,
-            `*Total estimado:* ${formatArs(subtotal)}`,
+            `*Total estimado:* ${formatArs(total)}`,
             '',
             '*Datos del cliente*',
             `Nombre: ${data.first_name} ${data.last_name}`,
@@ -139,7 +147,7 @@ export default function CheckoutIndex({ auth, items = [], subtotal = 0 }) {
             `Provincia: ${data.province}`,
             `Localidad: ${data.city}`,
             `Código Postal: ${data.postal_code}`,
-        ];
+        );
 
         if (shippingMethod === 'domicilio') {
             lines.push(`Dirección: ${data.address}`);
@@ -415,6 +423,15 @@ export default function CheckoutIndex({ auth, items = [], subtotal = 0 }) {
                                         <span className="text-[#adaaaa]">Subtotal</span>
                                         <span className="text-white">${Number(subtotal).toLocaleString('es-AR')}</span>
                                     </div>
+                                    {discount && (
+                                        <div className="flex justify-between text-xs">
+                                            <span className="text-[#adaaaa] flex items-center gap-1">
+                                                Descuento
+                                                <span className="font-mono text-[#8eff71] text-[9px] bg-[#8eff71]/10 px-1 rounded">{discount.code}</span>
+                                            </span>
+                                            <span className="text-[#8eff71] font-bold">-${Number(discount.amount).toLocaleString('es-AR')}</span>
+                                        </div>
+                                    )}
                                     <div className="flex justify-between text-xs">
                                         <span className="text-[#adaaaa]">Envío</span>
                                         <span className={freeShipping ? 'text-[#8eff71] font-bold' : 'text-[#adaaaa]'}>
@@ -423,7 +440,7 @@ export default function CheckoutIndex({ auth, items = [], subtotal = 0 }) {
                                     </div>
                                     <div className="flex justify-between text-xl font-black pt-3 text-[#8eff71]">
                                         <span>TOTAL</span>
-                                        <span>${Number(subtotal).toLocaleString('es-AR')}</span>
+                                        <span>${Number(total).toLocaleString('es-AR')}</span>
                                     </div>
                                 </div>
 

@@ -5,6 +5,8 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\DiscountCodeController;
+use App\Http\Controllers\StoreSettingController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -35,6 +37,9 @@ Route::delete('/carrito/eliminar', [CartController::class, 'remove'])->name('car
 Route::post('/carrito/vaciar', [CartController::class, 'clear'])->name('cart.clear');
 Route::get('/carrito/count', [CartController::class, 'count'])->name('cart.count');
 
+Route::post('/carrito/aplicar-descuento', [CartController::class, 'applyDiscount'])->name('cart.applyDiscount');
+Route::post('/carrito/quitar-descuento', [CartController::class, 'removeDiscount'])->name('cart.removeDiscount');
+
 Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
 Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
 
@@ -48,6 +53,10 @@ Route::get('/dashboard', function () {
 Route::middleware('auth')->group(function () {
     Route::resource('products', ProductController::class);
     Route::resource('categories', CategoryController::class)->except('show');
+    Route::resource('discount-codes', DiscountCodeController::class)->except('show');
+
+    Route::get('/store-settings', [StoreSettingController::class, 'edit'])->name('store-settings.edit');
+    Route::put('/store-settings', [StoreSettingController::class, 'update'])->name('store-settings.update');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

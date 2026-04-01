@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DiscountCode;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
+use App\Models\StoreSetting;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -23,10 +25,16 @@ class CheckoutController extends Controller
 
         $items = $this->resolveCartItems($cart);
         $subtotal = collect($items)->sum('line_total');
+        $freeShippingThreshold = (float) StoreSetting::get('free_shipping_threshold', 20000);
+
+        // Resolve discount
+        $discount = $this->resolveDiscount($subtotal);
 
         return Inertia::render('Checkout/Index', [
-            'items'    => $items,
-            'subtotal' => $subtotal,
+            'items'                 => $items,
+            'subtotal'              => $subtotal,
+            'freeShippingThreshold' => $freeShippingThreshold,
+            'discount'              => $discount,
         ]);
     }
 
@@ -61,12 +69,19 @@ class CheckoutController extends Controller
         $items = $this->resolveCartItems($cart);
         $subtotal = collect($items)->sum('line_total');
 
-        $order = DB::transaction(function () use ($validated, $items, $subtotal) {
+        // Resolve discount
+        $discount = $this->resolveDiscount($subtotal);
+        $discountAmount = $discount ? $discount['amount'] : 0;
+        $total = $subtotal - $discountAmount;
+
+        $order = DB::transaction(function () use ($validated, $items, $subtotal, $discountAmount, $total, $discount) {
             $order = Order::create([
                 ...$validated,
-                'subtotal' => $subtotal,
-                'total'    => $subtotal,
-                'status'   => 'pending',
+                'subtotal'        => $subtotal,
+                'discount_code'   => $discount['code'] ?? null,
+                'discount_amount' => $discountAmount,
+                'total'           => $total,
+                'status'          => 'pending',
             ]);
 
             foreach ($items as $item) {
@@ -80,14 +95,46 @@ class CheckoutController extends Controller
                 ]);
             }
 
+            // Increment discount code usage
+            if ($discount) {
+                DiscountCode::where('code', $discount['code'])->increment('times_used');
+            }
+
             return $order;
         });
 
         session()->forget('cart');
+        session()->forget('discount_code');
 
         return Inertia::render('Checkout/Success', [
             'order' => $order->load('items'),
         ]);
+    }
+
+    private function resolveDiscount(float $subtotal): ?array
+    {
+        $code = session()->get('discount_code');
+
+        if (!$code) {
+            return null;
+        }
+
+        $discountCode = DiscountCode::where('code', $code)->first();
+
+        if (!$discountCode || !$discountCode->isValid($subtotal)) {
+            session()->forget('discount_code');
+            return null;
+        }
+
+        $amount = $discountCode->calculateDiscount($subtotal);
+
+        return [
+            'code'   => $discountCode->code,
+            'type'   => $discountCode->type,
+            'value'  => (float) $discountCode->value,
+            'amount' => $amount,
+            'total'  => $subtotal - $amount,
+        ];
     }
 
     private function resolveCartItems(array $cart): array

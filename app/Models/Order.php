@@ -21,15 +21,18 @@ class Order extends Model
         'phone',
         'observations',
         'subtotal',
+        'discount_code',
+        'discount_amount',
         'shipping_cost',
         'total',
         'status',
     ];
 
     protected $casts = [
-        'subtotal'      => 'decimal:2',
-        'shipping_cost' => 'decimal:2',
-        'total'         => 'decimal:2',
+        'subtotal'        => 'decimal:2',
+        'discount_amount' => 'decimal:2',
+        'shipping_cost'   => 'decimal:2',
+        'total'           => 'decimal:2',
     ];
 
     public function items(): HasMany
