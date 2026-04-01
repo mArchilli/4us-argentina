@@ -63,7 +63,7 @@ function ProductCard({
     };
 
     return (
-        <article className={`group ${className} h-full flex flex-col`}>
+        <article className={`group ${className} h-full flex flex-col justify-between`}>
             <div className={`relative overflow-hidden rounded-[1.6rem] mb-5 bg-[#131313] ${contentClassName} flex-1`}>
                 {image ? (
                     <img
@@ -285,6 +285,38 @@ export default function FeaturedSection({ products = [] }) {
         return () => ctx.revert();
     }, [products]);
 
+    // ── Mobile / Tablet carousel ──────────────────────────────────
+    const carouselContainerRef = useRef(null);
+    const [carouselWidth, setCarouselWidth] = useState(0);
+
+    useEffect(() => {
+        const el = carouselContainerRef.current;
+        if (!el) return;
+        const observer = new ResizeObserver(([entry]) => {
+            setCarouselWidth(entry.contentRect.width);
+        });
+        observer.observe(el);
+        return () => observer.disconnect();
+    }, []);
+
+    const isMobileSlide = carouselWidth > 0 && carouselWidth < 768;
+    const cardGap = 16;
+    const mobileCardWidth = carouselWidth * 0.78;
+    const tabletCardWidth = (carouselWidth - cardGap) / 2;
+    const slideCardWidth = isMobileSlide ? mobileCardWidth : tabletCardWidth;
+    const slideStride = slideCardWidth + cardGap;
+    const slideOffset = isMobileSlide ? (carouselWidth - mobileCardWidth) / 2 : 0;
+    const maxSlideIndex = isMobileSlide
+        ? productCount - 1
+        : Math.max(0, productCount - 2);
+    const clampedSlideIndex = Math.max(0, Math.min(currentIndex, maxSlideIndex));
+    const slideTranslateX = slideOffset - clampedSlideIndex * slideStride;
+
+    const isSlideActive = (i) => {
+        if (isMobileSlide) return i === clampedSlideIndex;
+        return i >= clampedSlideIndex && i <= clampedSlideIndex + 1;
+    };
+
     if (productCount === 0) return null;
 
     return (
@@ -300,53 +332,120 @@ export default function FeaturedSection({ products = [] }) {
             </div>
 
             <div ref={carouselRef}>
-                <div className="hidden md:block">
+                <div className="hidden lg:block">
                     <div className="flex items-center justify-between gap-6 mb-6">
                         <div className="text-sm uppercase tracking-[0.35em] text-[#adaaaa]">
                             {String(currentIndex + 1).padStart(2, '0')} / {String(productCount).padStart(2, '0')}
                         </div>
+                    </div>
 
+                    <div className="relative">
+                        {/* Arrow: previous — overlays first card */}
+                        <button
+                            type="button"
+                            onClick={goToPrevious}
+                            className="absolute -left-5 top-1/3 -translate-y-1/2 z-20 h-12 w-12 rounded-full border border-white/20 bg-[#0e0e0e]/80 backdrop-blur-sm text-white transition-all hover:border-[#8eff71] hover:text-[#8eff71] hover:shadow-[0_0_20px_rgba(142,255,113,0.15)]"
+                            aria-label="Producto anterior"
+                        >
+                            <span className="material-symbols-outlined">arrow_back</span>
+                        </button>
+
+                        {/* Arrow: next — overlays last card */}
+                        <button
+                            type="button"
+                            onClick={goToNext}
+                            className="absolute -right-5 top-1/3 -translate-y-1/2 z-20 h-12 w-12 rounded-full border border-white/20 bg-[#0e0e0e]/80 backdrop-blur-sm text-white transition-all hover:border-[#8eff71] hover:text-[#8eff71] hover:shadow-[0_0_20px_rgba(142,255,113,0.15)]"
+                            aria-label="Producto siguiente"
+                        >
+                            <span className="material-symbols-outlined">arrow_forward</span>
+                        </button>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 xl:gap-10 h-full">
+                            {desktopProducts.map(({ product, index }, offset) => (
+                                <div
+                                    key={`${product.id}-${index}-${offset}`}
+                                    data-featured-item
+                                    className={`h-full ${offset % 2 !== 0 ? 'xl:mt-14' : ''}`}
+                                >
+                                    <ProductCard
+                                        product={product}
+                                        className="cursor-pointer h-full"
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+                {/* ── Mobile + Tablet carousel ── */}
+                <div className="lg:hidden">
+                    <div className="flex items-center justify-between mb-6">
+                        <div className="text-sm uppercase tracking-[0.35em] text-[#adaaaa]">
+                            {String(clampedSlideIndex + 1).padStart(2, '0')} / {String(productCount).padStart(2, '0')}
+                        </div>
                         <div className="flex items-center gap-3">
                             <button
                                 type="button"
                                 onClick={goToPrevious}
-                                className="h-12 w-12 rounded-full border border-white/15 bg-white/5 text-white transition hover:border-[#8eff71] hover:text-[#8eff71]"
+                                className="h-10 w-10 rounded-full border border-white/15 bg-white/5 text-white transition hover:border-[#8eff71] hover:text-[#8eff71]"
                                 aria-label="Producto anterior"
                             >
-                                <span className="material-symbols-outlined">arrow_back</span>
+                                <span className="material-symbols-outlined text-sm">arrow_back</span>
                             </button>
                             <button
                                 type="button"
                                 onClick={goToNext}
-                                className="h-12 w-12 rounded-full border border-white/15 bg-white/5 text-white transition hover:border-[#8eff71] hover:text-[#8eff71]"
+                                className="h-10 w-10 rounded-full border border-white/15 bg-white/5 text-white transition hover:border-[#8eff71] hover:text-[#8eff71]"
                                 aria-label="Producto siguiente"
                             >
-                                <span className="material-symbols-outlined">arrow_forward</span>
+                                <span className="material-symbols-outlined text-sm">arrow_forward</span>
                             </button>
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 xl:gap-10 h-full">
-                        {desktopProducts.map(({ product, index }, offset) => (
-                            <div
-                                key={`${product.id}-${index}-${offset}`}
-                                data-featured-item
-                                className={`h-full ${offset % 2 !== 0 ? 'xl:mt-14' : ''}`}
-                            >
-                                <ProductCard
-                                    product={product}
-                                    className="cursor-pointer h-full"
-                                />
-                            </div>
+                    <div
+                        ref={carouselContainerRef}
+                        className="overflow-hidden"
+                        onTouchStart={handleTouchStart}
+                        onTouchEnd={handleTouchEnd}
+                    >
+                        <div
+                            className="flex transition-transform duration-500 ease-out"
+                            style={{
+                                gap: `${cardGap}px`,
+                                transform: `translateX(${slideTranslateX}px)`,
+                            }}
+                        >
+                            {products.map((product, i) => (
+                                <div
+                                    key={product.id}
+                                    data-featured-item
+                                    className={`flex-shrink-0 transition-opacity duration-500 ${
+                                        carouselWidth > 0 && !isSlideActive(i) ? 'opacity-40' : 'opacity-100'
+                                    } ${carouselWidth === 0 ? 'w-[78%] md:w-[48%]' : ''}`}
+                                    style={{ width: carouselWidth > 0 ? `${slideCardWidth}px` : undefined }}
+                                >
+                                    <ProductCard product={product} />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Dots */}
+                    <div className="flex justify-center gap-2 mt-8">
+                        {products.map((_, i) => (
+                            <button
+                                key={i}
+                                type="button"
+                                onClick={() => setCurrentIndex(i)}
+                                className={`h-2 rounded-full transition-all duration-300 ${
+                                    i === clampedSlideIndex
+                                        ? 'w-6 bg-[#8eff71]'
+                                        : 'w-2 bg-[#484848] hover:bg-[#6f6f6f]'
+                                }`}
+                                aria-label={`Ir a producto ${i + 1}`}
+                            />
                         ))}
                     </div>
-                </div>
-                <div className="md:hidden flex flex-col gap-6">
-                    {products.map((product) => (
-                        <div key={product.id} data-featured-item>
-                            <ProductCard product={product} />
-                        </div>
-                    ))}
                 </div>
             </div>
         </section>
