@@ -11,6 +11,9 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use App\Models\Product;
+use App\Models\Category;
+use App\Models\DiscountCode;
+use App\Models\Order;
 use Inertia\Inertia;
 
 Route::get('/', function () {
@@ -47,7 +50,17 @@ Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.s
             return Inertia::render('retailer');
         });
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
+    return Inertia::render('Dashboard', [
+        'counts' => [
+            'products'       => \App\Models\Product::count(),
+            'featured'       => \App\Models\Product::where('is_featured', true)->count(),
+            'offers'         => \App\Models\Product::where('offer_active', true)->count(),
+            'categories'     => \App\Models\Category::count(),
+            'discountCodes'  => \App\Models\DiscountCode::count(),
+            'activeDiscounts'=> \App\Models\DiscountCode::where('is_active', true)->count(),
+            'orders'         => \App\Models\Order::count(),
+        ],
+    ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
