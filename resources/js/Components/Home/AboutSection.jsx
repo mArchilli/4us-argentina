@@ -30,7 +30,7 @@ export default function AboutSection() {
     }, []);
 
     return (
-        <section id="nosotros" className="py-16 px-6 md:px-16 overflow-hidden">
+        <section id="nosotros" className="py-16 px-6 md:px-16 overflow-hidden min-h-screen flex flex-col justify-center">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6  mx-auto">
                 <div ref={leftRef} className="px-0 py-20 md:px-0 md:py-20 rounded-2xl flex flex-col justify-center">
                     <span className="text-[#8eff71] font-bold tracking-widest uppercase mb-6 block text-lg md:text-2xl">

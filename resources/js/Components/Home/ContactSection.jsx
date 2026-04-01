@@ -40,14 +40,14 @@ export default function ContactSection() {
     };
 
     return (
-        <section id="contacto" className="relative min-h-[80vh] py-24 px-6 md:px-16 mx-auto">
-            <div className="relative z-10 mx-auto px-0 md:px-8">
+        <section id="contacto" className="relative min-h-screen py-24 px-6 md:px-16 mx-auto flex flex-col justify-center">
+            <div className="relative z-10 w-full">
                 {/* Heading y Formulario alineados arriba */}
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-stretch">
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 lg:gap-16 items-stretch">
                     {/* Título */}
-                    <div ref={infoRef} className="lg:col-span-5 flex flex-col justify-start">
-                        <div className="mb-16">
-                            <h1 className="text-5xl md:text-8xl lg:text-9xl font-black tracking-tighter uppercase leading-[0.85] text-left">
+                    <div ref={infoRef} className="md:col-span-5 flex flex-col justify-start">
+                        <div className="mb-8 lg:mb-16">
+                            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black tracking-tighter uppercase leading-[0.85] text-left">
                                 <span className="block text-white">PONETE EN</span>
                                 <span className="block text-[#8eff71] italic">CONTACTO</span>
                             </h1>
@@ -95,7 +95,7 @@ export default function ContactSection() {
                         </div>
                     </div>
                     {/* Formulario + Imagen */}
-                    <div ref={formRef} className="lg:col-span-7 flex flex-col">
+                    <div ref={formRef} className="md:col-span-7 flex flex-col">
                         <img
                             src="/images/contact-image.png"
                             alt="Contact Image"
