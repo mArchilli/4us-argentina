@@ -3,6 +3,7 @@ import { Head, Link, router } from '@inertiajs/react';
 import toast from 'react-hot-toast';
 import Navbar from '@/Components/Home/Navbar';
 import HomeFooter from '@/Components/Home/HomeFooter';
+import { emitCartChanged } from '@/utils/cartEvents';
 
 function CartItem({ item, onUpdate, onRemove }) {
     const decrease = () => {
@@ -92,6 +93,7 @@ export default function CartIndex({ auth, items = [], subtotal = 0 }) {
                 onSuccess: () => {
                     if (action === 'increase') toast.success('Cantidad aumentada.');
                     if (action === 'decrease') toast.success('Cantidad reducida.');
+                    emitCartChanged();
                 },
                 onError: () => toast.error('No se pudo actualizar la cantidad.'),
             }
@@ -102,7 +104,10 @@ export default function CartIndex({ auth, items = [], subtotal = 0 }) {
         router.delete(route('cart.remove'), {
             data: { product_id: productId },
             preserveScroll: true,
-            onSuccess: () => toast.success('Producto eliminado del carrito.'),
+            onSuccess: () => {
+                toast.success('Producto eliminado del carrito.');
+                emitCartChanged();
+            },
             onError: () => toast.error('No se pudo eliminar el producto.'),
         });
     };

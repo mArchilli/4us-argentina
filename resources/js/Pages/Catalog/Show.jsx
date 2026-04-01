@@ -3,6 +3,7 @@ import { Head, Link, router } from '@inertiajs/react';
 import toast from 'react-hot-toast';
 import Navbar from '@/Components/Home/Navbar';
 import HomeFooter from '@/Components/Home/HomeFooter';
+import { emitCartChanged } from '@/utils/cartEvents';
 
 /* ─────────────────────────── Small reusable card ─────────────────────── */
 function MiniProductCard({ product }) {
@@ -77,16 +78,42 @@ export default function CatalogShow({ auth, product, featured = [], onOffer = []
         product.media?.find((m) => m.is_primary) ?? product.media?.[0] ?? null
     );
 
-    const firstPrice = product.prices?.[0];
-    const hasMultiplePrices = product.prices?.length > 1;
+    const sortedPrices = [...(product.prices ?? [])].sort((a, b) => a.min_quantity - b.min_quantity);
+    const firstPrice = sortedPrices[0];
+    const hasMultiplePrices = sortedPrices.length > 1;
+    const [quantity, setQuantity] = useState(firstPrice?.min_quantity ?? 1);
+
+    const getTierForQuantity = (value) => {
+        if (!sortedPrices.length) return null;
+        return sortedPrices.reduce(
+            (selected, price) => (value >= price.min_quantity ? price : selected),
+            sortedPrices[0]
+        );
+    };
+
+    const activeTier = getTierForQuantity(quantity);
+    const unitPrice = activeTier ? Number(activeTier.price) : 0;
+    const totalPrice = unitPrice * quantity;
+
+    const handleQuantityChange = (value) => {
+        const parsed = Number(value);
+        if (Number.isNaN(parsed)) {
+            setQuantity(1);
+            return;
+        }
+        setQuantity(Math.max(1, Math.floor(parsed)));
+    };
 
     const handleAddToCart = () => {
         router.post(
             route('cart.add'),
-            { product_id: product.id, quantity: 1 },
+            { product_id: product.id, quantity },
             {
                 preserveScroll: true,
-                onSuccess: () => toast.success('Producto agregado al carrito.'),
+                onSuccess: () => {
+                    toast.success(`${quantity} unidad(es) agregadas al carrito.`);
+                    emitCartChanged();
+                },
                 onError: () => toast.error('No se pudo agregar el producto.'),
             }
         );
@@ -191,33 +218,41 @@ export default function CatalogShow({ auth, product, featured = [], onOffer = []
                             </h1>
 
                             {/* Price block */}
-                            {product.prices?.length > 0 && (
+                            {sortedPrices.length > 0 && (
                                 <div className="mb-6">
-                                    {hasMultiplePrices ? (
-                                        <div className="space-y-2">
-                                            {product.prices.map((price) => (
-                                                <div key={price.id} className="flex items-baseline gap-3">
-                                                    <span className="text-3xl font-black text-[#8eff71]">
-                                                        ${Number(price.price).toLocaleString('es-AR')} ARS
-                                                    </span>
-                                                    {price.min_quantity > 1 && (
-                                                        <span className="text-[#adaaaa] text-sm">
-                                                            × {price.min_quantity} unidades
-                                                        </span>
-                                                    )}
-                                                    {price.label && (
-                                                        <span className="text-xs text-[#adaaaa] uppercase tracking-wide">
-                                                            {price.label}
-                                                        </span>
-                                                    )}
-                                                </div>
-                                            ))}
+                                    <div className="space-y-4">
+                                        <div>
+                                            <p className="text-xs uppercase tracking-[0.18em] text-[#adaaaa] mb-1">Precio por unidad actual</p>
+                                            <span className="text-4xl font-black text-[#8eff71]">
+                                                ${unitPrice.toLocaleString('es-AR')} ARS
+                                            </span>
+                                            <p className="mt-1 text-[#adaaaa] text-sm">
+                                                Total: <span className="text-white font-semibold">${totalPrice.toLocaleString('es-AR')} ARS</span>
+                                            </p>
                                         </div>
-                                    ) : (
-                                        <span className="text-4xl font-black text-[#8eff71]">
-                                            ${Number(firstPrice.price).toLocaleString('es-AR')} ARS
-                                        </span>
-                                    )}
+
+                                        {hasMultiplePrices && (
+                                            <div className="flex flex-wrap gap-2">
+                                                {sortedPrices.map((price) => {
+                                                    const isActive = price.id === activeTier?.id;
+                                                    return (
+                                                        <button
+                                                            key={price.id}
+                                                            type="button"
+                                                            onClick={() => setQuantity(price.min_quantity)}
+                                                            className={`px-3 py-2 rounded-full text-xs font-bold uppercase tracking-wide transition-all ${
+                                                                isActive
+                                                                    ? 'bg-[#8eff71] text-[#0d6100]'
+                                                                    : 'bg-[#1a1a1a] text-[#adaaaa] border border-[#2a2a2a] hover:border-[#8eff71]/40 hover:text-white'
+                                                            }`}
+                                                        >
+                                                            {price.min_quantity}+ u · ${Number(price.price).toLocaleString('es-AR')} c/u
+                                                        </button>
+                                                    );
+                                                })}
+                                            </div>
+                                        )}
+                                    </div>
 
                                     {product.offer_active && product.offer_price && (
                                         <div className="mt-2 flex items-center gap-3">
@@ -242,13 +277,43 @@ export default function CatalogShow({ auth, product, featured = [], onOffer = []
                             {/* Divider */}
                             <div className="border-t border-[#1f2020] mb-8" />
 
+                            <div className="mb-5">
+                                <p className="text-xs uppercase tracking-[0.18em] text-[#adaaaa] mb-2">Cantidad</p>
+                                <div className="inline-flex items-center bg-[#131313] border border-[#2a2a2a] rounded-full overflow-hidden">
+                                    <button
+                                        type="button"
+                                        onClick={() => handleQuantityChange(quantity - 1)}
+                                        className="w-11 h-11 flex items-center justify-center text-white hover:bg-[#1f2020] transition-colors"
+                                        aria-label="Disminuir cantidad"
+                                    >
+                                        <span className="material-symbols-outlined">remove</span>
+                                    </button>
+                                    <input
+                                        type="number"
+                                        min="1"
+                                        value={quantity}
+                                        onChange={(e) => handleQuantityChange(e.target.value)}
+                                        className="w-20 bg-transparent text-center text-white font-bold outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => handleQuantityChange(quantity + 1)}
+                                        className="w-11 h-11 flex items-center justify-center text-white hover:bg-[#1f2020] transition-colors"
+                                        aria-label="Aumentar cantidad"
+                                    >
+                                        <span className="material-symbols-outlined">add</span>
+                                    </button>
+                                </div>
+                            </div>
+
                             {/* CTA */}
                             <button
                                 onClick={handleAddToCart}
+                                disabled={!sortedPrices.length}
                                 className="flex items-center justify-center gap-3 w-full bg-[#8eff71] text-[#0d6100] py-4 rounded-full font-black uppercase tracking-widest hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(142,255,113,0.4)] transition-all text-base"
                             >
                                 <span className="material-symbols-outlined">add_shopping_cart</span>
-                                Agregar al carrito
+                                Agregar {quantity} al carrito
                             </button>
 
                             <a

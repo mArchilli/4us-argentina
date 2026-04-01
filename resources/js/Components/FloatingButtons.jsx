@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Link, router } from '@inertiajs/react';
+import { subscribeCartChanged } from '@/utils/cartEvents';
 
 export default function FloatingButtons() {
     const [cartCount, setCartCount] = useState(0);
@@ -18,7 +19,14 @@ export default function FloatingButtons() {
             fetchCartCount();
         });
 
-        return () => removeListener();
+        const unsubscribe = subscribeCartChanged(() => {
+            fetchCartCount();
+        });
+
+        return () => {
+            removeListener();
+            unsubscribe();
+        };
     }, [fetchCartCount]);
 
     return (

@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Link, usePage, router } from '@inertiajs/react';
+import { subscribeCartChanged } from '@/utils/cartEvents';
 
 const navLinks = [
     { label: 'INICIO', id: 'inicio', href: '/' },
@@ -23,7 +24,11 @@ export default function Navbar({ auth, hidden = false }) {
     useEffect(() => {
         fetchCartCount();
         const removeListener = router.on('navigate', () => fetchCartCount());
-        return () => removeListener();
+        const unsubscribe = subscribeCartChanged(() => fetchCartCount());
+        return () => {
+            removeListener();
+            unsubscribe();
+        };
     }, [fetchCartCount]);
     const currentPath = url.split('?')[0];
     const isHomePage = currentPath === '/';

@@ -114,16 +114,20 @@ class CartController extends Controller
                 continue;
             }
 
-            $price = $product->prices->sortBy('min_quantity')->first();
-            $unitPrice = $price ? (float) $price->price : 0;
+            $quantity = (int) $entry['quantity'];
+            $prices = $product->prices->sortBy('min_quantity')->values();
+            $selectedPrice = $prices
+                ->filter(fn ($price) => (int) $price->min_quantity <= $quantity)
+                ->last() ?? $prices->first();
+            $unitPrice = $selectedPrice ? (float) $selectedPrice->price : 0;
 
             $items[] = [
                 'product_id'  => $product->id,
                 'title'       => $product->title,
                 'image'       => $product->primaryMedia?->url,
                 'unit_price'  => $unitPrice,
-                'quantity'    => $entry['quantity'],
-                'line_total'  => $unitPrice * $entry['quantity'],
+                'quantity'    => $quantity,
+                'line_total'  => $unitPrice * $quantity,
             ];
         }
 

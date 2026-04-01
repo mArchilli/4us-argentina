@@ -3,6 +3,7 @@ import { Head, Link, useForm } from '@inertiajs/react';
 import toast from 'react-hot-toast';
 import Navbar from '@/Components/Home/Navbar';
 import HomeFooter from '@/Components/Home/HomeFooter';
+import { emitCartChanged } from '@/utils/cartEvents';
 
 const PROVINCES = [
     'Buenos Aires', 'CABA', 'Catamarca', 'Chaco', 'Chubut', 'Córdoba',
@@ -187,6 +188,8 @@ export default function CheckoutIndex({ auth, items = [], subtotal = 0 }) {
             if (!response.ok) {
                 throw new Error('No se pudo vaciar el carrito.');
             }
+
+            emitCartChanged();
 
             const message = buildWhatsAppMessage();
             const waUrl = `https://wa.me/5491169659907?text=${encodeURIComponent(message)}`;

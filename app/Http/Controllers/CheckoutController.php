@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -12,7 +13,7 @@ use Inertia\Response;
 
 class CheckoutController extends Controller
 {
-    public function index(): Response
+    public function index(): Response|RedirectResponse
     {
         $cart = session()->get('cart', []);
 
@@ -109,16 +110,20 @@ class CheckoutController extends Controller
                 continue;
             }
 
-            $price = $product->prices->sortBy('min_quantity')->first();
-            $unitPrice = $price ? (float) $price->price : 0;
+            $quantity = (int) $entry['quantity'];
+            $prices = $product->prices->sortBy('min_quantity')->values();
+            $selectedPrice = $prices
+                ->filter(fn ($price) => (int) $price->min_quantity <= $quantity)
+                ->last() ?? $prices->first();
+            $unitPrice = $selectedPrice ? (float) $selectedPrice->price : 0;
 
             $items[] = [
                 'product_id'  => $product->id,
                 'title'       => $product->title,
                 'image'       => $product->primaryMedia?->url,
                 'unit_price'  => $unitPrice,
-                'quantity'    => $entry['quantity'],
-                'line_total'  => $unitPrice * $entry['quantity'],
+                'quantity'    => $quantity,
+                'line_total'  => $unitPrice * $quantity,
             ];
         }
 

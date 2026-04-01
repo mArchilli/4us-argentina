@@ -1,8 +1,10 @@
 import { useRef, useEffect, useState } from 'react';
 import { Head, Link, router } from '@inertiajs/react';
+import toast from 'react-hot-toast';
 import Navbar from '@/Components/Home/Navbar';
 import HomeFooter from '@/Components/Home/HomeFooter';
 import SecondaryButton from '@/Components/SecondaryButton';
+import { emitCartChanged } from '@/utils/cartEvents';
 
 function CategoryBadge({ name }) {
     return (
@@ -14,12 +16,52 @@ function CategoryBadge({ name }) {
 
 function ProductCard({ product }) {
     const image = product.primary_media?.url ?? null;
+    const sortedPrices = [...(product.prices ?? [])].sort((a, b) => (a.min_quantity || 1) - (b.min_quantity || 1));
+    const initialQuantity = sortedPrices[0]?.min_quantity ?? 1;
+    const [quantity, setQuantity] = useState(initialQuantity);
+
+    const getTierForQuantity = (value) => {
+        if (!sortedPrices.length) return null;
+        return sortedPrices.reduce(
+            (selected, price) => (value >= (price.min_quantity || 1) ? price : selected),
+            sortedPrices[0]
+        );
+    };
+
+    const activeTier = getTierForQuantity(quantity);
+    const unitPrice = activeTier ? Number(activeTier.price) : 0;
+    const totalPrice = unitPrice * quantity;
+    const baseUnitPrice = sortedPrices[0] ? Number(sortedPrices[0].price) : 0;
+    const savingsPerUnit = Math.max(0, baseUnitPrice - unitPrice);
+    const savingsTotal = savingsPerUnit * quantity;
+    const savingsPercent = baseUnitPrice > 0 ? Math.round((savingsPerUnit / baseUnitPrice) * 100) : 0;
+
+    const handleQuantityChange = (value) => {
+        const parsed = Number(value);
+        if (Number.isNaN(parsed)) {
+            setQuantity(1);
+            return;
+        }
+        setQuantity(Math.max(1, Math.floor(parsed)));
+    };
+
+    const handleAddToCart = () => {
+        router.post(
+            route('cart.add'),
+            { product_id: product.id, quantity },
+            {
+                preserveScroll: true,
+                onSuccess: () => {
+                    toast.success(`${quantity} unidad(es) agregadas al carrito.`);
+                    emitCartChanged();
+                },
+                onError: () => toast.error('No se pudo agregar el producto.'),
+            }
+        );
+    };
 
     return (
-        <Link
-            href={route('catalog.show', product.id)}
-            className="group relative flex flex-col h-full bg-[#131313] rounded-[1.6rem] overflow-hidden hover:scale-[1.02] transition-all duration-500 shadow-xl"
-        >
+        <article className="group relative flex flex-col h-full bg-[#131313] rounded-[1.6rem] overflow-hidden hover:scale-[1.02] transition-all duration-500 shadow-xl">
             <div className="aspect-[4/5] overflow-hidden relative">
                 {image ? (
                     <img
@@ -66,20 +108,20 @@ function ProductCard({ product }) {
                     </div>
 
                     <div className="text-right flex-shrink-0">
-                        {product.prices?.length > 0 ? (
-                            product.prices
-                                .slice()
-                                .sort((a, b) => (a.min_quantity || 1) - (b.min_quantity || 1))
-                                .map((price, i) => (
-                                    <div key={i} className="flex flex-col items-end">
-                                        <span className="text-[#8eff71] font-black text-lg md:text-xl">
-                                            ${Number(price.price).toLocaleString('es-AR')}
-                                        </span>
-                                        {price.min_quantity > 1 && (
-                                            <span className="text-[#adaaaa] text-xs">x{price.min_quantity}</span>
-                                        )}
-                                    </div>
-                                ))
+                        {sortedPrices.length > 0 ? (
+                            <>
+                                <span className="text-[#8eff71] font-black text-lg md:text-xl">
+                                    ${unitPrice.toLocaleString('es-AR')}
+                                </span>
+                                <p className="text-[#adaaaa] text-xs text-right">
+                                    Total: ${totalPrice.toLocaleString('es-AR')}
+                                </p>
+                                {savingsTotal > 0 && (
+                                    <p className="text-[#8eff71] text-[10px] font-bold text-right uppercase tracking-wide">
+                                        Ahorras ${savingsTotal.toLocaleString('es-AR')} ({savingsPercent}%)
+                                    </p>
+                                )}
+                            </>
                         ) : (
                             <div className="text-[#adaaaa] text-sm">Consultar</div>
                         )}
@@ -94,14 +136,75 @@ function ProductCard({ product }) {
 
                 {/* secondary categories already shown above, no duplicate needed */}
 
-                <div className="mt-6">
-                    <div className="w-full bg-[#8eff71]/10 border border-[#8eff71]/20 text-[#8eff71] py-3 rounded-full font-black uppercase tracking-tighter flex items-center justify-center gap-2 group-hover:bg-[#8eff71] group-hover:text-[#0d6100] transition-all duration-300 text-sm">
-                        <span className="material-symbols-outlined text-base">shopping_cart</span>
-                        Ver producto
+                {sortedPrices.length > 1 && (
+                    <div className="mt-3 flex flex-wrap gap-1.5">
+                        {sortedPrices.map((price) => (
+                            <button
+                                key={price.id}
+                                type="button"
+                                onClick={() => setQuantity(price.min_quantity || 1)}
+                                className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide transition-all ${
+                                    activeTier?.id === price.id
+                                        ? 'bg-[#8eff71] text-[#0d6100]'
+                                        : 'bg-[#1a1a1a] text-[#adaaaa] border border-[#2a2a2a] hover:border-[#8eff71]/40 hover:text-white'
+                                }`}
+                            >
+                                {price.min_quantity}+ u
+                            </button>
+                        ))}
                     </div>
+                )}
+
+                <div className="mt-4 inline-flex items-center bg-[#0e0e0e] border border-[#2a2a2a] rounded-full overflow-hidden w-fit">
+                    <button
+                        type="button"
+                        onClick={() => handleQuantityChange(quantity - 1)}
+                        className="w-8 h-8 flex items-center justify-center text-white hover:bg-[#1f2020] transition-colors"
+                        aria-label="Disminuir cantidad"
+                    >
+                        <span className="material-symbols-outlined text-base">remove</span>
+                    </button>
+                    <input
+                        type="number"
+                        min="1"
+                        value={quantity}
+                        onChange={(e) => handleQuantityChange(e.target.value)}
+                        className="w-14 bg-transparent text-center text-white text-sm font-bold outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                    />
+                    <button
+                        type="button"
+                        onClick={() => handleQuantityChange(quantity + 1)}
+                        className="w-8 h-8 flex items-center justify-center text-white hover:bg-[#1f2020] transition-colors"
+                        aria-label="Aumentar cantidad"
+                    >
+                        <span className="material-symbols-outlined text-base">add</span>
+                    </button>
                 </div>
+
+                <div className="mt-4 grid grid-cols-2 gap-2">
+                    <button
+                        type="button"
+                        onClick={handleAddToCart}
+                        className="w-full bg-[#8eff71] text-[#0d6100] py-2.5 rounded-full font-black uppercase tracking-tighter flex items-center justify-center gap-1.5 transition-all duration-300 text-xs hover:shadow-[0_0_20px_rgba(142,255,113,0.35)]"
+                    >
+                        <span className="material-symbols-outlined text-sm">add_shopping_cart</span>
+                        Agregar
+                    </button>
+                    <Link
+                        href={route('catalog.show', product.id)}
+                        className="w-full bg-[#8eff71]/10 border border-[#8eff71]/20 text-[#8eff71] py-2.5 rounded-full font-black uppercase tracking-tighter flex items-center justify-center gap-1.5 group-hover:bg-[#8eff71] group-hover:text-[#0d6100] transition-all duration-300 text-xs"
+                    >
+                        Ver
+                    </Link>
+                </div>
+
+                {activeTier?.label && (
+                    <div className="mt-2 text-[#adaaaa] text-[10px] uppercase tracking-wider font-semibold">
+                        Tramo activo: {activeTier.label}
+                    </div>
+                )}
             </div>
-        </Link>
+        </article>
     );
 }
 
