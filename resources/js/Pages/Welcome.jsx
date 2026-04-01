@@ -17,15 +17,19 @@ export default function Welcome({ auth, featuredProducts }) {
         const el = footerRef.current;
         if (!el) return;
         const observer = new IntersectionObserver(
-            ([entry]) => setFooterVisible(entry.intersectionRatio >= 0.8),
-            { threshold: [0, 0.8] }
+            ([entry]) => {
+                const isVisible = entry.isIntersecting && entry.intersectionRatio >= 0.8;
+                setFooterVisible((prev) => (prev === isVisible ? prev : isVisible));
+            },
+            { threshold: 0.8 }
         );
         observer.observe(el);
-        return () => observer.unobserve(el);
+        return () => observer.disconnect();
     }, []);
 
     const scrollToTop = () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
     };
 
     return (

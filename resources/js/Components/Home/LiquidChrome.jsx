@@ -8,6 +8,8 @@ export const LiquidChrome = ({
   frequencyX = 3,
   frequencyY = 2,
   interactive = true,
+  quality = 'auto',
+  maxFps = 60,
   ...props
 }) => {
   const containerRef = useRef(null);
@@ -16,6 +18,19 @@ export const LiquidChrome = ({
     if (!containerRef.current) return;
 
     const container = containerRef.current;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isSmallScreen = window.matchMedia('(max-width: 900px)').matches;
+    const isLowPower = prefersReducedMotion || isSmallScreen;
+
+    let renderScale = 1;
+    if (quality === 'low') renderScale = 0.55;
+    if (quality === 'medium') renderScale = 0.75;
+    if (quality === 'high') renderScale = 1;
+    if (quality === 'auto') renderScale = isLowPower ? 0.62 : 1;
+
+    const targetFps = isLowPower ? Math.min(30, maxFps) : maxFps;
+    const effectiveInteractive = interactive && !isLowPower;
+
     const renderer = new Renderer({ antialias: true });
     const gl = renderer.gl;
     gl.clearColor(1, 1, 1, 1);
@@ -93,8 +108,7 @@ export const LiquidChrome = ({
     const mesh = new Mesh(gl, { geometry, program });
 
     function resize() {
-      const scale = 1;
-      renderer.setSize(container.offsetWidth * scale, container.offsetHeight * scale);
+      renderer.setSize(container.offsetWidth * renderScale, container.offsetHeight * renderScale);
       const resUniform = program.uniforms.uResolution.value;
       resUniform[0] = gl.canvas.width;
       resUniform[1] = gl.canvas.height;
@@ -124,14 +138,19 @@ export const LiquidChrome = ({
       }
     }
 
-    if (interactive) {
+    if (effectiveInteractive) {
       container.addEventListener('mousemove', handleMouseMove);
       container.addEventListener('touchmove', handleTouchMove);
     }
 
     let animationId;
+    let lastFrameTime = 0;
+    const frameDuration = 1000 / Math.max(1, targetFps);
+
     function update(t) {
       animationId = requestAnimationFrame(update);
+      if (t - lastFrameTime < frameDuration) return;
+      lastFrameTime = t;
       program.uniforms.uTime.value = t * 0.001 * speed;
       renderer.render({ scene: mesh });
     }
@@ -142,7 +161,7 @@ export const LiquidChrome = ({
     return () => {
       cancelAnimationFrame(animationId);
       window.removeEventListener('resize', resize);
-      if (interactive) {
+      if (effectiveInteractive) {
         container.removeEventListener('mousemove', handleMouseMove);
         container.removeEventListener('touchmove', handleTouchMove);
       }
