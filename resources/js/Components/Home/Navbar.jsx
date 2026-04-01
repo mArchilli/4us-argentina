@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { Link, usePage } from '@inertiajs/react';
+import { useState, useEffect, useCallback } from 'react';
+import { Link, usePage, router } from '@inertiajs/react';
 
 const navLinks = [
     { label: 'INICIO', id: 'inicio', href: '/' },
@@ -11,6 +11,20 @@ export default function Navbar({ auth, hidden = false }) {
     const { url } = usePage();
     const [menuOpen, setMenuOpen] = useState(false);
     const [activeSection, setActiveSection] = useState('inicio');
+    const [cartCount, setCartCount] = useState(0);
+
+    const fetchCartCount = useCallback(() => {
+        fetch('/carrito/count')
+            .then((res) => res.json())
+            .then((data) => setCartCount(data.count ?? 0))
+            .catch(() => {});
+    }, []);
+
+    useEffect(() => {
+        fetchCartCount();
+        const removeListener = router.on('navigate', () => fetchCartCount());
+        return () => removeListener();
+    }, [fetchCartCount]);
     const currentPath = url.split('?')[0];
     const isHomePage = currentPath === '/';
     const isCatalogPage = currentPath.startsWith('/catalogo');
@@ -145,10 +159,15 @@ export default function Navbar({ auth, hidden = false }) {
 
                     <Link
                         href="/carrito"
-                        className="relative w-10 h-10 rounded-full bg-[#1f2020] border border-[#484848]/40 flex items-center justify-center text-[#adaaaa] hover:text-[#8eff71] hover:border-[#8eff71]/40 transition-all"
+                        className="relative w-11 h-11 rounded-[0.7rem] flex items-center justify-center hover:border-[#8eff71]/40 hover:shadow-[0_0_20px_rgba(142,255,113,0.1)] transition-all duration-300 group"
                         aria-label="Carrito"
                     >
-                        <span className="material-symbols-outlined text-xl">shopping_cart</span>
+                        <span className="material-symbols-outlined text-[22px] text-[#8eff71] group-hover:text-[#8eff71] transition-colors duration-300">shopping_cart</span>
+                        {cartCount > 0 && (
+                            <span className="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] px-0.5 flex items-center justify-center rounded-full bg-[#c9a84c] text-white text-[10px] font-bold leading-none shadow-[0_2px_8px_rgba(201,168,76,0.4)]">
+                                {cartCount > 99 ? '99+' : cartCount}
+                            </span>
+                        )}
                     </Link>
 
                     {/* Hamburger — mobile only */}
