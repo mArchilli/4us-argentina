@@ -228,7 +228,7 @@ export default function CatalogIndex({ auth, products = [], categories = [], act
     };
 
     const handleCategory = (slug) => {
-        router.get(route('catalog.index'), slug ? { categoria: slug } : {}, { preserveScroll: false });
+        router.get(route('catalog.index'), slug ? { categoria: slug } : {}, { preserveScroll: true });
     };
 
     return (
