@@ -103,8 +103,8 @@ export default function AuthenticatedLayout({ header, children }) {
         <div className="flex flex-col h-full">
             <div className={`flex items-center px-3 py-5 ${collapsed ? 'justify-center' : 'justify-between'}`}>
                 {!collapsed && (
-                    <Link href={route('dashboard')} className="text-lg font-black text-[#8eff71] tracking-tighter font-['Space_Grotesk'] leading-none">
-                        4us Argentina
+                    <Link href={route('dashboard')} className="text-lg italic font-black text-[#8eff71] tracking-tighter font-['Space_Grotesk'] leading-none">
+                        4US ARGENTINA
                     </Link>
                 )}
                 <button
@@ -203,7 +203,7 @@ export default function AuthenticatedLayout({ header, children }) {
                     </span>
 
                     {header && (
-                        <div className="hidden md:block text-white font-semibold text-lg">
+                        <div className="hidden text-white font-semibold text-lg">
                             {header}
                         </div>
                     )}
