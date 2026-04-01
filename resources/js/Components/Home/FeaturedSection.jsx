@@ -288,7 +288,7 @@ export default function FeaturedSection({ products = [] }) {
     if (productCount === 0) return null;
 
     return (
-        <section id="catalogo" className="py-20 md:py-22 px-6 md:px-16">
+        <section id="catalogo" className="py-20 md:py-22 px-6 md:px-16 min-h-screen flex flex-col justify-center">
             <div ref={headerRef} className="flex justify-between items-end mb-12 md:mb-14">
                 <h2 className="text-4xl md:text-7xl font-bold tracking-tight">
                     LANZAMIENTOS <br />

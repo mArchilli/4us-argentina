@@ -4,23 +4,29 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
+// drop-shadow es la operación más costosa — recalcular cada N frames
+const SHADOW_THROTTLE = 2;
+
 export default function Logo3D({ src, alt, className = '' }) {
     const containerRef = useRef(null);
     const imgRef = useRef(null);
     const rafRef = useRef(null);
-    const autoRotateRef = useRef(null);
     const isHoveringRef = useRef(false);
     const isReturningRef = useRef(false);
     const leaveTweenRef = useRef(null);
     const entranceTlRef = useRef(null);
     const entranceDoneRef = useRef(false);
     const scrollTriggeredRef = useRef(false);
+    const isVisibleRef = useRef(true);
+    // Cache para evitar getBoundingClientRect en cada mousemove (forced layout)
+    const cachedRectRef = useRef(null);
+    // Throttle de frames para sombra + cache de último filter aplicado
+    const frameCountRef = useRef(0);
+    const lastFilterRef = useRef('');
     // currentRef drives the actual rendering — GSAP tweens this during entrance, lerp drives it after
     const currentRef = useRef({ rotateX: 15, rotateY: -90, scale: 0.4, translateY: 0, opacity: 0, blur: 12 });
     const targetRef = useRef({ rotateX: 0, rotateY: 0, scale: 1, translateY: 0 });
     const [loaded, setLoaded] = useState(false);
-
-    const lerp = (start, end, factor) => start + (end - start) * factor;
 
     // --- Cinematic entrance on scroll into view ---
     useEffect(() => {
@@ -73,85 +79,126 @@ export default function Logo3D({ src, alt, className = '' }) {
         };
     }, [loaded]);
 
-    // --- Single render loop — always active ---
-    const updateTransform = useCallback(() => {
+    // --- Pausa off-screen: cero CPU cuando el elemento no es visible ---
+    useEffect(() => {
+        const container = containerRef.current;
+        if (!container) return;
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                const wasVisible = isVisibleRef.current;
+                isVisibleRef.current = entry.isIntersecting;
+                // Re-arrancar el loop si vuelve a ser visible
+                if (!wasVisible && entry.isIntersecting && !rafRef.current) {
+                    rafRef.current = requestAnimationFrame(tick);
+                }
+            },
+            { threshold: 0 },
+        );
+        observer.observe(container);
+        return () => observer.disconnect();
+    }, []);
+
+    // --- Loop unificado: idle + lerp + render en un solo rAF callback ---
+    const tick = useCallback((timestamp) => {
+        // Pausa completa cuando está fuera del viewport
+        if (!isVisibleRef.current) {
+            rafRef.current = null;
+            return;
+        }
+
         const current = currentRef.current;
         const target = targetRef.current;
         const img = imgRef.current;
 
-        // After entrance completes, lerp current toward target (idle/mouse)
-        if (entranceDoneRef.current) {
-            const smoothing = isHoveringRef.current ? 0.07 : 0.03;
-            current.rotateX = lerp(current.rotateX, target.rotateX, smoothing);
-            current.rotateY = lerp(current.rotateY, target.rotateY, smoothing);
-            current.scale = lerp(current.scale, target.scale, smoothing);
-            current.translateY = lerp(current.translateY, target.translateY, smoothing);
+        // Organic idle floating (antes era un rAF separado)
+        if (!isHoveringRef.current && !isReturningRef.current && entranceDoneRef.current) {
+            const t = timestamp * 0.001; // ms → s sin Date.now()
+            // Más amplitud y tilt para levitación más notoria
+            target.rotateY    = Math.sin(t * 0.32) * 13 + Math.sin(t * 0.71 + 1.3) * 5;
+            target.rotateX    = Math.sin(t * 0.23) * 5  + Math.cos(t * 0.51 + 0.7) * 2.5;
+            target.translateY = Math.sin(t * 0.28) * 18  + Math.sin(t * 0.59 + 2.0) * 7;
+            // Pulso de escala sutil
+            target.scale      = 1 + Math.sin(t * 0.25) * 0.018 + Math.sin(t * 0.51) * 0.008;
         }
 
+        // Lerp current → target después de la entrance
+        if (entranceDoneRef.current) {
+            const f = isHoveringRef.current ? 0.07 : 0.03;
+            current.rotateX    += (target.rotateX - current.rotateX) * f;
+            current.rotateY    += (target.rotateY - current.rotateY) * f;
+            current.scale      += (target.scale - current.scale) * f;
+            current.translateY += (target.translateY - current.translateY) * f;
+        }
+
+        // --- DOM write (batched en un solo frame) ---
         if (img) {
             const { rotateX, rotateY, scale, translateY, opacity, blur } = current;
-            img.style.opacity = opacity;
-            img.style.transform = `perspective(1000px) translateY(${translateY}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(${scale})`;
 
+            // Opacity: solo escribir durante entrance (evita writes redundantes post-entrance)
+            if (opacity < 1) {
+                img.style.opacity = opacity;
+            }
+
+            // Transform: siempre necesario
+            img.style.transform = `perspective(1000px) translateY(${translateY.toFixed(2)}px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) scale(${scale.toFixed(4)})`;
+
+            // Filter: throttle del cálculo de drop-shadow (operación GPU más costosa)
             if (blur > 0.1) {
-                img.style.filter = `blur(${blur}px)`;
+                const f = `blur(${blur.toFixed(1)}px)`;
+                img.style.filter = f;
+                lastFilterRef.current = '';
             } else {
-                // Sombra más pronunciada cuando no hay hover
-                const levitating = !isHoveringRef.current && !isReturningRef.current && entranceDoneRef.current;
-                const shadowStrength = levitating ? 0.55 : 0.35;
-                const shadowY = levitating ? rotateX * 2.2 + 22 : rotateX * 1.2 + 8;
-                const sx = -rotateY * 1.2;
-                img.style.filter = `drop-shadow(${sx}px ${shadowY}px 38px rgba(0,0,0,${shadowStrength})) drop-shadow(${sx * 0.3}px ${shadowY * 0.3}px 70px rgba(0,0,0,0.18))`;
+                frameCountRef.current++;
+                if (frameCountRef.current % SHADOW_THROTTLE === 0 || lastFilterRef.current === '') {
+                    // Sombra más pronunciada cuando no hay hover
+                    const levitating = !isHoveringRef.current && !isReturningRef.current && entranceDoneRef.current;
+                    const shadowStrength = levitating ? 0.55 : 0.35;
+                    const shadowY = levitating ? rotateX * 2.2 + 22 : rotateX * 1.2 + 8;
+                    const sx = -rotateY * 1.2;
+                    const filter = `drop-shadow(${sx.toFixed(1)}px ${shadowY.toFixed(1)}px 38px rgba(0,0,0,${shadowStrength})) drop-shadow(${(sx * 0.3).toFixed(1)}px ${(shadowY * 0.3).toFixed(1)}px 70px rgba(0,0,0,0.18))`;
+                    // Solo escribe al DOM si el string cambió
+                    if (filter !== lastFilterRef.current) {
+                        img.style.filter = filter;
+                        lastFilterRef.current = filter;
+                    }
+                }
             }
         }
 
-        rafRef.current = requestAnimationFrame(updateTransform);
+        rafRef.current = requestAnimationFrame(tick);
     }, []);
 
-    // --- Organic idle floating ---
+    // Arrancar render loop
     useEffect(() => {
-        let startTime = Date.now();
-
-        const autoRotate = () => {
-            if (!isHoveringRef.current && !isReturningRef.current && entranceDoneRef.current) {
-                const t = (Date.now() - startTime) / 1000;
-                // Más amplitud y tilt para levitación más notoria
-                targetRef.current.rotateY = Math.sin(t * 0.32) * 13 + Math.sin(t * 0.71 + 1.3) * 5;
-                targetRef.current.rotateX = Math.sin(t * 0.23) * 5 + Math.cos(t * 0.51 + 0.7) * 2.5;
-                targetRef.current.translateY = Math.sin(t * 0.28) * 18 + Math.sin(t * 0.59 + 2.0) * 7;
-                // Pulso de escala sutil
-                targetRef.current.scale = 1 + Math.sin(t * 0.25) * 0.018 + Math.sin(t * 0.51) * 0.008;
+        rafRef.current = requestAnimationFrame(tick);
+        return () => {
+            if (rafRef.current) {
+                cancelAnimationFrame(rafRef.current);
+                rafRef.current = null;
             }
-            autoRotateRef.current = requestAnimationFrame(autoRotate);
         };
-
-        autoRotate();
-        return () => {
-            if (autoRotateRef.current) cancelAnimationFrame(autoRotateRef.current);
-        };
-    }, []);
-
-    // Start render loop
-    useEffect(() => {
-        rafRef.current = requestAnimationFrame(updateTransform);
-        return () => {
-            if (rafRef.current) cancelAnimationFrame(rafRef.current);
-        };
-    }, [updateTransform]);
+    }, [tick]);
 
     // --- Mouse interaction ---
     useEffect(() => {
         const container = containerRef.current;
         if (!container) return;
 
+        // Refrescar rect cacheado (evita forced layout en mousemove)
+        const refreshRect = () => {
+            cachedRectRef.current = container.getBoundingClientRect();
+        };
+
         const handleMouseMove = (e) => {
             if (!entranceDoneRef.current) return;
-            const rect = container.getBoundingClientRect();
-            const centerX = rect.left + rect.width / 2;
-            const centerY = rect.top + rect.height / 2;
+            const rect = cachedRectRef.current;
+            if (!rect) return;
 
-            const normalX = Math.max(-1, Math.min(1, (e.clientX - centerX) / (rect.width / 2)));
-            const normalY = Math.max(-1, Math.min(1, (e.clientY - centerY) / (rect.height / 2)));
+            const halfW = rect.width * 0.5;
+            const halfH = rect.height * 0.5;
+            const normalX = Math.max(-1, Math.min(1, (e.clientX - rect.left - halfW) / halfW));
+            const normalY = Math.max(-1, Math.min(1, (e.clientY - rect.top - halfH) / halfH));
 
             targetRef.current.rotateY = normalX * 22;
             targetRef.current.rotateX = -normalY * 14;
@@ -160,6 +207,8 @@ export default function Logo3D({ src, alt, className = '' }) {
         };
 
         const handleMouseEnter = () => {
+            // Refrescar rect al iniciar hover (cubre resize/scroll previos)
+            refreshRect();
             // Kill any ongoing leave tween
             if (leaveTweenRef.current) {
                 leaveTweenRef.current.kill();
@@ -198,14 +247,17 @@ export default function Logo3D({ src, alt, className = '' }) {
             });
         };
 
-        container.addEventListener('mousemove', handleMouseMove);
+        // Passive en mousemove para no bloquear compositing del browser
+        container.addEventListener('mousemove', handleMouseMove, { passive: true });
         container.addEventListener('mouseenter', handleMouseEnter);
         container.addEventListener('mouseleave', handleMouseLeave);
+        window.addEventListener('resize', refreshRect, { passive: true });
 
         return () => {
             container.removeEventListener('mousemove', handleMouseMove);
             container.removeEventListener('mouseenter', handleMouseEnter);
             container.removeEventListener('mouseleave', handleMouseLeave);
+            window.removeEventListener('resize', refreshRect);
         };
     }, []);
 
