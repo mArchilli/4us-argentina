@@ -88,9 +88,10 @@ class CartController extends Controller
     public function count()
     {
         $cart = session()->get('cart', []);
+        $items = $this->resolveCartItems($cart);
 
         return response()->json([
-            'count' => collect($cart)->sum('quantity'),
+            'count' => collect($items)->sum('quantity'),
         ]);
     }
 
