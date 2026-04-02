@@ -45,19 +45,25 @@ export default function FloatingButtons() {
 
     useEffect(() => {
         const handleScroll = () => {
+            const isMobile = window.innerWidth < 768;
+            if (isMobile) { setAtBottom(false); return; }
             const distanceFromBottom = document.documentElement.scrollHeight - window.scrollY - window.innerHeight;
             setAtBottom(distanceFromBottom < 80);
         };
         window.addEventListener('scroll', handleScroll, { passive: true });
+        window.addEventListener('resize', handleScroll, { passive: true });
         handleScroll();
-        return () => window.removeEventListener('scroll', handleScroll);
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+            window.removeEventListener('resize', handleScroll);
+        };
     }, []);
 
     if (isAdmin) return null;
 
     return (
         <div
-            className={`fixed right-6 z-50 flex items-center gap-3 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${atBottom ? 'flex-row-reverse' : 'flex-col'}`}
+            className="fixed right-6 z-50 flex flex-col items-center gap-3 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
             style={{ bottom: atBottom ? '6rem' : '1.5rem' }}
         >
             {/* Cart Button */}
