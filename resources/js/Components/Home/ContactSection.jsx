@@ -1,7 +1,4 @@
 import { useState, useRef, useEffect } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-gsap.registerPlugin(ScrollTrigger);
 
 export default function ContactSection() {
     const [form, setForm] = useState({ name: '', email: '', message: '' });
@@ -9,23 +6,22 @@ export default function ContactSection() {
     const formRef = useRef(null);
 
     useEffect(() => {
-        const ctx = gsap.context(() => {
-            gsap.fromTo(infoRef.current,
-                { x: -40, opacity: 0 },
-                {
-                    x: 0, opacity: 1, duration: 1, ease: 'power3.out',
-                    scrollTrigger: { trigger: infoRef.current, start: 'top 85%', once: true },
-                }
-            );
-            gsap.fromTo(formRef.current,
-                { x: 40, opacity: 0 },
-                {
-                    x: 0, opacity: 1, duration: 1, ease: 'power3.out',
-                    scrollTrigger: { trigger: formRef.current, start: 'top 85%', once: true },
-                }
-            );
-        });
-        return () => ctx.revert();
+        const elements = [infoRef.current, formRef.current].filter(Boolean);
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate-in');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            },
+            { threshold: 0.15 }
+        );
+
+        elements.forEach((el) => observer.observe(el));
+        return () => observer.disconnect();
     }, []);
 
     const handleChange = (e) => {
@@ -45,7 +41,7 @@ export default function ContactSection() {
                 {/* Heading y Formulario alineados arriba */}
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 lg:gap-16 items-stretch">
                     {/* Título */}
-                    <div ref={infoRef} className="md:col-span-5 flex flex-col justify-start">
+                    <div ref={infoRef} className="md:col-span-5 flex flex-col justify-start opacity-0 -translate-x-8 transition-all duration-700 ease-out [&.animate-in]:opacity-100 [&.animate-in]:translate-x-0">
                         <div className="mb-8 lg:mb-16">
                             <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black tracking-tighter uppercase leading-[0.85] text-left">
                                 <span className="block text-white">PONETE EN</span>
@@ -95,7 +91,7 @@ export default function ContactSection() {
                         </div>
                     </div>
                     {/* Formulario + Imagen */}
-                    <div ref={formRef} className="md:col-span-7 flex flex-col">
+                    <div ref={formRef} className="md:col-span-7 flex flex-col opacity-0 translate-x-8 transition-all duration-700 ease-out delay-150 [&.animate-in]:opacity-100 [&.animate-in]:translate-x-0">
                         <img
                             src="/images/contact-image.png"
                             alt="Contact Image"

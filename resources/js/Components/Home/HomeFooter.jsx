@@ -1,8 +1,4 @@
 import { useRef, useEffect } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-gsap.registerPlugin(ScrollTrigger);
 
 const links = [
     { label: 'Instagram', href: 'https://www.instagram.com/4usargentina/' },
@@ -16,25 +12,23 @@ export default function HomeFooter() {
     const footerRef = useRef(null);
 
     useEffect(() => {
-        const ctx = gsap.context(() => {
-            gsap.fromTo(footerRef.current,
-                { y: 30, opacity: 0 },
-                {
-                    y: 0, opacity: 1, duration: 0.8, ease: 'power3.out',
-                    scrollTrigger: { trigger: footerRef.current, start: 'top 95%', once: true },
+        const el = footerRef.current;
+        if (!el) return;
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    el.classList.add('animate-in');
+                    observer.disconnect();
                 }
-            );
-        });
-        return () => ctx.revert();
+            },
+            { threshold: 0.05 }
+        );
+        observer.observe(el);
+        return () => observer.disconnect();
     }, []);
 
     return (
-        <footer ref={footerRef} className="relative bg-zinc-950 pt-24 pb-10 border-t border-white/5 overflow-hidden min-h-[480px] flex flex-col justify-between">
-            {/* Fondo decorativo */}
-            <div className="absolute inset-0 pointer-events-none opacity-5" style={{backgroundImage: "url('data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.65\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\'/%3E%3C/svg%3E')"}}></div>
-            <div className="absolute -top-40 -right-40 w-[600px] h-[600px] bg-[#8eff71]/10 blur-[120px] rounded-full pointer-events-none animate-pulse"></div>
-
-
+        <footer ref={footerRef} className="relative bg-zinc-950 pt-24 pb-10 border-t border-white/5 overflow-hidden min-h-[480px] flex flex-col justify-between opacity-0 translate-y-6 transition-all duration-700 ease-out [&.animate-in]:opacity-100 [&.animate-in]:translate-y-0">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-12 px-6 md:px-16 w-full mx-auto relative z-10 flex-grow content-start">
                 {/* Branding & descripción */}
                 <div className="md:col-span-1 space-y-8">

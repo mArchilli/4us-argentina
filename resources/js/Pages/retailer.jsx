@@ -64,7 +64,7 @@ export default function Retailer({ auth }) {
                         </p>
                         <div className="flex flex-col sm:flex-row gap-4">
                             <a
-                                href="/catalogo/catalogo.pdf"
+                                href="/files/catalog/catalogo.pdf"
                                 download
                                 className="bg-[#8eff71] text-[#0d6100] font-headline font-black italic px-8 py-5 rounded-full text-lg uppercase tracking-tight hover:shadow-[0_0_30px_rgba(142,255,113,0.3)] transition-all active:scale-95 flex items-center justify-center gap-2"
                             >
@@ -114,7 +114,7 @@ export default function Retailer({ auth }) {
                                 EL PRÓXIMO DROP PUEDE SER TU MEJOR VENTA. SUMATE A 4US HOY MISMO.
                             </p>
                             <a
-                                href="/catalogo/catalogo.pdf"
+                                href="/files/catalog/catalogo.pdf"
                                 download
                                 className="inline-block bg-[#0d6100] text-[#8eff71] font-headline font-black italic px-12 py-6 rounded-full text-2xl uppercase tracking-tight hover:scale-105 transition-all shadow-2xl"
                             >

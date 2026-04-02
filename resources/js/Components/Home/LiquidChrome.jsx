@@ -157,6 +157,9 @@ export const LiquidChrome = ({
     animationId = requestAnimationFrame(update);
 
     container.appendChild(gl.canvas);
+    gl.canvas.style.width = '100%';
+    gl.canvas.style.height = '100%';
+    gl.canvas.style.display = 'block';
 
     return () => {
       cancelAnimationFrame(animationId);
