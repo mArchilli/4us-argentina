@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Head, Link, useForm } from '@inertiajs/react';
 import toast from 'react-hot-toast';
 import Navbar from '@/Components/Home/Navbar';
@@ -60,6 +60,22 @@ function FormSelect({ label, id, value, onChange, error, options, placeholder, c
 }
 
 export default function CheckoutIndex({ auth, items = [], subtotal = 0, freeShippingThreshold = 20000, discount = null }) {
+    const footerRef = useRef(null);
+    const [footerVisible, setFooterVisible] = useState(false);
+
+    useEffect(() => {
+        const el = footerRef.current;
+        if (!el) return;
+        const observer = new IntersectionObserver(
+            ([entry]) => setFooterVisible(entry.intersectionRatio >= 0.8),
+            { threshold: [0, 0.8] }
+        );
+        observer.observe(el);
+        return () => observer.unobserve(el);
+    }, []);
+
+    const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+
     const [shippingMethod, setShippingMethod] = useState('domicilio');
     const [submitError, setSubmitError] = useState('');
     const [localErrors, setLocalErrors] = useState({});
@@ -213,7 +229,7 @@ export default function CheckoutIndex({ auth, items = [], subtotal = 0, freeShip
         <>
             <Head title="Checkout - 4us Argentina" />
             <div className="bg-[#0e0e0e] text-white min-h-screen">
-                <Navbar auth={auth} />
+                <Navbar auth={auth} hidden={footerVisible} />
 
                 <main className="pt-32 pb-32 px-6 max-w-[1600px] mx-auto">
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
@@ -496,7 +512,17 @@ export default function CheckoutIndex({ auth, items = [], subtotal = 0, freeShip
                     </div>
                 </main>
 
-                <HomeFooter />
+                <button
+                    onClick={scrollToTop}
+                    className={`fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] bg-[#8eff71] text-[#0d6100] px-4 py-2 rounded-full shadow-2xl flex items-center gap-2 text-base font-black uppercase tracking-tight transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:scale-110 hover:shadow-[0_0_20px_rgba(142,255,113,0.4)] ${footerVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}
+                >
+                    <span className="material-symbols-outlined text-xl">arrow_upward</span>
+                    Volver al inicio
+                </button>
+
+                <div ref={footerRef}>
+                    <HomeFooter />
+                </div>
             </div>
         </>
     );

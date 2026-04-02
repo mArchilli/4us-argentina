@@ -1,13 +1,30 @@
+import { useRef, useEffect, useState } from 'react';
 import { Head, Link } from '@inertiajs/react';
 import Navbar from '@/Components/Home/Navbar';
 import HomeFooter from '@/Components/Home/HomeFooter';
 
 export default function CheckoutSuccess({ auth, order }) {
+    const footerRef = useRef(null);
+    const [footerVisible, setFooterVisible] = useState(false);
+
+    useEffect(() => {
+        const el = footerRef.current;
+        if (!el) return;
+        const observer = new IntersectionObserver(
+            ([entry]) => setFooterVisible(entry.intersectionRatio >= 0.8),
+            { threshold: [0, 0.8] }
+        );
+        observer.observe(el);
+        return () => observer.unobserve(el);
+    }, []);
+
+    const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+
     return (
         <>
             <Head title="Pedido Confirmado - 4us Argentina" />
             <div className="bg-[#0e0e0e] text-white min-h-screen">
-                <Navbar auth={auth} />
+                <Navbar auth={auth} hidden={footerVisible} />
 
                 <main className="pt-28 pb-24 px-6 md:px-12 lg:px-24 max-w-3xl mx-auto text-center">
                     <div className="bg-[#131313] rounded-[2rem] p-10 md:p-16">
@@ -61,7 +78,17 @@ export default function CheckoutSuccess({ auth, order }) {
                     </div>
                 </main>
 
-                <HomeFooter />
+                <button
+                    onClick={scrollToTop}
+                    className={`fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] bg-[#8eff71] text-[#0d6100] px-4 py-2 rounded-full shadow-2xl flex items-center gap-2 text-base font-black uppercase tracking-tight transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:scale-110 hover:shadow-[0_0_20px_rgba(142,255,113,0.4)] ${footerVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}
+                >
+                    <span className="material-symbols-outlined text-xl">arrow_upward</span>
+                    Volver al inicio
+                </button>
+
+                <div ref={footerRef}>
+                    <HomeFooter />
+                </div>
             </div>
         </>
     );
