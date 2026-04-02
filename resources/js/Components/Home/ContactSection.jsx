@@ -45,7 +45,7 @@ export default function ContactSection() {
                         <div className="mb-8 lg:mb-16">
                             <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black tracking-tighter uppercase leading-[0.85] text-left">
                                 <span className="block text-white">PONETE EN</span>
-                                <span className="block text-[#8eff71] italic">CONTACTO</span>
+                                <span className="block text-[#8eff71] italic">CONTACTO.</span>
                             </h1>
                         </div>
                         <div className="space-y-6">

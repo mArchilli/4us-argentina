@@ -57,7 +57,7 @@ export default function Retailer({ auth }) {
                         <h1 className="text-5xl md:text-8xl font-headline font-black italic uppercase leading-none tracking-tighter mb-8">
                             ¿SOS <span className="text-[#8eff71]">MAYORISTA</span>? <br />
                             TENEMOS PRECIOS <br />
-                            PARA VOS
+                            PARA VOS.
                         </h1>
                         <p className="text-[#adaaaa] text-lg md:text-xl max-w-xl mb-12 font-medium leading-relaxed">
                             Sé parte de la cultura. Llevá 4us a tu zona con descuentos exclusivos para mayoristas y beneficios únicos.

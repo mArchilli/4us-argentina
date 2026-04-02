@@ -250,7 +250,7 @@ export default function CatalogIndex({ auth, products = [], categories = [], act
                             <h1 className="text-5xl md:text-8xl font-headline font-black italic uppercase leading-none tracking-tighter mb-8">
                                 ¿BUSCÁS <span className="text-[#8eff71]">PREMIUM</span>? <br />
                                 ENCONTRÁ LO MEJOR <br />
-                                EN NUESTRO CATÁLOGO
+                                EN NUESTRO CATÁLOGO.
                             </h1>
                             <p className="text-[#adaaaa] text-lg md:text-xl max-w-xl mb-12 font-medium leading-relaxed">
                                 Explorá nuestra selección curada de accesorios y piezas exclusivas pensadas para identidad, estética y calidad.

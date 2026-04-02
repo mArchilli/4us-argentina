@@ -39,7 +39,7 @@ export default function CommunityPerks() {
             {/* Headline */}
             <div className="w-full max-w-7xl px-6 md:px-16 text-center mb-10 md:mb-15">
                 <h2 className="font-headline font-black italic uppercase text-3xl sm:text-5xl md:text-7xl lg:text-8xl leading-none tracking-tighter text-on-surface mb-2">
-                    BENEFICIOS DE <span className="text-primary text-[#8eff71]">COMUNIDAD</span>
+                    BENEFICIOS DE <span className="text-primary text-[#8eff71]">COMUNIDAD.</span>
                 </h2>
             </div>
 
