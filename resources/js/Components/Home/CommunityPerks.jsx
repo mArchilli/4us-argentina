@@ -38,7 +38,7 @@ export default function CommunityPerks() {
         <section id="perks" className="relative py-16 md:py-28 bg-background min-h-screen flex flex-col items-center justify-center overflow-x-hidden">
             {/* Headline */}
             <div className="w-full max-w-7xl px-6 md:px-16 text-center mb-10 md:mb-15">
-                <h2 className="font-headline font-black italic uppercase text-3xl sm:text-5xl md:text-7xl lg:text-8xl leading-none tracking-tighter text-on-surface mb-2">
+                <h2 className="font-headline font-black italic uppercase text-3xl sm:text-5xl md:text-7xl lg:text-8xl leading-none tracking-tighter text-on-surface mb-2 whitespace-nowrap">
                     BENEFICIOS DE <span className="text-primary text-[#8eff71]">COMUNIDAD.</span>
                 </h2>
             </div>
@@ -80,7 +80,7 @@ export default function CommunityPerks() {
             {/* Botón CTA */}
             <div className="flex justify-center w-full px-6 md:px-0 mt-6">
                 <PrimaryButton
-                    className="w-full md:w-auto px-8 md:px-12 py-4 md:py-6 text-base md:text-lg tracking-widest hover:scale-105 active:opacity-80 shadow-[0_0_20px_rgba(183,252,99,0.2)]"
+                    className="w-full md:w-auto px-6 md:px-8 py-3 md:py-4 text-sm md:text-base tracking-widest hover:scale-105 active:opacity-80 shadow-[0_0_20px_rgba(183,252,99,0.2)]"
                     onClick={() => router.visit('/retailer')}
                 >
                     CONOCER MÁS

@@ -220,7 +220,7 @@ export default function CheckoutIndex({ auth, items = [], subtotal = 0, freeShip
 
                         {/* ── Left column (8 cols) ── */}
                         <div className="lg:col-span-8 space-y-6">
-                            <h1 className="text-5xl md:text-8xl font-headline font-black italic uppercase leading-none tracking-tighter mb-8">FINALIZAR <span className="text-[#8eff71]">COMPRA</span>.</h1>
+                            <h1 className="text-5xl md:text-8xl font-headline font-black italic uppercase leading-none tracking-tighter mb-8">FINALIZAR <span className="text-[#8eff71]">COMPRA</span><span className="text-[#8eff71]">.</span></h1>
 
                             <form id="checkout-form" onSubmit={handleSubmit}>
                                 {/* Shipping section */}
@@ -449,9 +449,9 @@ export default function CheckoutIndex({ auth, items = [], subtotal = 0, freeShip
                                     type="submit"
                                     form="checkout-form"
                                     disabled={processing}
-                                    className="w-full mt-6 py-4 rounded-full bg-gradient-to-br from-[#8eff71] to-[#2ff801] text-[#0d6100] font-black uppercase tracking-[0.2em] text-sm shadow-[0_10px_30px_rgba(142,255,113,0.3)] hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                                    className="w-full mt-6 bg-[#8eff71] text-[#0d6100] font-headline font-black italic py-5 px-8 rounded-full text-lg uppercase tracking-tight hover:shadow-[0_0_30px_rgba(142,255,113,0.3)] transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                                 >
-                                    {processing ? 'Procesando...' : 'Finalizar Compra'}
+                                    {processing ? 'Procesando...' : 'FINALIZAR COMPRA'}
                                 </button>
 
                                 <p className="mt-4 text-xs text-[#8eff71] leading-relaxed">

@@ -169,7 +169,7 @@ export default function Navbar({ auth, hidden = false }) {
                     >
                         <span className="material-symbols-outlined text-[22px] text-[#8eff71] group-hover:text-[#8eff71] transition-colors duration-300">shopping_cart</span>
                         {cartCount > 0 && (
-                            <span className="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] px-0.5 flex items-center justify-center rounded-full bg-[#c9a84c] text-white text-[10px] font-bold leading-none shadow-[0_2px_8px_rgba(201,168,76,0.4)]">
+                            <span className="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] px-0.5 flex items-center justify-center rounded-full bg-[#8eff71] text-[#131313] text-[10px] font-bold leading-none shadow-[0_2px_8px_rgba(201,168,76,0.4)]">
                                 {cartCount > 99 ? '99+' : cartCount}
                             </span>
                         )}

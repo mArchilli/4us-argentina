@@ -16,6 +16,7 @@ export default function FloatingButtons() {
     );
 
     const [cartCount, setCartCount] = useState(0);
+    const [atBottom, setAtBottom] = useState(false);
 
     const fetchCartCount = useCallback(() => {
         fetch('/carrito/count')
@@ -42,22 +43,35 @@ export default function FloatingButtons() {
         };
     }, [fetchCartCount]);
 
+    useEffect(() => {
+        const handleScroll = () => {
+            const distanceFromBottom = document.documentElement.scrollHeight - window.scrollY - window.innerHeight;
+            setAtBottom(distanceFromBottom < 80);
+        };
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        handleScroll();
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
     if (isAdmin) return null;
 
     return (
-        <div className="fixed bottom-6 right-6 z-50 flex flex-col items-center gap-3">
+        <div
+            className={`fixed right-6 z-50 flex items-center gap-3 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${atBottom ? 'flex-row-reverse' : 'flex-col'}`}
+            style={{ bottom: atBottom ? '6rem' : '1.5rem' }}
+        >
             {/* Cart Button */}
             <Link
                 href="/carrito"
                 className="relative w-14 h-14 md:w-[4.2rem] md:h-[4.2rem] rounded-[1.1rem] bg-[#131313] border border-[#2a2a2a] flex items-center justify-center text-white hover:border-[#8eff71]/40 hover:shadow-[0_0_20px_rgba(142,255,113,0.1)] transition-all duration-300 group"
                 aria-label="Carrito"
             >
-                <span className="material-symbols-outlined text-[22px] md:text-[26px] text-[#8eff71] group-hover:text-[#8eff71] transition-colors duration-300">
+                <span className="material-symbols-outlined text-[22px] md:text-[26px] text-[#8eff71] group-hover:text-[#c] transition-colors duration-300">
                     shopping_cart
                 </span>
 
                 {cartCount > 0 && (
-                    <span className="absolute -top-1.5 -right-1.5 min-w-[20px] h-5 md:min-w-[22px] md:h-[22px] px-1 flex items-center justify-center rounded-full bg-[#c9a84c] text-white text-[11px] md:text-xs font-bold leading-none shadow-[0_2px_8px_rgba(201,168,76,0.4)]">
+                    <span className="absolute -top-1.5 -right-1.5 min-w-[20px] h-5 md:min-w-[22px] md:h-[22px] px-1 flex items-center justify-center rounded-full bg-[#8eff71] text-[#131313] text-[11px] md:text-xs font-bold leading-none shadow-[0_2px_8px_rgba(201,168,76,0.4)]">
                         {cartCount > 99 ? '99+' : cartCount}
                     </span>
                 )}

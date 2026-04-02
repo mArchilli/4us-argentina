@@ -13,27 +13,18 @@ export default function Retailer({ auth }) {
     const [footerVisible, setFooterVisible] = useState(false);
 
     useEffect(() => {
-        const observer = new window.IntersectionObserver(
-            ([entry]) => setFooterVisible(entry.intersectionRatio >= 0.8),
+        const el = footerRef.current;
+        if (!el) return;
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                const isVisible = entry.isIntersecting && entry.intersectionRatio >= 0.8;
+                setFooterVisible((prev) => (prev === isVisible ? prev : isVisible));
+            },
             { threshold: 0.8 }
         );
-        if (footerRef.current) {
-            observer.observe(footerRef.current);
-        }
-        return () => {
-            if (footerRef.current) observer.unobserve(footerRef.current);
-        };
+        observer.observe(el);
+        return () => observer.disconnect();
     }, []);
-
-    // El efecto debe aplicarse solo cuando el usuario realmente llega al final (footer completamente visible)
-    useEffect(() => {
-        const navbar = document.querySelector('nav');
-        if (navbar) {
-            navbar.style.transition = 'opacity 0.3s';
-            navbar.style.opacity = footerVisible ? '0' : '1';
-            navbar.style.pointerEvents = footerVisible ? 'none' : '';
-        }
-    }, [footerVisible]);
 
     const scrollToTop = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -41,7 +32,7 @@ export default function Retailer({ auth }) {
 
     return (
         <div className="bg-[#0e0e0e] text-white font-body min-h-screen flex flex-col justify-between">
-            <Navbar auth={auth} />
+            <Navbar auth={auth} hidden={footerVisible} />
 
             <main className="pb-32 flex-1">
                 {/* Hero Section */}
@@ -126,27 +117,13 @@ export default function Retailer({ auth }) {
             </main>
 
             {/* Botón flotante cuando el footer es visible */}
-            {footerVisible && (
-                <button
-                    onClick={scrollToTop}
-                    className="fixed bottom-6 right-6 z-[100] bg-[#8eff71] text-[#0d6100] px-4 py-2 rounded-full shadow-2xl flex items-center gap-2 text-base font-black uppercase tracking-tight transition-transform duration-300 animate-fadeInUp hover:scale-110 hover:shadow-[0_0_20px_rgba(142,255,113,0.4)]"
-                    style={{ animation: 'fadeInUp 0.5s cubic-bezier(0.22,1,0.36,1)' }}
-                >
-                    <span className="material-symbols-outlined text-xl">arrow_upward</span>
-                    Volver al inicio
-                </button>
-            )}
-
-            {/* Animación keyframes para fadeInUp */}
-            <style>{`
-                @keyframes fadeInUp {
-                    0% { opacity: 0; transform: translateY(40px) scale(0.95); }
-                    100% { opacity: 1; transform: translateY(0) scale(1); }
-                }
-                .animate-fadeInUp {
-                    animation: fadeInUp 0.5s cubic-bezier(0.22,1,0.36,1);
-                }
-            `}</style>
+            <button
+                onClick={scrollToTop}
+                className={`fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] bg-[#8eff71] text-[#0d6100] px-4 py-2 rounded-full shadow-2xl flex items-center gap-2 text-base font-black uppercase tracking-tight transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:scale-110 hover:shadow-[0_0_20px_rgba(142,255,113,0.4)] ${footerVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}
+            >
+                <span className="material-symbols-outlined text-xl">arrow_upward</span>
+                Volver al inicio
+            </button>
 
             {/* Footer con ref para IntersectionObserver */}
             <div ref={footerRef}>

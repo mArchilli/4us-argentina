@@ -157,7 +157,7 @@ export default function CartIndex({ auth, items = [], subtotal = 0, freeShipping
                     {items.length === 0 ? (
                         <>
                             <div className="mb-12">
-                                <h1 className="text-5xl md:text-8xl font-headline font-black italic uppercase leading-none tracking-tighter mb-8">MI <span className="text-[#8eff71]">CARRITO</span>.</h1>
+                                <h1 className="text-5xl md:text-8xl font-headline font-black italic uppercase leading-none tracking-tighter mb-8">MI <span className="text-[#8eff71]">CARRITO</span><span className="text-[#8eff71]">.</span></h1>
                                 <p className="text-[#adaaaa] font-medium tracking-widest uppercase text-xs">4US Argentina — Carrito vacío</p>
                             </div>
                             <div className="text-center py-24">
@@ -176,7 +176,7 @@ export default function CartIndex({ auth, items = [], subtotal = 0, freeShipping
                         <>
                             {/* Headline */}
                             <div className="mb-12">
-                                <h1 className="text-5xl md:text-8xl font-headline font-black italic uppercase leading-none tracking-tighter mb-8">MI <span className="text-[#8eff71]">CARRITO</span>.</h1>
+                                <h1 className="text-5xl md:text-8xl font-headline font-black italic uppercase leading-none tracking-tighter mb-8">MI <span className="text-[#8eff71]">CARRITO</span><span className="text-[#8eff71]">.</span></h1>
                                 <p className="text-[#adaaaa] font-medium tracking-widest uppercase text-xs">
                                     4US Argentina — {items.length} {items.length === 1 ? 'producto' : 'productos'}
                                 </p>
@@ -314,10 +314,10 @@ export default function CartIndex({ auth, items = [], subtotal = 0, freeShipping
                                         {/* Checkout CTA */}
                                         <Link
                                             href={route('checkout.index')}
-                                            className="w-full bg-gradient-to-br from-[#8eff71] to-[#2ff801] text-[#0d6100] font-bold py-6 px-8 rounded-[1rem] flex justify-between items-center group transition-all shadow-[0_0_20px_rgba(142,255,113,0.15)] hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(142,255,113,0.25)] active:scale-95"
+                                            className="w-full bg-[#8eff71] text-[#0d6100] font-headline font-black italic py-5 px-8 rounded-full text-lg uppercase tracking-tight hover:shadow-[0_0_30px_rgba(142,255,113,0.3)] transition-all active:scale-95 flex items-center justify-between gap-2 group"
                                         >
-                                            <span className="font-['Space_Grotesk'] text-xl tracking-tight uppercase">Ir al Checkout</span>
-                                            <span className="material-symbols-outlined transition-transform group-hover:translate-x-2">arrow_forward</span>
+                                            <span>IR AL CHECKOUT</span>
+                                            <span className="material-symbols-outlined font-bold transition-transform group-hover:translate-x-2">arrow_forward</span>
                                         </Link>
 
                                         {/* Payment icons */}
