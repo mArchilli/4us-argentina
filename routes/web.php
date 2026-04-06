@@ -15,12 +15,17 @@ use App\Models\Category;
 use App\Models\DiscountCode;
 use App\Models\Order;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Cache;
 
 Route::get('/', function () {
-    $featured = Product::with(['primaryMedia', 'prices', 'categories'])
-        ->where('is_featured', true)
-        ->latest()
-        ->get();
+    $featured = Cache::remember('home.featured_products', now()->addMinutes(5), function () {
+        return Product::with(['primaryMedia', 'prices', 'categories'])
+            ->select(['id', 'title', 'description', 'is_featured', 'offer_active', 'offer_price', 'offer_ends_at', 'created_at'])
+            ->where('is_featured', true)
+            ->latest()
+            ->limit(12)
+            ->get();
+    });
 
     return Inertia::render('Welcome', [
         'canLogin'         => Route::has('login'),

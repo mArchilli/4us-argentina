@@ -6,6 +6,7 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createRoot } from 'react-dom/client';
 import { Toaster } from 'react-hot-toast';
 import FloatingButtons from '@/Components/FloatingButtons';
+import AgeGate from '@/Components/AgeGate';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
@@ -20,7 +21,7 @@ createInertiaApp({
         const root = createRoot(el);
 
         root.render(
-            <>
+            <AgeGate>
                 <Toaster
                     position="top-right"
                     toastOptions={{
@@ -34,7 +35,7 @@ createInertiaApp({
                 />
                 <App {...props} />
                 <FloatingButtons />
-            </>
+            </AgeGate>
         );
     },
     progress: {
