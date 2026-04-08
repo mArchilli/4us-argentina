@@ -31,7 +31,7 @@ export default function Login({ status, canResetPassword }) {
 
             {/*  Header  */}
             <header className="fixed top-0 inset-x-0 z-50 flex items-center justify-between px-8 py-6">
-                <span className="text-xl font-bold tracking-tighter text-[#8eff71] uppercase">4US Argentina</span>
+                <span className="text-xl font-bold italic tracking-tighter text-[#8eff71] uppercase">4US Argentina</span>
                 <Link
                     href="/"
                     className="text-[#adaaaa] hover:text-[#8eff71] transition-colors text-xs tracking-widest uppercase flex items-center gap-1.5"
