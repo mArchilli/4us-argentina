@@ -107,21 +107,34 @@ export const LiquidChrome = ({
     });
     const mesh = new Mesh(gl, { geometry, program });
 
-    // Append and style canvas FIRST so container.offsetWidth is correct when resize() runs
+    // Append canvas and force it to fill the container via CSS
+    gl.canvas.style.position = 'absolute';
+    gl.canvas.style.inset = '0';
     gl.canvas.style.width = '100%';
     gl.canvas.style.height = '100%';
     gl.canvas.style.display = 'block';
     container.appendChild(gl.canvas);
 
     function resize() {
-      renderer.setSize(container.offsetWidth * renderScale, container.offsetHeight * renderScale);
+      const w = container.offsetWidth;
+      const h = container.offsetHeight;
+      if (!w || !h) return;
+      // Set draw-buffer size manually so OGL doesn't touch the canvas CSS styles
+      gl.canvas.width = Math.round(w * renderScale);
+      gl.canvas.height = Math.round(h * renderScale);
+      gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+      // Re-apply CSS so OGL doesn't shrink the display size
+      gl.canvas.style.width = '100%';
+      gl.canvas.style.height = '100%';
       const resUniform = program.uniforms.uResolution.value;
       resUniform[0] = gl.canvas.width;
       resUniform[1] = gl.canvas.height;
       resUniform[2] = gl.canvas.width / gl.canvas.height;
     }
+
+    const resizeObserver = new ResizeObserver(() => resize());
+    resizeObserver.observe(container);
     window.addEventListener('resize', resize);
-    resize();
 
     function handleMouseMove(event) {
       const rect = container.getBoundingClientRect();
@@ -164,6 +177,7 @@ export const LiquidChrome = ({
 
     return () => {
       cancelAnimationFrame(animationId);
+      resizeObserver.disconnect();
       window.removeEventListener('resize', resize);
       if (effectiveInteractive) {
         container.removeEventListener('mousemove', handleMouseMove);
@@ -176,7 +190,7 @@ export const LiquidChrome = ({
     };
   }, [baseColor, speed, amplitude, frequencyX, frequencyY, interactive]);
 
-  return <div ref={containerRef} className="w-full h-full" {...props} />;
+  return <div ref={containerRef} className="relative w-full h-full" {...props} />;
 };
 
 export default LiquidChrome;
