@@ -73,6 +73,7 @@ export default function HomeFooter() {
                     <ul className="space-y-4">
                         <li><a className="text-zinc-500 uppercase text-xs tracking-[0.2em] font-bold hover:text-[#8eff71] hover:italic transition-all duration-300" href="#">Política de privacidad</a></li>
                         <li><a className="text-zinc-500 uppercase text-xs tracking-[0.2em] font-bold hover:text-[#8eff71] hover:italic transition-all duration-300" href="#">Envíos</a></li>
+                        <li><a className="text-zinc-500 uppercase text-xs tracking-[0.2em] font-bold hover:text-[#8eff71] hover:italic transition-all duration-300" href="/login">Ingresar</a></li>
                     </ul>
                 </div>
                 {/* Mail - mobile only (separate block) */}

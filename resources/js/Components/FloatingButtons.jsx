@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { Link, router } from '@inertiajs/react';
 import { subscribeCartChanged } from '@/utils/cartEvents';
 
-const ADMIN_PREFIXES = ['Dashboard', 'Products/', 'Categories/', 'DiscountCodes/', 'StoreSettings/', 'Profile/'];
+const ADMIN_PREFIXES = ['Dashboard', 'Products/', 'Categories/', 'DiscountCodes/', 'StoreSettings/', 'Profile/', 'Auth/'];
 
 function checkIsAdmin(component) {
     return ADMIN_PREFIXES.some((prefix) =>
