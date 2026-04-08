@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Head, Link, router } from '@inertiajs/react';
 import toast from 'react-hot-toast';
 import Navbar from '@/Components/Home/Navbar';
@@ -75,9 +75,18 @@ function ProductStrip({ title, accent, products }) {
 
 /* ─────────────────────────── Main page ───────────────────────────────── */
 export default function CatalogShow({ auth, product, featured = [], onOffer = [], related = [] }) {
+    const mediaItems = product.media ?? [];
     const [activeImage, setActiveImage] = useState(
-        product.media?.find((m) => m.is_primary) ?? product.media?.[0] ?? null
+        mediaItems.find((m) => m.is_primary) ?? mediaItems[0] ?? null
     );
+    const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+    const [previewIndex, setPreviewIndex] = useState(0);
+    const [previewScale, setPreviewScale] = useState(1);
+    const [previewOffset, setPreviewOffset] = useState({ x: 0, y: 0 });
+    const [isDraggingPreview, setIsDraggingPreview] = useState(false);
+    const [dragStartPoint, setDragStartPoint] = useState({ x: 0, y: 0 });
+    const pinchDistanceRef = useRef(0);
+    const pinchScaleRef = useRef(1);
 
     const sortedPrices = [...(product.prices ?? [])].sort((a, b) => a.min_quantity - b.min_quantity);
     const firstPrice = sortedPrices[0];
@@ -121,6 +130,135 @@ export default function CatalogShow({ auth, product, featured = [], onOffer = []
         );
     };
 
+    const resetPreviewTransform = () => {
+        setPreviewScale(1);
+        setPreviewOffset({ x: 0, y: 0 });
+    };
+
+    const openPreview = (index) => {
+        setPreviewIndex(index);
+        resetPreviewTransform();
+        setIsPreviewOpen(true);
+    };
+
+    const closePreview = () => {
+        setIsPreviewOpen(false);
+        setIsDraggingPreview(false);
+        resetPreviewTransform();
+    };
+
+    const movePreview = (direction) => {
+        if (!mediaItems.length) return;
+        setPreviewIndex((prev) => (prev + direction + mediaItems.length) % mediaItems.length);
+        resetPreviewTransform();
+    };
+
+    const zoomPreview = (delta) => {
+        setPreviewScale((prev) => {
+            const next = Math.min(4, Math.max(1, prev + delta));
+            if (next === 1) {
+                setPreviewOffset({ x: 0, y: 0 });
+            }
+            return next;
+        });
+    };
+
+    const handlePreviewWheel = (e) => {
+        e.preventDefault();
+        zoomPreview(e.deltaY < 0 ? 0.2 : -0.2);
+    };
+
+    const handlePreviewMouseDown = (e) => {
+        if (previewScale <= 1) return;
+        setIsDraggingPreview(true);
+        setDragStartPoint({ x: e.clientX - previewOffset.x, y: e.clientY - previewOffset.y });
+    };
+
+    const handlePreviewMouseMove = (e) => {
+        if (!isDraggingPreview || previewScale <= 1) return;
+        setPreviewOffset({
+            x: e.clientX - dragStartPoint.x,
+            y: e.clientY - dragStartPoint.y,
+        });
+    };
+
+    const handlePreviewMouseUp = () => {
+        setIsDraggingPreview(false);
+    };
+
+    const getTouchDistance = (touchA, touchB) => {
+        const dx = touchA.clientX - touchB.clientX;
+        const dy = touchA.clientY - touchB.clientY;
+        return Math.sqrt(dx * dx + dy * dy);
+    };
+
+    const handlePreviewTouchStart = (e) => {
+        if (e.touches.length === 2) {
+            pinchDistanceRef.current = getTouchDistance(e.touches[0], e.touches[1]);
+            pinchScaleRef.current = previewScale;
+            setIsDraggingPreview(false);
+            return;
+        }
+
+        if (e.touches.length === 1 && previewScale > 1) {
+            const touch = e.touches[0];
+            setIsDraggingPreview(true);
+            setDragStartPoint({ x: touch.clientX - previewOffset.x, y: touch.clientY - previewOffset.y });
+        }
+    };
+
+    const handlePreviewTouchMove = (e) => {
+        if (e.touches.length === 2) {
+            const distance = getTouchDistance(e.touches[0], e.touches[1]);
+            const baseDistance = pinchDistanceRef.current || distance;
+            const scaleFromPinch = pinchScaleRef.current * (distance / baseDistance);
+            const clampedScale = Math.min(4, Math.max(1, scaleFromPinch));
+            setPreviewScale(clampedScale);
+            if (clampedScale === 1) {
+                setPreviewOffset({ x: 0, y: 0 });
+            }
+            return;
+        }
+
+        if (e.touches.length === 1 && isDraggingPreview && previewScale > 1) {
+            const touch = e.touches[0];
+            setPreviewOffset({
+                x: touch.clientX - dragStartPoint.x,
+                y: touch.clientY - dragStartPoint.y,
+            });
+        }
+    };
+
+    const handlePreviewTouchEnd = () => {
+        if (previewScale <= 1) {
+            setPreviewOffset({ x: 0, y: 0 });
+        }
+        setIsDraggingPreview(false);
+        pinchDistanceRef.current = 0;
+    };
+
+    useEffect(() => {
+        if (!isPreviewOpen) return;
+
+        const onKeyDown = (event) => {
+            if (event.key === 'Escape') closePreview();
+            if (event.key === 'ArrowRight') movePreview(1);
+            if (event.key === 'ArrowLeft') movePreview(-1);
+            if (event.key === '+') zoomPreview(0.2);
+            if (event.key === '-') zoomPreview(-0.2);
+        };
+
+        document.body.style.overflow = 'hidden';
+        window.addEventListener('keydown', onKeyDown);
+
+        return () => {
+            document.body.style.overflow = '';
+            window.removeEventListener('keydown', onKeyDown);
+        };
+    }, [isPreviewOpen]);
+
+    const previewImage = mediaItems[previewIndex] ?? null;
+
     return (
         <>
             <Head title={`${product.title} - 4us Argentina`} />
@@ -161,7 +299,11 @@ export default function CatalogShow({ auth, product, featured = [], onOffer = []
                                         key={activeImage.id}
                                         src={activeImage.url}
                                         alt={product.title}
-                                        className="w-full h-full object-cover"
+                                        className="w-full h-full object-cover cursor-zoom-in"
+                                        onClick={() => {
+                                            const index = mediaItems.findIndex((item) => item.id === activeImage.id);
+                                            openPreview(index >= 0 ? index : 0);
+                                        }}
                                     />
                                 ) : (
                                     <div className="w-full h-full flex items-center justify-center">
@@ -350,6 +492,100 @@ export default function CatalogShow({ auth, product, featured = [], onOffer = []
 
                 <HomeFooter />
             </div>
+
+            {isPreviewOpen && previewImage && (
+                <div className="fixed inset-0 z-[120] bg-black/95 backdrop-blur-sm flex flex-col">
+                    <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
+                        <p className="text-sm text-[#d6d6d6]">
+                            Imagen {previewIndex + 1} de {mediaItems.length}
+                        </p>
+                        <div className="flex items-center gap-2">
+                            <button
+                                type="button"
+                                onClick={() => zoomPreview(-0.2)}
+                                className="w-9 h-9 rounded-full border border-white/20 text-white hover:bg-white/10 transition-colors"
+                                aria-label="Alejar"
+                            >
+                                <span className="material-symbols-outlined text-base">remove</span>
+                            </button>
+                            <button
+                                type="button"
+                                onClick={resetPreviewTransform}
+                                className="px-3 h-9 rounded-full border border-white/20 text-white text-xs font-bold uppercase tracking-wide hover:bg-white/10 transition-colors"
+                            >
+                                Reset
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => zoomPreview(0.2)}
+                                className="w-9 h-9 rounded-full border border-white/20 text-white hover:bg-white/10 transition-colors"
+                                aria-label="Acercar"
+                            >
+                                <span className="material-symbols-outlined text-base">add</span>
+                            </button>
+                            <button
+                                type="button"
+                                onClick={closePreview}
+                                className="w-9 h-9 rounded-full border border-white/20 text-white hover:bg-[#ff7351] hover:border-[#ff7351] transition-colors"
+                                aria-label="Cerrar previsualizacion"
+                            >
+                                <span className="material-symbols-outlined text-base">close</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div
+                        className="flex-1 relative overflow-hidden touch-none"
+                        onWheel={handlePreviewWheel}
+                        onMouseMove={handlePreviewMouseMove}
+                        onMouseUp={handlePreviewMouseUp}
+                        onMouseLeave={handlePreviewMouseUp}
+                        onTouchStart={handlePreviewTouchStart}
+                        onTouchMove={handlePreviewTouchMove}
+                        onTouchEnd={handlePreviewTouchEnd}
+                    >
+                        {mediaItems.length > 1 && (
+                            <>
+                                <button
+                                    type="button"
+                                    onClick={() => movePreview(-1)}
+                                    className="absolute left-3 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-black/55 border border-white/20 text-white hover:bg-black/80 transition-colors"
+                                    aria-label="Imagen anterior"
+                                >
+                                    <span className="material-symbols-outlined">chevron_left</span>
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => movePreview(1)}
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-black/55 border border-white/20 text-white hover:bg-black/80 transition-colors"
+                                    aria-label="Imagen siguiente"
+                                >
+                                    <span className="material-symbols-outlined">chevron_right</span>
+                                </button>
+                            </>
+                        )}
+
+                        <div className="w-full h-full flex items-center justify-center px-4">
+                            <img
+                                src={previewImage.url}
+                                alt={product.title}
+                                onMouseDown={handlePreviewMouseDown}
+                                draggable={false}
+                                className={`max-w-full max-h-full select-none ${previewScale > 1 ? 'cursor-grab active:cursor-grabbing' : 'cursor-zoom-in'}`}
+                                style={{
+                                    transform: `translate(${previewOffset.x}px, ${previewOffset.y}px) scale(${previewScale})`,
+                                    transformOrigin: 'center center',
+                                    transition: isDraggingPreview ? 'none' : 'transform 120ms ease-out',
+                                }}
+                            />
+                        </div>
+                    </div>
+
+                    <div className="px-4 py-3 border-t border-white/10 text-xs text-[#adaaaa] text-center">
+                        Desktop: rueda para zoom, arrastrar para mover, flechas para navegar. Mobile: pellizcar para zoom y arrastrar para mover.
+                    </div>
+                </div>
+            )}
         </>
     );
 }
