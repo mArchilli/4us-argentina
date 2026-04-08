@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 import Navbar from '@/Components/Home/Navbar';
 import HomeFooter from '@/Components/Home/HomeFooter';
 import { emitCartChanged } from '@/utils/cartEvents';
+import { sanitizeHtml } from '@/utils/sanitize';
 
 /* ─────────────────────────── Small reusable card ─────────────────────── */
 function MiniProductCard({ product }) {
@@ -267,9 +268,10 @@ export default function CatalogShow({ auth, product, featured = [], onOffer = []
 
                             {/* Description */}
                             {product.description && (
-                                <p className="text-[#adaaaa] text-base leading-relaxed mb-8">
-                                    {product.description}
-                                </p>
+                                <div
+                                    className="product-description mb-8"
+                                    dangerouslySetInnerHTML={{ __html: sanitizeHtml(product.description) }}
+                                />
                             )}
 
                             {/* Divider */}

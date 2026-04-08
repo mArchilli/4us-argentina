@@ -1,6 +1,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { useState } from 'react';
+import RichTextEditor from '@/Components/RichTextEditor';
 
 const inputCls =
     'w-full rounded-xl bg-[#0e0e0e] border border-[#2a2a2a] text-white placeholder:text-[#adaaaa] px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#8eff71]/40 focus:border-[#8eff71]/60 transition-all';
@@ -132,12 +133,9 @@ export default function Edit({ product, categories = [] }) {
                                 />
                             </Field>
                             <Field label="Descripción" error={errors.description}>
-                                <textarea
+                                <RichTextEditor
                                     value={data.description}
-                                    onChange={(e) => setData('description', e.target.value)}
-                                    placeholder="Descripción del producto..."
-                                    rows={4}
-                                    className={`${inputCls} resize-none`}
+                                    onChange={(value) => setData('description', value)}
                                 />
                             </Field>
                         </div>

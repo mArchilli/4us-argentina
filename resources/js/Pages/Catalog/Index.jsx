@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 import Navbar from '@/Components/Home/Navbar';
 import HomeFooter from '@/Components/Home/HomeFooter';
 import { emitCartChanged } from '@/utils/cartEvents';
+import { stripHtml } from '@/utils/sanitize';
 
 function CategoryBadge({ name }) {
     return (
@@ -129,7 +130,7 @@ function ProductCard({ product }) {
 
                 {product.description && (
                     <p className="text-[#adaaaa] text-sm line-clamp-2 mb-4 leading-relaxed">
-                        {product.description}
+                        {stripHtml(product.description)}
                     </p>
                 )}
 

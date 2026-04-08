@@ -4,6 +4,7 @@ import gsap from 'gsap';
 import toast from 'react-hot-toast';
 import { emitCartChanged } from '@/utils/cartEvents';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { stripHtml } from '@/utils/sanitize';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -122,7 +123,7 @@ function ProductCard({
             )}
 
             {product.description && (
-                <p className="text-[#adaaaa] mt-2 text-sm md:text-base line-clamp-2 flex-none">{product.description}</p>
+                <p className="text-[#adaaaa] mt-2 text-sm md:text-base line-clamp-2 flex-none">{stripHtml(product.description)}</p>
             )}
 
             {sortedPrices.length > 1 && (

@@ -13,3 +13,97 @@
 .material-symbols-outlined {
     font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }
+
+/* ── Quill dark theme ────────────────────────────────────────── */
+.quill-dark .ql-toolbar.ql-snow {
+    background-color: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    border-bottom: none;
+    border-radius: 0.75rem 0.75rem 0 0;
+    padding: 6px 8px;
+}
+
+.quill-dark .ql-container.ql-snow {
+    background-color: #0e0e0e;
+    border: 1px solid #2a2a2a;
+    border-radius: 0 0 0.75rem 0.75rem;
+    color: #fff;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.875rem;
+    min-height: 140px;
+}
+
+.quill-dark .ql-editor {
+    min-height: 140px;
+    color: #ffffff;
+    line-height: 1.65;
+}
+
+.quill-dark .ql-editor.ql-blank::before {
+    color: #adaaaa;
+    font-style: normal;
+}
+
+.quill-dark .ql-toolbar.ql-snow .ql-stroke {
+    stroke: #adaaaa;
+}
+
+.quill-dark .ql-toolbar.ql-snow .ql-fill {
+    fill: #adaaaa;
+}
+
+.quill-dark .ql-toolbar.ql-snow .ql-picker {
+    color: #adaaaa;
+}
+
+.quill-dark .ql-toolbar.ql-snow button:hover .ql-stroke,
+.quill-dark .ql-toolbar.ql-snow button.ql-active .ql-stroke {
+    stroke: #8eff71;
+}
+
+.quill-dark .ql-toolbar.ql-snow button:hover .ql-fill,
+.quill-dark .ql-toolbar.ql-snow button.ql-active .ql-fill {
+    fill: #8eff71;
+}
+
+.quill-dark .ql-toolbar.ql-snow button:hover,
+.quill-dark .ql-toolbar.ql-snow button.ql-active {
+    color: #8eff71;
+}
+
+.quill-dark .ql-snow .ql-tooltip {
+    background-color: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    color: #ffffff;
+    box-shadow: none;
+}
+
+.quill-dark .ql-snow .ql-tooltip input[type='text'] {
+    background-color: #0e0e0e;
+    border: 1px solid #2a2a2a;
+    color: #ffffff;
+    outline: none;
+}
+
+.quill-dark .ql-snow a {
+    color: #8eff71;
+}
+
+/* ── Rendered product description (rich text) ────────────────── */
+.product-description {
+    color: #adaaaa;
+    font-size: 1rem;
+    line-height: 1.75;
+}
+
+.product-description strong { color: #ffffff; }
+.product-description em { color: #d6d6d6; }
+.product-description u { text-decoration-color: #adaaaa; }
+.product-description a { color: #8eff71; text-decoration: underline; }
+.product-description ul, .product-description ol {
+    padding-left: 1.25rem;
+    margin: 0.5rem 0;
+}
+.product-description ul { list-style: disc; }
+.product-description ol { list-style: decimal; }
+.product-description li { margin-bottom: 0.25rem; }
