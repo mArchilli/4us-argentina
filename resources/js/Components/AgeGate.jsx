@@ -96,12 +96,12 @@ export default function AgeGate({ children }) {
 
     // Prompt (status === null)
     return (
-        <div className="fixed inset-0 z-[9999] h-screen overflow-hidden bg-[#0e0e0e] font-['Space_Grotesk',sans-serif] text-white flex items-center justify-center p-6">
+        <div className="fixed inset-0 z-[9999] min-h-screen overflow-y-auto bg-[#0e0e0e] font-['Space_Grotesk',sans-serif] text-white flex items-start md:items-center justify-center p-6">
             <div className="fixed inset-0 pointer-events-none" style={bgGlow} />
 
-            <main className="relative z-10 w-full max-w-7xl grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <main className="relative z-10 w-full max-w-7xl grid grid-cols-1 md:grid-cols-2 gap-12 items-center py-10 md:py-0">
                 {/* Left: Branding */}
-                <div className="flex flex-col gap-4 text-center md:text-left order-2 md:order-1">
+                <div className="flex flex-col gap-4 text-center md:text-left order-1">
                     <h1
                         className="text-[clamp(4.5rem,13vw,9rem)] font-black italic tracking-tighter text-[#8eff71] leading-none uppercase"
                         style={textGlow}
@@ -115,7 +115,7 @@ export default function AgeGate({ children }) {
                 </div>
 
                 {/* Right: Glass Card */}
-                <div className="flex justify-center md:justify-end order-1 md:order-2">
+                <div className="flex justify-center md:justify-end order-2">
                     <div
                         className="w-full max-w-md rounded-[2rem] p-10 flex flex-col items-center text-center shadow-[0_20px_40px_rgba(0,0,0,0.6)]"
                         style={glassCard}

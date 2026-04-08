@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+﻿import { useRef, useEffect } from 'react';
 import { Renderer, Program, Mesh, Triangle } from 'ogl';
 
 export const LiquidChrome = ({
@@ -107,6 +107,12 @@ export const LiquidChrome = ({
     });
     const mesh = new Mesh(gl, { geometry, program });
 
+    // Append and style canvas FIRST so container.offsetWidth is correct when resize() runs
+    gl.canvas.style.width = '100%';
+    gl.canvas.style.height = '100%';
+    gl.canvas.style.display = 'block';
+    container.appendChild(gl.canvas);
+
     function resize() {
       renderer.setSize(container.offsetWidth * renderScale, container.offsetHeight * renderScale);
       const resUniform = program.uniforms.uResolution.value;
@@ -155,11 +161,6 @@ export const LiquidChrome = ({
       renderer.render({ scene: mesh });
     }
     animationId = requestAnimationFrame(update);
-
-    container.appendChild(gl.canvas);
-    gl.canvas.style.width = '100%';
-    gl.canvas.style.height = '100%';
-    gl.canvas.style.display = 'block';
 
     return () => {
       cancelAnimationFrame(animationId);
