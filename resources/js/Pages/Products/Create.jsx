@@ -2,6 +2,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { useState } from 'react';
 import RichTextEditor from '@/Components/RichTextEditor';
+import CategoryPicker from '@/Components/CategoryPicker';
 
 const inputCls =
     'w-full rounded-xl bg-[#0e0e0e] border border-[#2a2a2a] text-white placeholder:text-[#adaaaa] px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#8eff71]/40 focus:border-[#8eff71]/60 transition-all';
@@ -230,43 +231,12 @@ export default function Create({ categories = [] }) {
                                 onChange={(v) => setData('is_featured', v)}
                             />
 
-                            <div>
-                                <p className="text-sm font-medium text-white">Categorías</p>
-                                <p className="text-xs text-[#adaaaa] mt-0.5">Seleccioná una o varias categorías</p>
-
-                                {categories.length === 0 ? (
-                                    <p className="text-xs text-[#484848] mt-2">No hay categorías creadas todavía.</p>
-                                ) : (
-                                    <div className="mt-2 grid grid-cols-1 gap-2 max-h-52 overflow-auto pr-1">
-                                        {categories.map((category) => {
-                                            const checked = data.category_ids.includes(category.id);
-                                            return (
-                                                <label
-                                                    key={category.id}
-                                                    className="flex items-center gap-2.5 p-2 rounded-lg border border-[#2a2a2a] hover:border-[#3a3a3a] cursor-pointer"
-                                                >
-                                                    <input
-                                                        type="checkbox"
-                                                        checked={checked}
-                                                        onChange={(e) => {
-                                                            const next = e.target.checked
-                                                                ? [...data.category_ids, category.id]
-                                                                : data.category_ids.filter((id) => id !== category.id);
-                                                            setData('category_ids', next);
-                                                        }}
-                                                        className="w-4 h-4 rounded border-[#2a2a2a] bg-[#0e0e0e] accent-[#8eff71]"
-                                                    />
-                                                    <span className="text-sm text-[#d6d6d6]">{category.name}</span>
-                                                </label>
-                                            );
-                                        })}
-                                    </div>
-                                )}
-
-                                {errors.category_ids && (
-                                    <p className="text-[#ff7351] text-xs mt-1">{errors.category_ids}</p>
-                                )}
-                            </div>
+                            <CategoryPicker
+                                categories={categories}
+                                selectedIds={data.category_ids}
+                                onChange={(ids) => setData('category_ids', ids)}
+                                errors={errors.category_ids}
+                            />
                         </div>
                     </Card>
 

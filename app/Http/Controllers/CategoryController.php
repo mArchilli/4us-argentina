@@ -62,6 +62,11 @@ class CategoryController extends Controller
             'slug' => Str::slug($validated['slug'] ?: $validated['name']),
         ]);
 
+        // If the request comes from another page (e.g. product form), go back there
+        if ($request->header('X-Inertia') && !str_contains((string) $request->header('referer', ''), '/categories')) {
+            return redirect()->back()->with('success', 'Categoría creada exitosamente.');
+        }
+
         return redirect()->route('categories.index')
             ->with('success', 'Categoria creada exitosamente.');
     }

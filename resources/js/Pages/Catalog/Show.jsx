@@ -267,6 +267,25 @@ export default function CatalogShow({ auth, product, featured = [], onOffer = []
 
                 <main className="pt-28 pb-24 px-6 md:px-10 max-w-7xl mx-auto">
 
+                    {/* Back button */}
+                    {(() => {
+                        const params = new URLSearchParams(window.location.search);
+                        const page = params.get('page');
+                        const backUrl = page && page !== '1'
+                            ? `${route('catalog.index')}?page=${page}`
+                            : route('catalog.index');
+
+                        return (
+                            <Link
+                                href={backUrl}
+                                className="inline-flex items-center gap-2 mb-6 px-5 py-2.5 rounded-full bg-[#1a1a1a] border border-[#2a2a2a] text-[#adaaaa] text-sm font-bold uppercase tracking-wide hover:border-[#8eff71]/40 hover:text-[#8eff71] transition-all duration-300 group"
+                            >
+                                <span className="material-symbols-outlined text-base transition-transform duration-300 group-hover:-translate-x-1">arrow_back</span>
+                                Volver al catálogo
+                            </Link>
+                        );
+                    })()}
+
                     {/* Breadcrumb */}
                     <nav className="flex items-center gap-2 text-sm text-[#adaaaa] mb-10">
                         <Link href={route('catalog.index')} className="hover:text-[#8eff71] transition-colors">

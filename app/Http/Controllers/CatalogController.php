@@ -13,6 +13,9 @@ class CatalogController extends Controller
     public function index(Request $request): Response
     {
         $categorySlug = $request->query('categoria');
+        $search       = trim((string) $request->string('search'));
+        $destacados   = $request->query('destacados');
+        $ofertas      = $request->query('ofertas');
 
         $query = Product::with(['primaryMedia', 'prices', 'categories'])
             ->latest();
@@ -21,13 +24,33 @@ class CatalogController extends Controller
             $query->whereHas('categories', fn ($q) => $q->where('slug', $categorySlug));
         }
 
-        $products   = $query->get();
+        if ($search !== '') {
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%");
+            });
+        }
+
+        if ($destacados === '1') {
+            $query->where('is_featured', true);
+        }
+
+        if ($ofertas === '1') {
+            $query->where('offer_active', true);
+        }
+
+        $products   = $query->paginate(12)->withQueryString();
         $categories = Category::withCount('products')->orderBy('name')->get();
 
         return Inertia::render('Catalog/Index', [
             'products'        => $products,
             'categories'      => $categories,
             'activeCategory'  => $categorySlug,
+            'filters'         => [
+                'search'     => $search,
+                'destacados' => $destacados === '1' ? '1' : '',
+                'ofertas'    => $ofertas === '1' ? '1' : '',
+            ],
         ]);
     }
 

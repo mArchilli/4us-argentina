@@ -14,7 +14,7 @@ function CategoryBadge({ name }) {
     );
 }
 
-function ProductCard({ product }) {
+function ProductCard({ product, currentPage }) {
     const image = product.primary_media?.url ?? null;
     const sortedPrices = [...(product.prices ?? [])].sort((a, b) => (a.min_quantity || 1) - (b.min_quantity || 1));
     const [quantity, setQuantity] = useState(sortedPrices[0]?.min_quantity ?? 1);
@@ -191,7 +191,7 @@ function ProductCard({ product }) {
                         Agregar
                     </button>
                     <Link
-                        href={route('catalog.show', product.id)}
+                        href={`${route('catalog.show', product.id)}?page=${currentPage}`}
                         className="w-full bg-[#8eff71]/10 border border-[#8eff71]/20 text-[#8eff71] py-2.5 rounded-full font-black uppercase tracking-tighter flex items-center justify-center gap-1.5 group-hover:bg-[#8eff71] group-hover:text-[#0d6100] transition-all duration-300 text-xs"
                     >
                         Ver
@@ -208,9 +208,59 @@ function ProductCard({ product }) {
     );
 }
 
-export default function CatalogIndex({ auth, products = [], categories = [], activeCategory = null }) {
+/* ─────────────────────────── Pagination ──────────────────────────────── */
+function Pagination({ links, currentPage, lastPage }) {
+    if (lastPage <= 1) return null;
+
+    return (
+        <nav className="mt-16 flex justify-center" aria-label="Paginación">
+            <ul className="inline-flex items-center gap-2">
+                {links.map((link, i) => {
+                    const isActive = link.active;
+                    const isDisabled = !link.url;
+                    const label = link.label
+                        .replace('&laquo;', '«')
+                        .replace('&raquo;', '»')
+                        .replace('Previous', '«')
+                        .replace('Next', '»');
+
+                    if (isDisabled) {
+                        return (
+                            <li key={i}>
+                                <span className="w-10 h-10 flex items-center justify-center rounded-full text-sm font-bold text-[#484848] cursor-default">
+                                    {label}
+                                </span>
+                            </li>
+                        );
+                    }
+
+                    return (
+                        <li key={i}>
+                            <Link
+                                href={link.url}
+                                className={`w-10 h-10 flex items-center justify-center rounded-full text-sm font-bold transition-all duration-300 ${
+                                    isActive
+                                        ? 'bg-[#8eff71] text-[#0d6100] shadow-[0_0_15px_rgba(142,255,113,0.3)]'
+                                        : 'bg-[#1a1a1a] text-[#adaaaa] border border-[#2a2a2a] hover:border-[#8eff71]/40 hover:text-[#8eff71]'
+                                }`}
+                                preserveScroll={false}
+                            >
+                                {label}
+                            </Link>
+                        </li>
+                    );
+                })}
+            </ul>
+        </nav>
+    );
+}
+
+export default function CatalogIndex({ auth, products = {}, categories = [], activeCategory = null, filters = {} }) {
     const footerRef = useRef(null);
     const [footerVisible, setFooterVisible] = useState(false);
+    const [searchValue, setSearchValue] = useState(filters.search ?? '');
+    const [filtersOpen, setFiltersOpen] = useState(false);
+    const searchTimeout = useRef(null);
 
     useEffect(() => {
         const el = footerRef.current;
@@ -227,9 +277,53 @@ export default function CatalogIndex({ auth, products = [], categories = [], act
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
-    const handleCategory = (slug) => {
-        router.get(route('catalog.index'), slug ? { categoria: slug } : {}, { preserveScroll: true });
+    const buildParams = (overrides = {}) => {
+        const params = {};
+        const search = overrides.search ?? filters.search;
+        const categoria = overrides.categoria !== undefined ? overrides.categoria : activeCategory;
+        const destacados = overrides.destacados !== undefined ? overrides.destacados : filters.destacados;
+        const ofertas = overrides.ofertas !== undefined ? overrides.ofertas : filters.ofertas;
+
+        if (search) params.search = search;
+        if (categoria) params.categoria = categoria;
+        if (destacados === '1') params.destacados = '1';
+        if (ofertas === '1') params.ofertas = '1';
+        return params;
     };
+
+    const applyFilters = (overrides = {}) => {
+        router.get(route('catalog.index'), buildParams(overrides), {
+            preserveScroll: true,
+        });
+    };
+
+    const handleSearchChange = (value) => {
+        setSearchValue(value);
+        if (searchTimeout.current) clearTimeout(searchTimeout.current);
+        searchTimeout.current = setTimeout(() => {
+            applyFilters({ search: value });
+        }, 400);
+    };
+
+    const handleCategory = (slug) => {
+        applyFilters({ categoria: slug || null });
+    };
+
+    const toggleFilter = (key) => {
+        const current = filters[key];
+        applyFilters({ [key]: current === '1' ? '' : '1' });
+    };
+
+    const clearAllFilters = () => {
+        setSearchValue('');
+        router.get(route('catalog.index'), {}, { preserveScroll: false });
+    };
+
+    const activeFilterCount =
+        (filters.search ? 1 : 0) +
+        (activeCategory ? 1 : 0) +
+        (filters.destacados === '1' ? 1 : 0) +
+        (filters.ofertas === '1' ? 1 : 0);
 
     return (
         <>
@@ -274,49 +368,193 @@ export default function CatalogIndex({ auth, products = [], categories = [], act
 
                     {/* Catalog section */}
                     <section className="px-6 md:px-12 lg:px-24 mb-16">
-                        {/* Category filter pills */}
-                        <div className="flex flex-wrap gap-3 mb-12">
-                            <button
-                                onClick={() => handleCategory(null)}
-                                className={`px-7 py-2.5 rounded-full font-bold transition-all text-sm ${
-                                    !activeCategory
-                                        ? 'bg-[#8eff71] text-[#0d6100] shadow-lg'
-                                        : 'bg-[#1f2020] text-[#adaaaa] border border-[#484848]/40 hover:bg-[#262626] hover:text-[#8eff71]'
-                                }`}
-                            >
-                                Todos
-                            </button>
-                            {categories.map((cat) => (
+
+                        {/* ── Filter bar ── */}
+                        <div className="mb-10 space-y-4">
+
+                            {/* Top row: Search + toggle button (mobile) */}
+                            <div className="flex gap-3 items-center">
+                                <div className="flex-1 relative">
+                                    <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-[#484848] text-xl pointer-events-none">search</span>
+                                    <input
+                                        type="text"
+                                        value={searchValue}
+                                        onChange={(e) => handleSearchChange(e.target.value)}
+                                        placeholder="Buscar productos..."
+                                        className="w-full bg-[#131313] border border-[#2a2a2a] rounded-full pl-12 pr-4 py-3 text-sm text-white placeholder-[#484848] outline-none focus:border-[#8eff71]/50 transition-colors"
+                                    />
+                                    {searchValue && (
+                                        <button
+                                            type="button"
+                                            onClick={() => handleSearchChange('')}
+                                            className="absolute right-3 top-1/2 -translate-y-1/2 text-[#484848] hover:text-white transition-colors"
+                                        >
+                                            <span className="material-symbols-outlined text-lg">close</span>
+                                        </button>
+                                    )}
+                                </div>
+
+                                {/* Mobile filter toggle */}
                                 <button
-                                    key={cat.id}
-                                    onClick={() => handleCategory(cat.slug)}
-                                    className={`px-7 py-2.5 rounded-full font-bold transition-all text-sm ${
-                                        activeCategory === cat.slug
-                                            ? 'bg-[#8eff71] text-[#0d6100] shadow-lg'
-                                            : 'bg-[#1f2020] text-[#adaaaa] border border-[#484848]/40 hover:bg-[#262626] hover:text-[#8eff71]'
-                                    }`}
+                                    type="button"
+                                    onClick={() => setFiltersOpen(!filtersOpen)}
+                                    className="lg:hidden flex items-center gap-2 px-4 py-3 bg-[#131313] border border-[#2a2a2a] rounded-full text-sm font-bold text-[#adaaaa] hover:border-[#8eff71]/40 transition-colors flex-shrink-0"
                                 >
-                                    {cat.name}
-                                    {cat.products_count > 0 && (
-                                        <span className="ml-2 text-xs opacity-60">({cat.products_count})</span>
+                                    <span className="material-symbols-outlined text-lg">tune</span>
+                                    Filtros
+                                    {activeFilterCount > 0 && (
+                                        <span className="w-5 h-5 flex items-center justify-center rounded-full bg-[#8eff71] text-[#0d6100] text-[10px] font-black">
+                                            {activeFilterCount}
+                                        </span>
                                     )}
                                 </button>
-                            ))}
+                            </div>
+
+                            {/* Filter body — always visible on desktop, collapsible on mobile */}
+                            <div className={`lg:block ${filtersOpen ? 'block' : 'hidden'}`}>
+                                <div className="bg-[#131313] border border-[#2a2a2a] rounded-[1.4rem] p-5 space-y-5">
+
+                                    {/* Quick filters row */}
+                                    <div className="flex flex-wrap gap-2">
+                                        <button
+                                            type="button"
+                                            onClick={() => toggleFilter('destacados')}
+                                            className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-sm transition-all duration-300 ${
+                                                filters.destacados === '1'
+                                                    ? 'bg-[#8eff71] text-[#0d6100] shadow-[0_0_12px_rgba(142,255,113,0.25)]'
+                                                    : 'bg-[#1a1a1a] text-[#adaaaa] border border-[#2a2a2a] hover:border-[#8eff71]/40 hover:text-[#8eff71]'
+                                            }`}
+                                        >
+                                            <span className="material-symbols-outlined text-base">star</span>
+                                            Destacados
+                                        </button>
+
+                                        <button
+                                            type="button"
+                                            onClick={() => toggleFilter('ofertas')}
+                                            className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full font-bold text-sm transition-all duration-300 ${
+                                                filters.ofertas === '1'
+                                                    ? 'bg-[#ff7351] text-white shadow-[0_0_12px_rgba(255,115,81,0.3)]'
+                                                    : 'bg-[#1a1a1a] text-[#adaaaa] border border-[#2a2a2a] hover:border-[#ff7351]/40 hover:text-[#ff7351]'
+                                            }`}
+                                        >
+                                            <span className="material-symbols-outlined text-base">local_offer</span>
+                                            En Oferta
+                                        </button>
+
+                                        {activeFilterCount > 0 && (
+                                            <button
+                                                type="button"
+                                                onClick={clearAllFilters}
+                                                className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full text-sm font-bold text-[#adaaaa] hover:text-white transition-colors"
+                                            >
+                                                <span className="material-symbols-outlined text-base">filter_alt_off</span>
+                                                Limpiar filtros
+                                            </button>
+                                        )}
+                                    </div>
+
+                                    {/* Separator */}
+                                    <div className="border-t border-[#2a2a2a]" />
+
+                                    {/* Category pills */}
+                                    <div>
+                                        <p className="text-xs uppercase tracking-[0.15em] text-[#484848] font-bold mb-3">Categorías</p>
+                                        <div className="flex flex-nowrap lg:flex-wrap gap-2 overflow-x-auto pb-2 -mx-1 px-1 scrollbar-hide">
+                                            <button
+                                                onClick={() => handleCategory(null)}
+                                                className={`flex-shrink-0 px-5 py-2 rounded-full font-bold transition-all text-sm ${
+                                                    !activeCategory
+                                                        ? 'bg-[#8eff71] text-[#0d6100] shadow-lg'
+                                                        : 'bg-[#0e0e0e] text-[#adaaaa] border border-[#2a2a2a] hover:border-[#8eff71]/40 hover:text-[#8eff71]'
+                                                }`}
+                                            >
+                                                Todos
+                                            </button>
+                                            {categories.map((cat) => (
+                                                <button
+                                                    key={cat.id}
+                                                    onClick={() => handleCategory(cat.slug)}
+                                                    className={`flex-shrink-0 px-5 py-2 rounded-full font-bold transition-all text-sm ${
+                                                        activeCategory === cat.slug
+                                                            ? 'bg-[#8eff71] text-[#0d6100] shadow-lg'
+                                                            : 'bg-[#0e0e0e] text-[#adaaaa] border border-[#2a2a2a] hover:border-[#8eff71]/40 hover:text-[#8eff71]'
+                                                    }`}
+                                                >
+                                                    {cat.name}
+                                                    {cat.products_count > 0 && (
+                                                        <span className="ml-1.5 text-xs opacity-60">({cat.products_count})</span>
+                                                    )}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Active filter tags (visible summary) */}
+                            {activeFilterCount > 0 && (
+                                <div className="flex flex-wrap items-center gap-2 lg:hidden">
+                                    <span className="text-xs text-[#484848] font-bold uppercase tracking-wider">Activos:</span>
+                                    {filters.search && (
+                                        <span className="px-3 py-1 rounded-full bg-[#1a1a1a] border border-[#2a2a2a] text-xs text-[#adaaaa] font-semibold flex items-center gap-1.5">
+                                            <span className="material-symbols-outlined text-xs">search</span>
+                                            "{filters.search}"
+                                            <button onClick={() => handleSearchChange('')} className="text-[#484848] hover:text-white">
+                                                <span className="material-symbols-outlined text-xs">close</span>
+                                            </button>
+                                        </span>
+                                    )}
+                                    {activeCategory && (
+                                        <span className="px-3 py-1 rounded-full bg-[#1a1a1a] border border-[#2a2a2a] text-xs text-[#adaaaa] font-semibold flex items-center gap-1.5">
+                                            {categories.find(c => c.slug === activeCategory)?.name ?? activeCategory}
+                                            <button onClick={() => handleCategory(null)} className="text-[#484848] hover:text-white">
+                                                <span className="material-symbols-outlined text-xs">close</span>
+                                            </button>
+                                        </span>
+                                    )}
+                                    {filters.destacados === '1' && (
+                                        <span className="px-3 py-1 rounded-full bg-[#8eff71]/10 border border-[#8eff71]/20 text-xs text-[#8eff71] font-semibold flex items-center gap-1.5">
+                                            <span className="material-symbols-outlined text-xs">star</span>
+                                            Destacados
+                                            <button onClick={() => toggleFilter('destacados')} className="text-[#8eff71]/50 hover:text-[#8eff71]">
+                                                <span className="material-symbols-outlined text-xs">close</span>
+                                            </button>
+                                        </span>
+                                    )}
+                                    {filters.ofertas === '1' && (
+                                        <span className="px-3 py-1 rounded-full bg-[#ff7351]/10 border border-[#ff7351]/20 text-xs text-[#ff7351] font-semibold flex items-center gap-1.5">
+                                            <span className="material-symbols-outlined text-xs">local_offer</span>
+                                            En Oferta
+                                            <button onClick={() => toggleFilter('ofertas')} className="text-[#ff7351]/50 hover:text-[#ff7351]">
+                                                <span className="material-symbols-outlined text-xs">close</span>
+                                            </button>
+                                        </span>
+                                    )}
+                                </div>
+                            )}
                         </div>
 
                         {/* Product grid */}
                         <div id="productos">
-                            {products.length === 0 ? (
+                            {(products.data ?? []).length === 0 ? (
                                 <div className="text-center py-24 text-[#adaaaa]">
                                     <span className="material-symbols-outlined text-6xl mb-4 block text-[#2a2a2a]">inventory_2</span>
                                     <p className="text-xl font-medium">No hay productos en esta categoría todavía.</p>
                                 </div>
                             ) : (
-                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                                    {products.map((product) => (
-                                        <ProductCard key={product.id} product={product} />
-                                    ))}
-                                </div>
+                                <>
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                                        {(products.data ?? []).map((product) => (
+                                            <ProductCard key={product.id} product={product} currentPage={products.current_page} />
+                                        ))}
+                                    </div>
+                                    <Pagination
+                                        links={products.links ?? []}
+                                        currentPage={products.current_page}
+                                        lastPage={products.last_page}
+                                    />
+                                </>
                             )}
                         </div>
                     </section>
