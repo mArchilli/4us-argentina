@@ -21,16 +21,17 @@ class ProductSeeder extends Seeder
         );
 
         // ── 2. Product ─────────────────────────────────────────────────────
-        $description = '<p>Sumá estilo a tu ritual con la bandeja metálica 4US, pensada para quienes disfrutan cada detalle. Con un diseño inspirado en ilustraciones animadas icónicas y un acabado vibrante, esta bandeja no solo cumple su función, sino que también destaca como pieza de colección.</p>'
-            . '<p>Fabricada en metal resistente, ofrece una superficie amplia y bordes elevados que facilitan el armado y mantienen todo en su lugar, evitando pérdidas y desorden. Ideal para uso diario, tanto en casa como para llevar.</p>'
+        $description = '<p><strong>Bandeja metálica 4US para armar</strong> – Sumá estilo a tu ritual con esta bandeja pensada para quienes disfrutan cada detalle. Con un <em>diseño inspirado en ilustraciones animadas icónicas</em> y un acabado vibrante, esta bandeja no solo cumple su función, sino que también destaca como <strong>pieza de colección</strong>.</p>'
+            . '<p>Fabricada en <strong>metal resistente</strong>, ofrece una superficie amplia y bordes elevados que facilitan el armado y mantienen todo en su lugar, evitando pérdidas y desorden. Ideal para uso diario, tanto en casa como para llevar.</p>'
+            . '<p><strong>Características Principales:</strong></p>'
             . '<ul>'
-            . '<li>Material metálico resistente</li>'
-            . '<li>Bordes curvos para mayor comodidad</li>'
-            . '<li>Superficie amplia y fácil de limpiar</li>'
-            . '<li>Diseño exclusivo y llamativo</li>'
-            . '<li>Perfecta para uso personal o reventa</li>'
+            . '<li><strong>Material metálico resistente:</strong> Fabricación duradera para uso intensivo diario.</li>'
+            . '<li><strong>Bordes curvos:</strong> Mayor comodidad y retención del material al armar.</li>'
+            . '<li><strong>Superficie amplia:</strong> Fácil de limpiar y cómoda para el armado.</li>'
+            . '<li><strong>Diseño exclusivo:</strong> Arte animado clásico con colores vibrantes.</li>'
+            . '<li><strong>Versátil:</strong> Perfecta para uso personal o reventa en tabaquería.</li>'
             . '</ul>'
-            . '<p>Disponible por unidad o en ventas mayoristas. Un producto que combina funcionalidad y estética, ideal para potenciar tu catálogo.</p>';
+            . '<p>Disponible por unidad o en <strong>venta mayorista</strong>. Un producto que combina funcionalidad y estética, ideal para potenciar el catálogo de tu <strong>tabaquería</strong> o <strong>smoke shop</strong>.</p>';
 
         $product = Product::firstOrCreate(
             ['title' => 'Bandeja metálica 4US – Edición diseño animado'],
@@ -97,16 +98,17 @@ class ProductSeeder extends Seeder
         );
 
         // ── 2. Product ─────────────────────────────────────────────────────
-        $description2 = '<p>Sumá estilo a tu ritual con la bandeja metálica 4US, pensada para quienes disfrutan cada detalle. Con un diseño inspirado en ilustraciones animadas icónicas y un acabado vibrante, esta bandeja no solo cumple su función, sino que también destaca como pieza de colección.</p>'
-            . '<p>Fabricada en metal resistente, ofrece una superficie amplia y bordes elevados que facilitan el armado y mantienen todo en su lugar, evitando pérdidas y desorden. Ideal para uso diario, tanto en casa como para llevar.</p>'
+        $description2 = '<p><strong>Bandeja metálica 4US para armar</strong> – Llevá tu experiencia al siguiente nivel con esta bandeja diseñada para los amantes del estilo y la practicidad. Su <em>ilustración animada con estética pop art</em> la convierte en un accesorio único que combina <strong>funcionalidad y diseño</strong>.</p>'
+            . '<p>Fabricada en <strong>metal de alta resistencia</strong>, cuenta con una superficie generosa y bordes elevados que evitan pérdidas de material durante el armado. Compacta y liviana, ideal para llevar a cualquier lado.</p>'
+            . '<p><strong>Características Principales:</strong></p>'
             . '<ul>'
-            . '<li>Material metálico resistente</li>'
-            . '<li>Bordes curvos para mayor comodidad</li>'
-            . '<li>Superficie amplia y fácil de limpiar</li>'
-            . '<li>Diseño exclusivo y llamativo</li>'
-            . '<li>Perfecta para uso personal o reventa</li>'
+            . '<li><strong>Metal resistente:</strong> Construida para un uso prolongado sin deformaciones.</li>'
+            . '<li><strong>Bordes elevados:</strong> Mantienen el material contenido mientras armás.</li>'
+            . '<li><strong>Fácil limpieza:</strong> Superficie lisa que se limpia en segundos.</li>'
+            . '<li><strong>Diseño pop art:</strong> Estética animada vibrante y llamativa.</li>'
+            . '<li><strong>Multiuso:</strong> Ideal para uso personal o como producto de reventa.</li>'
             . '</ul>'
-            . '<p>Disponible por unidad o en ventas mayoristas. Un producto que combina funcionalidad y estética, ideal para potenciar tu catálogo.</p>';
+            . '<p>Disponible por unidad o en <strong>compra mayorista</strong>. Accesorio imprescindible para cualquier <strong>tabaquería</strong>, <strong>grow shop</strong> o revendedor.</p>';
 
         $product2 = Product::firstOrCreate(
             ['title' => 'Bandeja metálica 4US – Edición diseño animado (variante 2)'],
@@ -173,16 +175,17 @@ class ProductSeeder extends Seeder
         );
 
         // ── 2. Product ─────────────────────────────────────────────────────
-        $description3 = '<p>Sumá estilo a tu ritual con la bandeja metálica 4US, pensada para quienes disfrutan cada detalle. Con un diseño inspirado en ilustraciones animadas icónicas y un acabado vibrante, esta bandeja no solo cumple su función, sino que también destaca como pieza de colección.</p>'
-            . '<p>Fabricada en metal resistente, ofrece una superficie amplia y bordes elevados que facilitan el armado y mantienen todo en su lugar, evitando pérdidas y desorden. Ideal para uso diario, tanto en casa como para llevar.</p>'
+        $description3 = '<p><strong>Bandeja metálica 4US para armar</strong> – Descubrí la combinación perfecta entre arte y funcionalidad. Esta bandeja presenta un <em>diseño animado con paleta de colores intensos</em> que la hace destacar como pieza única dentro de cualquier <strong>colección de accesorios</strong>.</p>'
+            . '<p>Su construcción en <strong>metal reforzado</strong> garantiza durabilidad y resistencia al uso diario. Los bordes redondeados y elevados facilitan el armado sin desperdiciar material, manteniendo todo ordenado en un solo lugar.</p>'
+            . '<p><strong>Características Principales:</strong></p>'
             . '<ul>'
-            . '<li>Material metálico resistente</li>'
-            . '<li>Bordes curvos para mayor comodidad</li>'
-            . '<li>Superficie amplia y fácil de limpiar</li>'
-            . '<li>Diseño exclusivo y llamativo</li>'
-            . '<li>Perfecta para uso personal o reventa</li>'
+            . '<li><strong>Construcción robusta:</strong> Metal resistente a golpes y caídas.</li>'
+            . '<li><strong>Bordes redondeados:</strong> Diseñados para una experiencia de armado cómoda.</li>'
+            . '<li><strong>Superficie antiadherente:</strong> Limpieza rápida y sin residuos.</li>'
+            . '<li><strong>Arte exclusivo:</strong> Ilustración animada con colores intensos y vibrantes.</li>'
+            . '<li><strong>Para todos:</strong> Uso personal, regalo o reventa en comercios.</li>'
             . '</ul>'
-            . '<p>Disponible por unidad o en ventas mayoristas. Un producto que combina funcionalidad y estética, ideal para potenciar tu catálogo.</p>';
+            . '<p>Comprá por unidad o aprovechá los precios de <strong>venta por mayor</strong>. Producto ideal para sumar al stock de tu <strong>tabaquería</strong> o <strong>smoke shop</strong>.</p>';
 
         $product3 = Product::firstOrCreate(
             ['title' => 'Bandeja metálica 4US – Edición diseño animado (variante 3)'],
@@ -249,16 +252,17 @@ class ProductSeeder extends Seeder
         );
 
         // ── 2. Product ─────────────────────────────────────────────────────
-        $description4 = '<p>Sumá estilo a tu ritual con la bandeja metálica 4US, pensada para quienes disfrutan cada detalle. Con un diseño inspirado en ilustraciones animadas icónicas y un acabado vibrante, esta bandeja no solo cumple su función, sino que también destaca como pieza de colección.</p>'
-            . '<p>Fabricada en metal resistente, ofrece una superficie amplia y bordes elevados que facilitan el armado y mantienen todo en su lugar, evitando pérdidas y desorden. Ideal para uso diario, tanto en casa como para llevar.</p>'
+        $description4 = '<p><strong>Bandeja metálica 4US para armar</strong> – Un accesorio que une practicidad con <strong>diseño urbano</strong>. Esta variante presenta una <em>gráfica animada con trazos urbanos y colores llamativos</em>, ideal para quienes buscan un estilo diferente y auténtico.</p>'
+            . '<p>Fabricada íntegramente en <strong>metal duradero</strong>, ofrece estabilidad, bordes contenedores y una superficie de trabajo amplia para un armado limpio y eficiente. Perfecta para el día a día o para salidas.</p>'
+            . '<p><strong>Características Principales:</strong></p>'
             . '<ul>'
-            . '<li>Material metálico resistente</li>'
-            . '<li>Bordes curvos para mayor comodidad</li>'
-            . '<li>Superficie amplia y fácil de limpiar</li>'
-            . '<li>Diseño exclusivo y llamativo</li>'
-            . '<li>Perfecta para uso personal o reventa</li>'
+            . '<li><strong>Metal de alta calidad:</strong> Resistente al desgaste y uso constante.</li>'
+            . '<li><strong>Bordes contenedores:</strong> Evitan pérdidas y mantienen el orden.</li>'
+            . '<li><strong>Superficie lisa:</strong> Armado cómodo y limpieza sin esfuerzo.</li>'
+            . '<li><strong>Estilo urbano:</strong> Diseño con trazos gráficos de alto impacto visual.</li>'
+            . '<li><strong>Ideal para reventa:</strong> Producto de alta rotación en tabaquerías.</li>'
             . '</ul>'
-            . '<p>Disponible por unidad o en ventas mayoristas. Un producto que combina funcionalidad y estética, ideal para potenciar tu catálogo.</p>';
+            . '<p>Disponible por unidad y en <strong>venta mayorista</strong> con precios especiales. Potenciá tu negocio con accesorios de calidad para tu <strong>tabaquería</strong> o <strong>grow shop</strong>.</p>';
 
         $product4 = Product::firstOrCreate(
             ['title' => 'Bandeja metálica 4US – Edición diseño animado (variante 4)'],
@@ -325,16 +329,17 @@ class ProductSeeder extends Seeder
         );
 
         // ── 2. Product ─────────────────────────────────────────────────────
-        $description5 = '<p>Sumá estilo a tu ritual con la bandeja metálica 4US, pensada para quienes disfrutan cada detalle. Con un diseño inspirado en ilustraciones animadas icónicas y un acabado vibrante, esta bandeja no solo cumple su función, sino que también destaca como pieza de colección.</p>'
-            . '<p>Fabricada en metal resistente, ofrece una superficie amplia y bordes elevados que facilitan el armado y mantienen todo en su lugar, evitando pérdidas y desorden. Ideal para uso diario, tanto en casa como para llevar.</p>'
+        $description5 = '<p><strong>Bandeja metálica 4US para armar</strong> – Cerrá tu colección con esta bandeja de <em>estética retro inspirada en animaciones clásicas</em>. Un accesorio que combina <strong>nostalgia y funcionalidad</strong> en un diseño pensado para verdaderos conocedores.</p>'
+            . '<p>Construida en <strong>metal resistente de primera calidad</strong>, esta bandeja cuenta con bordes elevados y una superficie amplia que facilita cada armado. Liviana, compacta y duradera, es la compañera ideal para el uso cotidiano.</p>'
+            . '<p><strong>Características Principales:</strong></p>'
             . '<ul>'
-            . '<li>Material metálico resistente</li>'
-            . '<li>Bordes curvos para mayor comodidad</li>'
-            . '<li>Superficie amplia y fácil de limpiar</li>'
-            . '<li>Diseño exclusivo y llamativo</li>'
-            . '<li>Perfecta para uso personal o reventa</li>'
+            . '<li><strong>Metal premium:</strong> Máxima resistencia y durabilidad garantizada.</li>'
+            . '<li><strong>Bordes elevados:</strong> Control total del material durante el armado.</li>'
+            . '<li><strong>Superficie generosa:</strong> Espacio amplio para armar con comodidad.</li>'
+            . '<li><strong>Diseño retro:</strong> Estética vintage animada con acabado de colección.</li>'
+            . '<li><strong>Doble propósito:</strong> Uso personal o producto estrella para reventa.</li>'
             . '</ul>'
-            . '<p>Disponible por unidad o en ventas mayoristas. Un producto que combina funcionalidad y estética, ideal para potenciar tu catálogo.</p>';
+            . '<p>Conseguila por unidad o por <strong>compra mayorista</strong>. Accesorio indispensable para <strong>tabaquerías</strong>, <strong>smoke shops</strong> y revendedores en Argentina.</p>';
 
         $product5 = Product::firstOrCreate(
             ['title' => 'Bandeja metálica 4US – Edición diseño animado (variante 5)'],
@@ -567,17 +572,17 @@ class ProductSeeder extends Seeder
         );
 
         // ── 2. Product ─────────────────────────────────────────────────────
-        $description8 = '<p>El Frasco Triturador Todo en Uno es un accesorio práctico y funcional diseñado para quienes buscan organizar, triturar y preparar su contenido en un solo dispositivo. Su diseño compacto integra múltiples funciones que facilitan el uso diario y mantienen todo en un mismo lugar.</p>'
-            . '<p>En la parte inferior incluye un picador desmontable, ideal para triturar de manera eficiente. La sección central cuenta con un visor transparente, que permite ver fácilmente el contenido almacenado sin necesidad de abrir el frasco. En la parte superior incorpora una lupa con luz LED recargable, perfecta para observar el material con mayor detalle.</p>'
-            . '<p>Este sistema multifunción combina almacenamiento y trituración en un solo accesorio, ofreciendo comodidad, portabilidad y un diseño moderno pensado para el uso cotidiano.</p>'
+        $description8 = '<p>El <strong>Frasco Triturador Todo en Uno</strong> es un <strong>accesorio multifunción</strong> diseñado para quienes buscan organizar, triturar y preparar su contenido en un solo dispositivo. Su diseño compacto integra múltiples funciones que facilitan el uso diario y mantienen todo en un mismo lugar.</p>'
+            . '<p>En la parte inferior incluye un <strong>picador (grinder) desmontable</strong>, ideal para triturar de manera eficiente. La sección central cuenta con un <em>visor transparente</em>, que permite ver fácilmente el contenido almacenado sin necesidad de abrir el frasco. En la parte superior incorpora una <strong>lupa con luz LED recargable</strong>, perfecta para observar el material con mayor detalle.</p>'
+            . '<p><strong>Características Principales:</strong></p>'
             . '<ul>'
-            . '<li>Picador (grinder) desmontable</li>'
-            . '<li>Frasco contenedor con visor transparente</li>'
-            . '<li>Lupa integrada en la tapa</li>'
-            . '<li>Luz LED recargable</li>'
-            . '<li>Diseño compacto y multifunción</li>'
+            . '<li><strong>Picador desmontable:</strong> Grinder integrado para un triturado eficiente.</li>'
+            . '<li><strong>Frasco contenedor:</strong> Visor transparente para ver el contenido sin abrir.</li>'
+            . '<li><strong>Lupa integrada:</strong> Ubicada en la tapa para inspección detallada.</li>'
+            . '<li><strong>Luz LED recargable:</strong> Iluminación incorporada para mejor visibilidad.</li>'
+            . '<li><strong>Diseño compacto:</strong> Sistema multifunción portátil y moderno.</li>'
             . '</ul>'
-            . '<p>Disponible por unidad o por mayor, ideal para tabaquerías, grow shops y revendedores que buscan sumar un accesorio práctico e innovador a su catálogo.</p>';
+            . '<p>Disponible por unidad o <strong>por mayor</strong>, ideal para <strong>tabaquerías</strong>, <strong>grow shops</strong> y revendedores que buscan sumar un accesorio práctico e innovador a su catálogo.</p>';
 
         $product8 = Product::firstOrCreate(
             ['title' => 'Frasco Triturador Todo en Uno con Lupa y Luz LED'],
@@ -662,21 +667,21 @@ class ProductSeeder extends Seeder
         );
 
         // ── 2. Product ─────────────────────────────────────────────────────
-        $description9 = '<p>Potenciá tu experiencia con el picador de hierba 4US, diseñado para ofrecer un triturado preciso, uniforme y sin esfuerzo. Fabricado en aleación de zinc resistente, este grinder combina durabilidad, diseño y funcionalidad en un formato compacto ideal para el uso diario.</p>'
-            . '<p>Su sistema de 4 piezas incluye dientes de corte tipo diamante que garantizan una molienda eficiente, mientras que el filtro de malla fina permite separar las partículas más finas para un aprovechamiento completo del material. Además, su tapa magnética asegura un cierre firme y seguro durante el uso o transporte.</p>'
-            . '<p>Disponible en diseños llamativos y psicodélicos, este picador no solo es funcional sino también un accesorio con estilo dentro de cualquier colección de tabaquería.</p>'
-            . '<p><strong>Características:</strong></p>'
+        $description9 = '<p>Potenciá tu experiencia con el <strong>picador de hierba 4US</strong>, diseñado para ofrecer un <strong>triturado preciso, uniforme y sin esfuerzo</strong>. Fabricado en <strong>aleación de zinc resistente</strong>, este grinder combina durabilidad, diseño y funcionalidad en un formato compacto ideal para el uso diario.</p>'
+            . '<p>Su sistema de <strong>4 piezas</strong> incluye dientes de corte tipo diamante que garantizan una molienda eficiente, mientras que el <em>filtro de malla fina</em> permite separar las partículas más finas para un aprovechamiento completo del material. Además, su <strong>tapa magnética</strong> asegura un cierre firme y seguro durante el uso o transporte.</p>'
+            . '<p>Disponible en <em>diseños llamativos y psicodélicos</em>, este picador no solo es funcional sino también un accesorio con estilo dentro de cualquier colección de <strong>tabaquería</strong>.</p>'
+            . '<p><strong>Características Principales:</strong></p>'
             . '<ul>'
-            . '<li>Material: Aleación de zinc resistente</li>'
-            . '<li>Sistema de 4 piezas con compartimento de almacenamiento</li>'
-            . '<li>Dientes de corte tipo diamante para triturado uniforme</li>'
-            . '<li>Filtro de malla fina para filtrado de partículas</li>'
-            . '<li>Tapa magnética para cierre seguro</li>'
-            . '<li>Incluye raspador para recolectar residuos</li>'
-            . '<li>Diámetro: 50 mm</li>'
+            . '<li><strong>Material:</strong> Aleación de zinc resistente y duradera.</li>'
+            . '<li><strong>Sistema de 4 piezas:</strong> Con compartimento de almacenamiento integrado.</li>'
+            . '<li><strong>Dientes tipo diamante:</strong> Triturado uniforme y eficiente.</li>'
+            . '<li><strong>Filtro de malla fina:</strong> Separación precisa de partículas.</li>'
+            . '<li><strong>Tapa magnética:</strong> Cierre seguro para transporte sin derrames.</li>'
+            . '<li><strong>Raspador incluido:</strong> Para recolectar residuos fácilmente.</li>'
+            . '<li><strong>Diámetro:</strong> 50 mm, tamaño compacto y portátil.</li>'
             . '</ul>'
-            . '<p>Perfecto para quienes buscan calidad, practicidad y diseño en un solo accesorio. Un producto imprescindible en cualquier smoke shop o tabaquería.</p>'
-            . '<p>Disponible para venta por unidad y por mayor.</p>';
+            . '<p>Perfecto para quienes buscan <strong>calidad y diseño</strong> en un solo accesorio. Un producto imprescindible en cualquier <strong>smoke shop</strong> o <strong>tabaquería</strong>.</p>'
+            . '<p>Disponible para <strong>venta por menor y por mayor</strong>.</p>';
 
         $product9 = Product::firstOrCreate(
             ['title' => 'Picador de Hierba 4US – Aleación de Zinc 4 Piezas (50 mm)'],
@@ -749,21 +754,21 @@ class ProductSeeder extends Seeder
         );
 
         // ── 2. Product ─────────────────────────────────────────────────────
-        $description10 = '<p>Potenciá tu experiencia con el picador de hierba 4US, diseñado para ofrecer un triturado preciso, uniforme y sin esfuerzo. Fabricado en aleación de zinc resistente, este grinder combina durabilidad, diseño y funcionalidad en un formato compacto ideal para el uso diario.</p>'
-            . '<p>Su sistema de 4 piezas incluye dientes de corte tipo diamante que garantizan una molienda eficiente, mientras que el filtro de malla fina permite separar las partículas más finas para un aprovechamiento completo del material. Además, su tapa magnética asegura un cierre firme y seguro durante el uso o transporte.</p>'
-            . '<p>Disponible en diseños llamativos y psicodélicos, este picador no solo es funcional sino también un accesorio con estilo dentro de cualquier colección de tabaquería.</p>'
-            . '<p><strong>Características:</strong></p>'
+        $description10 = '<p>Elevá tu experiencia con el <strong>picador de hierba 4US</strong> en su segunda variante de diseño. Fabricado en <strong>aleación de zinc de alta resistencia</strong>, este grinder ofrece un <strong>triturado preciso y uniforme</strong> en un formato compacto pensado para el uso intensivo.</p>'
+            . '<p>Con su sistema de <strong>4 piezas</strong>, incluye dientes de corte tipo diamante para una molienda eficiente y un <em>filtro de malla fina</em> que separa las partículas más pequeñas. La <strong>tapa magnética</strong> garantiza un cierre firme y seguro, ideal para transportar sin preocupaciones.</p>'
+            . '<p>Esta variante presenta un <em>diseño exclusivo con gráfica psicodélica diferenciada</em>, destacando como accesorio de estilo en cualquier <strong>colección de tabaquería</strong>.</p>'
+            . '<p><strong>Características Principales:</strong></p>'
             . '<ul>'
-            . '<li>Material: Aleación de zinc resistente</li>'
-            . '<li>Sistema de 4 piezas con compartimento de almacenamiento</li>'
-            . '<li>Dientes de corte tipo diamante para triturado uniforme</li>'
-            . '<li>Filtro de malla fina para filtrado de partículas</li>'
-            . '<li>Tapa magnética para cierre seguro</li>'
-            . '<li>Incluye raspador para recolectar residuos</li>'
-            . '<li>Diámetro: 50 mm</li>'
+            . '<li><strong>Material:</strong> Aleación de zinc premium, resistente al desgaste.</li>'
+            . '<li><strong>4 piezas:</strong> Sistema completo con compartimento de almacenamiento.</li>'
+            . '<li><strong>Corte tipo diamante:</strong> Molienda uniforme en cada uso.</li>'
+            . '<li><strong>Malla fina:</strong> Filtrado óptimo de partículas pequeñas.</li>'
+            . '<li><strong>Cierre magnético:</strong> Seguridad durante el transporte.</li>'
+            . '<li><strong>Raspador incluido:</strong> Recolección fácil de residuos.</li>'
+            . '<li><strong>Diámetro:</strong> 50 mm, portátil y práctico.</li>'
             . '</ul>'
-            . '<p>Perfecto para quienes buscan calidad, practicidad y diseño en un solo accesorio. Un producto imprescindible en cualquier smoke shop o tabaquería.</p>'
-            . '<p>Disponible para venta por unidad y por mayor.</p>';
+            . '<p>Ideal para uso personal o como producto estrella en tu <strong>tabaquería</strong> o <strong>grow shop</strong>.</p>'
+            . '<p>Disponible para <strong>compra por menor y mayorista</strong>.</p>';
 
         $product10 = Product::firstOrCreate(
             ['title' => 'Picador de Hierba 4US – Aleación de Zinc 4 Piezas (50 mm) (Variante 2)'],
@@ -836,18 +841,19 @@ class ProductSeeder extends Seeder
         );
 
         // ── 2. Product ─────────────────────────────────────────────────────
-        $description11 = '<p>Los 4US Brown Rolling Paper son papeles para armar de alta calidad, fabricados con pulpa de madera 100% natural y diseñados para ofrecer una combustión pareja y un armado cómodo.</p>'
-            . '<p>Su papel brown sin blanquear mantiene un estilo más natural y ligero, permitiendo disfrutar una experiencia de fumado más pura y con mejor tiraje. Además, cuentan con goma arábiga natural, lo que asegura un pegado firme y sencillo al momento de armar.</p>'
-            . '<p>Cada display incluye 22 packs, lo que lo convierte en una excelente opción para kioscos, tabaquerías y revendedores que buscan un producto confiable y de buena rotación.</p>'
-            . '<p>El diseño del packaging, con una estética colorida e inspirada en la naturaleza, refleja el enfoque natural del producto y lo hace destacar en cualquier mostrador.</p>'
+        $description11 = '<p>Los <strong>4US Brown Rolling Paper</strong> son <strong>papeles para armar de alta calidad</strong>, fabricados con <em>pulpa de madera 100% natural</em> y diseñados para ofrecer una <strong>combustión pareja</strong> y un armado cómodo.</p>'
+            . '<p>Su <strong>papel brown sin blanquear</strong> mantiene un estilo más natural y ligero, permitiendo disfrutar una experiencia de fumado más pura y con mejor tiraje. Además, cuentan con <strong>goma arábiga natural</strong>, lo que asegura un pegado firme y sencillo al momento de armar.</p>'
+            . '<p>Cada <strong>display incluye 22 packs</strong>, lo que lo convierte en una excelente opción para kioscos, <strong>tabaquerías</strong> y revendedores que buscan un producto confiable y de buena rotación.</p>'
+            . '<p>El diseño del packaging, con una <em>estética colorida e inspirada en la naturaleza</em>, refleja el enfoque natural del producto y lo hace destacar en cualquier mostrador.</p>'
+            . '<p><strong>Características Principales:</strong></p>'
             . '<ul>'
-            . '<li>Papel brown natural</li>'
-            . '<li>Goma arábiga natural</li>'
-            . '<li>Fabricado con 100% pulpa de madera</li>'
-            . '<li>Combustión uniforme</li>'
-            . '<li>Display de 22 packs</li>'
+            . '<li><strong>Papel brown natural:</strong> Sin blanquear, para una experiencia más pura.</li>'
+            . '<li><strong>Goma arábiga natural:</strong> Pegado firme y sencillo.</li>'
+            . '<li><strong>100% pulpa de madera:</strong> Material orgánico de primera calidad.</li>'
+            . '<li><strong>Combustión uniforme:</strong> Quemado parejo sin interrupciones.</li>'
+            . '<li><strong>Display de 22 packs:</strong> Formato ideal para reventa.</li>'
             . '</ul>'
-            . '<p>Disponibles por unidad o por mayor, ideales para consumidores habituales y comercios que buscan sumar un papel de calidad a su catálogo.</p>';
+            . '<p>Disponibles por unidad o <strong>por mayor</strong>, ideales para consumidores habituales y comercios que buscan sumar un <strong>rolling paper</strong> de calidad a su catálogo de <strong>tabaquería</strong>.</p>';
 
         $product11 = Product::firstOrCreate(
             ['title' => '4US Brown Rolling Paper – Papel para armar'],
@@ -920,16 +926,17 @@ class ProductSeeder extends Seeder
         );
 
         // ── 2. Product ─────────────────────────────────────────────────────
-        $description12 = '<p>Descubrí una experiencia diferente al armar con los papeles 4US Brown. Diseñados para quienes buscan calidad y estilo, estos papeles están fabricados con material orgánico sin blanquear, ofreciendo una combustión más natural, lenta y uniforme.</p>'
-            . '<p>Su formato práctico y liviano los convierte en el compañero ideal para llevar a todos lados, mientras que su diseño psicodélico y vibrante refleja una identidad única, pensada para quienes viven cada momento al máximo.</p>'
+        $description12 = '<p>Descubrí una experiencia diferente al armar con los <strong>papeles 4US Brown</strong>. Diseñados para quienes buscan <strong>calidad y estilo</strong>, estos papeles están fabricados con <em>material orgánico sin blanquear</em>, ofreciendo una <strong>combustión más natural, lenta y uniforme</strong>.</p>'
+            . '<p>Su formato práctico y liviano los convierte en el compañero ideal para llevar a todos lados, mientras que su <em>diseño psicodélico y vibrante</em> refleja una identidad única, pensada para quienes viven cada momento al máximo.</p>'
+            . '<p><strong>Características Principales:</strong></p>'
             . '<ul>'
-            . '<li>Papel orgánico sin blanquear</li>'
-            . '<li>Combustión lenta y pareja</li>'
-            . '<li>Sabor más puro, sin interferencias</li>'
-            . '<li>Pack de 50 hojas</li>'
-            . '<li>Ideal para uso personal o reventa</li>'
+            . '<li><strong>Papel orgánico:</strong> Sin blanquear, para un fumado más natural.</li>'
+            . '<li><strong>Combustión lenta:</strong> Quemado parejo y prolongado.</li>'
+            . '<li><strong>Sabor puro:</strong> Sin interferencias químicas en el sabor.</li>'
+            . '<li><strong>Pack de 50 hojas:</strong> Contenido generoso para uso prolongado.</li>'
+            . '<li><strong>Ideal para reventa:</strong> Producto de alta rotación en tabaquerías.</li>'
             . '</ul>'
-            . '<p>Disponibles por unidad o en compras mayoristas. Stock permanente para abastecer tu negocio o sumar a tu colección.</p>';
+            . '<p>Disponibles por unidad o en <strong>compras mayoristas</strong>. Stock permanente para abastecer tu negocio de <strong>tabaquería</strong> o sumar a tu colección personal de <strong>rolling papers</strong>.</p>';
 
         $product12 = Product::firstOrCreate(
             ['title' => 'Papel para armar 4US Brown – Pack x50 hojas'],
@@ -985,17 +992,18 @@ class ProductSeeder extends Seeder
         );
 
         // ── 2. Product ─────────────────────────────────────────────────────
-        $description13 = '<p>Los 4US Premium Cone son conos prearmados de alta calidad diseñados para quienes buscan practicidad y una experiencia de fumado uniforme. Fabricados con papel ultra fino de origen natural, permiten una combustión pareja que respeta el sabor del contenido.</p>'
-            . '<p>Cada cono viene perfectamente armado con filtro incorporado, listo para rellenar sin necesidad de armar manualmente. Esto los convierte en una opción ideal tanto para usuarios habituales como para quienes prefieren una preparación rápida y cómoda.</p>'
-            . '<p>El pack incluye 55 conos prearmados, elaborados con papel orgánico blanqueado, garantizando un producto liviano, resistente y de excelente tiraje.</p>'
+        $description13 = '<p>Los <strong>4US Premium Cone</strong> son <strong>conos prearmados de alta calidad</strong> diseñados para quienes buscan practicidad y una experiencia de fumado uniforme. Fabricados con <em>papel ultra fino de origen natural</em>, permiten una <strong>combustión pareja</strong> que respeta el sabor del contenido.</p>'
+            . '<p>Cada cono viene <strong>perfectamente armado con filtro incorporado</strong>, listo para rellenar sin necesidad de armar manualmente. Esto los convierte en una opción ideal tanto para usuarios habituales como para quienes prefieren una preparación rápida y cómoda.</p>'
+            . '<p>El pack incluye <strong>55 conos prearmados</strong>, elaborados con <em>papel orgánico blanqueado</em>, garantizando un producto liviano, resistente y de excelente tiraje.</p>'
+            . '<p><strong>Características Principales:</strong></p>'
             . '<ul>'
-            . '<li>Papel ultra fino de goma arábiga natural</li>'
-            . '<li>Combustión uniforme</li>'
-            . '<li>Cono prearmado con filtro</li>'
-            . '<li>Papel 100% natural</li>'
-            . '<li>Pack de 55 unidades</li>'
+            . '<li><strong>Papel ultra fino:</strong> Con goma arábiga natural para sellado perfecto.</li>'
+            . '<li><strong>Combustión uniforme:</strong> Quemado parejo de principio a fin.</li>'
+            . '<li><strong>Cono prearmado:</strong> Con filtro incorporado, listo para usar.</li>'
+            . '<li><strong>Papel 100% natural:</strong> Material orgánico de primera calidad.</li>'
+            . '<li><strong>Pack de 55 unidades:</strong> Contenido ideal para uso prolongado o reventa.</li>'
             . '</ul>'
-            . '<p>Disponibles por unidad o por mayor, ideales para kioscos, tabaquerías y revendedores que buscan ofrecer un producto práctico y de gran rotación.</p>';
+            . '<p>Disponibles por unidad o <strong>por mayor</strong>, ideales para kioscos, <strong>tabaquerías</strong> y revendedores que buscan ofrecer <strong>conos prearmados</strong> de gran rotación.</p>';
 
         $product13 = Product::firstOrCreate(
             ['title' => '4US Premium Cone – Conos prearmados'],
@@ -1050,18 +1058,18 @@ class ProductSeeder extends Seeder
         );
 
         // ── 2. Product ─────────────────────────────────────────────────────
-        $description14 = '<p>Mantén tu material siempre en perfectas condiciones con este contenedor hermético diseñado para conservar aroma, frescura y calidad. Su sistema de cierre a presión con válvula permite liberar el aire interno para lograr un sellado más efectivo, ayudando a preservar el contenido por más tiempo.</p>'
-            . '<p>Fabricado con materiales resistentes y livianos, es ideal para transportar de forma segura y discreta. Su diseño exterior con arte psicodélico le da un estilo único que destaca entre los accesorios de tabaquería.</p>'
+        $description14 = '<p>Mantené tu material siempre en perfectas condiciones con este <strong>contenedor hermético</strong> diseñado para conservar <strong>aroma, frescura y calidad</strong>. Su sistema de <em>cierre a presión con válvula</em> permite liberar el aire interno para lograr un sellado más efectivo, ayudando a preservar el contenido por más tiempo.</p>'
+            . '<p>Fabricado con <strong>materiales resistentes y livianos</strong>, es ideal para transportar de forma segura y discreta. Su diseño exterior con <em>arte psicodélico</em> le da un estilo único que destaca entre los <strong>accesorios de tabaquería</strong>.</p>'
             . '<p>Perfecto para uso personal o para quienes buscan organizar su kit con accesorios funcionales y con personalidad.</p>'
-            . '<p><strong>Características:</strong></p>'
+            . '<p><strong>Características Principales:</strong></p>'
             . '<ul>'
-            . '<li>Sistema de cierre hermético con botón de presión</li>'
-            . '<li>Conserva aroma y frescura por más tiempo</li>'
-            . '<li>Material resistente y liviano</li>'
-            . '<li>Diseño artístico psicodélico</li>'
-            . '<li>Compacto y fácil de transportar</li>'
+            . '<li><strong>Cierre hermético:</strong> Sistema con botón de presión para sellado total.</li>'
+            . '<li><strong>Conservación óptima:</strong> Mantiene aroma y frescura por más tiempo.</li>'
+            . '<li><strong>Material resistente:</strong> Construcción liviana y duradera.</li>'
+            . '<li><strong>Diseño artístico:</strong> Estética psicodélica única y llamativa.</li>'
+            . '<li><strong>Compacto y portátil:</strong> Fácil de transportar a cualquier lugar.</li>'
             . '</ul>'
-            . '<p>Disponible por unidad y también para compra mayorista.</p>';
+            . '<p>Disponible por unidad y también para <strong>compra mayorista</strong>. Accesorio ideal para <strong>tabaquerías</strong> y <strong>grow shops</strong>.</p>';
 
         $product14 = Product::firstOrCreate(
             ['title' => 'Contenedor hermético “Keep It Fresh”'],
@@ -1122,16 +1130,17 @@ class ProductSeeder extends Seeder
         );
 
         // ── 2. Product ─────────────────────────────────────────────────────
-        $description15 = '<p>Picador de alta calidad fabricado en metal resistente, ideal para lograr una molienda uniforme y sin esfuerzo. Su diseño de 3 partes permite triturar el material de forma eficiente, mientras que el compartimento intermedio facilita la recolección sin desperdicios.</p>'
-            . '<p>Cuenta con dientes afilados tipo diamante que garantizan un corte preciso, y una tapa con cierre magnético que asegura firmeza durante el uso. Incluye tamiz fino para filtrar partículas más pequeñas, optimizando cada uso.</p>'
-            . '<p>Compacto, duradero y fácil de transportar, es una herramienta esencial tanto para uso personal como para reventa en tabaquerías.</p>'
+        $description15 = '<p><strong>Picador metálico 4US de 3 partes</strong> – De alta calidad, fabricado en <strong>metal resistente</strong>, ideal para lograr una <strong>molienda uniforme y sin esfuerzo</strong>. Su diseño de 3 partes permite triturar el material de forma eficiente, mientras que el compartimento intermedio facilita la recolección sin desperdicios.</p>'
+            . '<p>Cuenta con <strong>dientes afilados tipo diamante</strong> que garantizan un corte preciso, y una <em>tapa con cierre magnético</em> que asegura firmeza durante el uso. Incluye <strong>tamiz fino</strong> para filtrar partículas más pequeñas, optimizando cada uso.</p>'
+            . '<p>Compacto, duradero y fácil de transportar, es una herramienta esencial tanto para uso personal como para reventa en <strong>tabaquerías</strong>.</p>'
+            . '<p><strong>Especificaciones Técnicas:</strong></p>'
             . '<ul>'
-            . '<li>Material: Metal</li>'
-            . '<li>Sistema: 3 partes con filtro</li>'
-            . '<li>Cierre magnético</li>'
-            . '<li>Molienda uniforme y eficiente</li>'
+            . '<li><strong>Material:</strong> Metal de alta resistencia y durabilidad.</li>'
+            . '<li><strong>Sistema:</strong> 3 partes con filtro integrado.</li>'
+            . '<li><strong>Cierre magnético:</strong> Seguridad y firmeza en cada uso.</li>'
+            . '<li><strong>Molienda uniforme:</strong> Dientes tipo diamante para corte preciso.</li>'
             . '</ul>'
-            . '<p>Disponible por unidad y por mayor.</p>';
+            . '<p>Disponible por unidad y <strong>por mayor</strong>. Producto ideal para <strong>smoke shops</strong>, <strong>tabaquerías</strong> y revendedores.</p>';
 
         $product15 = Product::firstOrCreate(
             ['title' => 'Picador metálico 3 partes 4US'],
@@ -1192,17 +1201,17 @@ class ProductSeeder extends Seeder
         );
 
         // ── 2. Product ─────────────────────────────────────────────────────
-        $description16 = '<p>Práctica, funcional y con un diseño llamativo, esta bandeja imantada es el accesorio ideal para quienes buscan comodidad y orden al momento de preparar. Su base imantada se adhiere a superficies metálicas, evitando movimientos y derrames, brindando mayor estabilidad en cada uso.</p>'
-            . '<p>Gracias a sus bordes elevados, permite trabajar sin desperdiciar material, manteniendo todo en un solo lugar. Su tamaño compacto la hace fácil de transportar, perfecta tanto para uso diario como para llevar a cualquier lado.</p>'
-            . '<p>El diseño exclusivo le da un estilo único que destaca dentro de cualquier colección de accesorios de tabaquería.</p>'
+        $description16 = '<p>Práctica, funcional y con un diseño llamativo, esta <strong>bandeja imantada para armar</strong> es el accesorio ideal para quienes buscan comodidad y orden al momento de preparar. Su <strong>base imantada</strong> se adhiere a superficies metálicas, evitando movimientos y derrames, brindando mayor estabilidad en cada uso.</p>'
+            . '<p>Gracias a sus <strong>bordes elevados</strong>, permite trabajar sin desperdiciar material, manteniendo todo en un solo lugar. Su tamaño compacto la hace fácil de transportar, perfecta tanto para uso diario como para llevar a cualquier lado.</p>'
+            . '<p>El <em>diseño exclusivo con arte psicodélico en tonos cálidos</em> le da un estilo único que destaca dentro de cualquier colección de <strong>accesorios de tabaquería</strong>.</p>'
+            . '<p><strong>Características Principales:</strong></p>'
             . '<ul>'
-            . '<li>Base imantada antideslizante</li>'
-            . '<li>Bordes elevados para mayor control</li>'
-            . '<li>Tamaño práctico y portátil</li>'
-            . '<li>Diseño original y llamativo</li>'
+            . '<li><strong>Base imantada:</strong> Antideslizante para máxima estabilidad.</li>'
+            . '<li><strong>Bordes elevados:</strong> Mayor control y retención del material.</li>'
+            . '<li><strong>Tamaño práctico:</strong> Compacta y fácil de transportar.</li>'
+            . '<li><strong>Diseño original:</strong> Arte psicodélico con paleta de colores cálidos.</li>'
             . '</ul>'
-            . '<p>Ideal para picar, armar y mantener todo organizado.</p>'
-            . '<p>Disponible por unidad y por mayor.</p>';
+            . '<p>Ideal para picar, armar y mantener todo organizado. Disponible por unidad y <strong>por mayor</strong> para <strong>tabaquerías</strong> y revendedores.</p>';
 
         $product16 = Product::firstOrCreate(
             ['title' => 'Bandeja Imantada para armar'],
@@ -1281,17 +1290,17 @@ class ProductSeeder extends Seeder
         );
 
         // ── 2. Product ─────────────────────────────────────────────────────
-        $description17 = '<p>Práctica, funcional y con un diseño llamativo, esta bandeja imantada es el accesorio ideal para quienes buscan comodidad y orden al momento de preparar. Su base imantada se adhiere a superficies metálicas, evitando movimientos y derrames, brindando mayor estabilidad en cada uso.</p>'
-            . '<p>Gracias a sus bordes elevados, permite trabajar sin desperdiciar material, manteniendo todo en un solo lugar. Su tamaño compacto la hace fácil de transportar, perfecta tanto para uso diario como para llevar a cualquier lado.</p>'
-            . '<p>El diseño exclusivo le da un estilo único que destaca dentro de cualquier colección de accesorios de tabaquería.</p>'
+        $description17 = '<p>Organizá tu espacio de armado con esta <strong>bandeja imantada 4US</strong>, diseñada para combinar <strong>practicidad y estilo</strong>. Su <strong>base magnética</strong> se fija a superficies metálicas, garantizando estabilidad total y evitando derrames mientras preparás.</p>'
+            . '<p>Los <strong>bordes elevados</strong> mantienen el material contenido en la superficie de trabajo, facilitando un armado limpio y sin desperdicios. Su formato compacto la convierte en el accesorio perfecto para llevar a cualquier lugar.</p>'
+            . '<p>Esta variante presenta un <em>diseño con gráfica urbana en tonos fríos</em>, aportando una estética moderna y diferenciada dentro de la colección de <strong>accesorios de tabaquería 4US</strong>.</p>'
+            . '<p><strong>Características Principales:</strong></p>'
             . '<ul>'
-            . '<li>Base imantada antideslizante</li>'
-            . '<li>Bordes elevados para mayor control</li>'
-            . '<li>Tamaño práctico y portátil</li>'
-            . '<li>Diseño original y llamativo</li>'
+            . '<li><strong>Base magnética:</strong> Fijación segura sobre superficies metálicas.</li>'
+            . '<li><strong>Bordes contenedores:</strong> Evitan pérdidas de material al armar.</li>'
+            . '<li><strong>Portátil:</strong> Tamaño compacto ideal para transportar.</li>'
+            . '<li><strong>Diseño urbano:</strong> Gráfica exclusiva en tonos fríos y modernos.</li>'
             . '</ul>'
-            . '<p>Ideal para picar, armar y mantener todo organizado.</p>'
-            . '<p>Disponible por unidad y por mayor.</p>';
+            . '<p>Ideal para picar, armar y organizar. Disponible por unidad y en <strong>venta mayorista</strong> para <strong>tabaquerías</strong>, <strong>smoke shops</strong> y revendedores.</p>';
 
         $product17 = Product::firstOrCreate(
             ['title' => 'Bandeja Imantada para armar Variante 2'],
@@ -1370,17 +1379,18 @@ class ProductSeeder extends Seeder
         );
 
         // ── 2. Product ─────────────────────────────────────────────────────
-        $description18 = '<p>Cenicero de vidrio resistente con terminación de alta calidad, ideal para acompañar cualquier espacio con estilo y funcionalidad. Su diseño sólido garantiza estabilidad, mientras que sus ranuras permiten apoyar cómodamente cigarrillos o armados.</p>'
-            . '<p>Cuenta con una base amplia que facilita la limpieza y evita la acumulación de residuos fuera del área de uso. Disponible en distintos diseños exclusivos, con gráficos llamativos que le dan un toque único y moderno.</p>'
-            . '<p>Perfecto tanto para uso personal como para sumar a la oferta de cualquier tabaquería.</p>'
+        $description18 = '<p><strong>Cenicero de vidrio 4US</strong> resistente con terminación de alta calidad, ideal para acompañar cualquier espacio con <strong>estilo y funcionalidad</strong>. Su diseño sólido garantiza estabilidad, mientras que sus ranuras permiten apoyar cómodamente cigarrillos o armados.</p>'
+            . '<p>Cuenta con una <strong>base amplia</strong> que facilita la limpieza y evita la acumulación de residuos fuera del área de uso. Este modelo presenta un <em>diseño psicodélico multicolor</em> con gráficos llamativos que le dan un toque único y moderno.</p>'
+            . '<p>Perfecto tanto para uso personal como para sumar a la oferta de cualquier <strong>tabaquería</strong>.</p>'
+            . '<p><strong>Características Principales:</strong></p>'
             . '<ul>'
-            . '<li>Material: Vidrio resistente</li>'
-            . '<li>Ranuras para apoyo seguro</li>'
-            . '<li>Fácil de limpiar</li>'
-            . '<li>Diseños originales y llamativos</li>'
-            . '<li>Base estable y duradera</li>'
+            . '<li><strong>Material:</strong> Vidrio resistente de alta calidad.</li>'
+            . '<li><strong>Ranuras funcionales:</strong> Apoyo seguro para cigarrillos y armados.</li>'
+            . '<li><strong>Fácil de limpiar:</strong> Superficie lisa sin porosidades.</li>'
+            . '<li><strong>Diseño psicodélico:</strong> Arte multicolor vibrante y original.</li>'
+            . '<li><strong>Base estable:</strong> Construcción sólida y duradera.</li>'
             . '</ul>'
-            . '<p>Disponible por unidad y por mayor.</p>';
+            . '<p>Disponible por unidad y <strong>por mayor</strong>. Accesorio ideal para <strong>smoke shops</strong> y <strong>tabaquerías</strong>.</p>';
 
         $product18 = Product::firstOrCreate(
             ['title' => 'Cenicero de vidrio 4US – Diseño Premium'],
@@ -1441,17 +1451,18 @@ class ProductSeeder extends Seeder
         );
 
         // ── 2. Product ─────────────────────────────────────────────────────
-        $description19 = '<p>Cenicero de vidrio resistente con terminación de alta calidad, ideal para acompañar cualquier espacio con estilo y funcionalidad. Su diseño sólido garantiza estabilidad, mientras que sus ranuras permiten apoyar cómodamente cigarrillos o armados.</p>'
-            . '<p>Cuenta con una base amplia que facilita la limpieza y evita la acumulación de residuos fuera del área de uso. Disponible en distintos diseños exclusivos, con gráficos llamativos que le dan un toque único y moderno.</p>'
-            . '<p>Perfecto tanto para uso personal como para sumar a la oferta de cualquier tabaquería.</p>'
+        $description19 = '<p><strong>Cenicero de vidrio 4US</strong> con acabado premium, diseñado para quienes valoran la <strong>calidad y el diseño</strong> en cada detalle. Su estructura de <strong>vidrio resistente</strong> ofrece durabilidad y estabilidad en cualquier superficie.</p>'
+            . '<p>Las ranuras integradas permiten apoyar cigarrillos o armados de forma segura, mientras que su <strong>base amplia</strong> facilita el mantenimiento y la limpieza diaria. Esta variante presenta una <em>gráfica artística con tonos vibrantes</em>, ideal para darle personalidad a tu espacio.</p>'
+            . '<p>Un accesorio funcional que eleva la estética de cualquier rincón fumador.</p>'
+            . '<p><strong>Características Principales:</strong></p>'
             . '<ul>'
-            . '<li>Material: Vidrio resistente</li>'
-            . '<li>Ranuras para apoyo seguro</li>'
-            . '<li>Fácil de limpiar</li>'
-            . '<li>Diseños originales y llamativos</li>'
-            . '<li>Base estable y duradera</li>'
+            . '<li><strong>Vidrio premium:</strong> Resistente a impactos y al uso intensivo.</li>'
+            . '<li><strong>Ranuras de apoyo:</strong> Soporte seguro para cigarrillos y armados.</li>'
+            . '<li><strong>Limpieza sencilla:</strong> Superficie que no retiene residuos.</li>'
+            . '<li><strong>Arte vibrante:</strong> Gráfica artística con colores llamativos.</li>'
+            . '<li><strong>Estabilidad total:</strong> Base amplia y peso adecuado.</li>'
             . '</ul>'
-            . '<p>Disponible por unidad y por mayor.</p>';
+            . '<p>Disponible por unidad y en <strong>compra mayorista</strong> para <strong>tabaquerías</strong> y revendedores.</p>';
 
         $product19 = Product::firstOrCreate(
             ['title' => 'Cenicero de vidrio 4US – Diseño Premium (Variante 2)'],
@@ -1506,17 +1517,18 @@ class ProductSeeder extends Seeder
         );
 
         // ── 2. Product ─────────────────────────────────────────────────────
-        $description20 = '<p>Cenicero de vidrio resistente con terminación de alta calidad, ideal para acompañar cualquier espacio con estilo y funcionalidad. Su diseño sólido garantiza estabilidad, mientras que sus ranuras permiten apoyar cómodamente cigarrillos o armados.</p>'
-            . '<p>Cuenta con una base amplia que facilita la limpieza y evita la acumulación de residuos fuera del área de uso. Disponible en distintos diseños exclusivos, con gráficos llamativos que le dan un toque único y moderno.</p>'
-            . '<p>Perfecto tanto para uso personal como para sumar a la oferta de cualquier tabaquería.</p>'
+        $description20 = '<p><strong>Cenicero de vidrio 4US</strong> con terminación de primera calidad, pensado para complementar cualquier espacio con un <strong>toque artístico y urbano</strong>. Fabricado en <strong>vidrio grueso y resistente</strong>, garantiza una larga vida útil incluso con uso diario intenso.</p>'
+            . '<p>Su diseño funcional incluye ranuras para apoyo de cigarrillos y una base estable que evita vuelcos. Esta variante destaca por su <em>estampado con arte urbano</em>, una opción moderna y con carácter para los amantes del estilo callejero.</p>'
+            . '<p>Ideal como accesorio personal o como producto destacado en la vidriera de tu comercio.</p>'
+            . '<p><strong>Características Principales:</strong></p>'
             . '<ul>'
-            . '<li>Material: Vidrio resistente</li>'
-            . '<li>Ranuras para apoyo seguro</li>'
-            . '<li>Fácil de limpiar</li>'
-            . '<li>Diseños originales y llamativos</li>'
-            . '<li>Base estable y duradera</li>'
+            . '<li><strong>Vidrio grueso:</strong> Máxima resistencia para uso intensivo.</li>'
+            . '<li><strong>Ranuras integradas:</strong> Apoyo cómodo y seguro para cigarrillos.</li>'
+            . '<li><strong>Fácil mantenimiento:</strong> Limpieza rápida sin complicaciones.</li>'
+            . '<li><strong>Arte urbano:</strong> Estampado con estética callejera y moderna.</li>'
+            . '<li><strong>Diseño estable:</strong> Base firme que evita accidentes.</li>'
             . '</ul>'
-            . '<p>Disponible por unidad y por mayor.</p>';
+            . '<p>Disponible por unidad y <strong>por mayor</strong>. Sumá estilo al stock de tu <strong>tabaquería</strong> o <strong>smoke shop</strong>.</p>';
 
         $product20 = Product::firstOrCreate(
             ['title' => 'Cenicero de vidrio 4US – Diseño Premium (Variante 3)'],
@@ -1577,17 +1589,18 @@ class ProductSeeder extends Seeder
         );
 
         // ── 2. Product ─────────────────────────────────────────────────────
-        $description21 = '<p>Cenicero de vidrio resistente con terminación de alta calidad, ideal para acompañar cualquier espacio con estilo y funcionalidad. Su diseño sólido garantiza estabilidad, mientras que sus ranuras permiten apoyar cómodamente cigarrillos o armados.</p>'
-            . '<p>Cuenta con una base amplia que facilita la limpieza y evita la acumulación de residuos fuera del área de uso. Disponible en distintos diseños exclusivos, con gráficos llamativos que le dan un toque único y moderno.</p>'
-            . '<p>Perfecto tanto para uso personal como para sumar a la oferta de cualquier tabaquería.</p>'
+        $description21 = '<p><strong>Cenicero de vidrio 4US</strong> con diseño exclusivo y <strong>acabado de alta calidad</strong>. Su construcción en <strong>vidrio resistente</strong> asegura durabilidad, mientras que su estética cuidada lo convierte en un accesorio que combina <strong>funcionalidad y personalidad</strong>.</p>'
+            . '<p>Equipado con ranuras de apoyo para cigarrillos y armados, y una base amplia que brinda estabilidad total. Esta variante presenta un <em>diseño moderno con colores contrastantes</em>, perfecto para quienes buscan un cenicero con identidad propia.</p>'
+            . '<p>Un producto que no puede faltar en ningún rincón fumador ni en la vidriera de tu negocio.</p>'
+            . '<p><strong>Características Principales:</strong></p>'
             . '<ul>'
-            . '<li>Material: Vidrio resistente</li>'
-            . '<li>Ranuras para apoyo seguro</li>'
-            . '<li>Fácil de limpiar</li>'
-            . '<li>Diseños originales y llamativos</li>'
-            . '<li>Base estable y duradera</li>'
+            . '<li><strong>Vidrio de calidad:</strong> Resistente, duradero y con acabado premium.</li>'
+            . '<li><strong>Apoyo seguro:</strong> Ranuras diseñadas para cigarrillos y armados.</li>'
+            . '<li><strong>Mantenimiento cero:</strong> Superficie fácil de limpiar en segundos.</li>'
+            . '<li><strong>Colores contrastantes:</strong> Diseño moderno de alto impacto visual.</li>'
+            . '<li><strong>Base firme:</strong> Estabilidad garantizada en cualquier superficie.</li>'
             . '</ul>'
-            . '<p>Disponible por unidad y por mayor.</p>';
+            . '<p>Disponible por unidad y en <strong>venta mayorista</strong>. Producto de alta demanda para <strong>tabaquerías</strong>, <strong>grow shops</strong> y revendedores en Argentina.</p>';
 
         $product21 = Product::firstOrCreate(
             ['title' => 'Cenicero de vidrio 4US – Diseño Premium (Variante 4)'],
