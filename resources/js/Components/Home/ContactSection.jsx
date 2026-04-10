@@ -36,7 +36,7 @@ export default function ContactSection() {
     };
 
     return (
-        <section id="contacto" className="relative min-h-screen py-24 px-6 md:px-16 mx-auto flex flex-col justify-center">
+        <section id="contacto" className="relative min-h-screen py-24 px-6 md:px-16 mx-auto flex flex-col justify-center overflow-hidden">
             <div className="relative z-10 w-full">
                 {/* Heading y Formulario alineados arriba */}
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 lg:gap-16 items-stretch">

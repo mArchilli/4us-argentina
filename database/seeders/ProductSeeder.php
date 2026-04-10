@@ -1817,6 +1817,5 @@ class ProductSeeder extends Seeder
         $product23->categories()->syncWithoutDetaching([$category23->id]);
     #endregion
 
-    
     }
 }
