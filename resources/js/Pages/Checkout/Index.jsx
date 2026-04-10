@@ -196,10 +196,23 @@ export default function CheckoutIndex({ auth, items = [], subtotal = 0, freeShip
 
         setSubmitError('');
 
+        // Abrir WhatsApp de forma sincrónica (sobre el gesto del usuario)
+        // para evitar que mobile lo bloquee como popup.
+        const message = buildWhatsAppMessage();
+        const waUrl = `https://wa.me/5491169659907?text=${encodeURIComponent(message)}`;
+        const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+        if (isMobile) {
+            window.location.href = waUrl;
+        } else {
+            window.open(waUrl, '_blank', 'noopener,noreferrer');
+        }
+
+        toast.success('Pedido generado. Te redirigimos a WhatsApp.');
+
+        // Vaciar el carrito después de abrir WhatsApp
         try {
             const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
-
-            const response = await fetch(route('cart.clear'), {
+            await fetch(route('cart.clear'), {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -208,20 +221,9 @@ export default function CheckoutIndex({ auth, items = [], subtotal = 0, freeShip
                 },
                 body: JSON.stringify({}),
             });
-
-            if (!response.ok) {
-                throw new Error('No se pudo vaciar el carrito.');
-            }
-
             emitCartChanged();
-
-            const message = buildWhatsAppMessage();
-            const waUrl = `https://wa.me/5491169659907?text=${encodeURIComponent(message)}`;
-            window.open(waUrl, '_blank');
-            toast.success('Pedido generado. Te redirigimos a WhatsApp.');
         } catch {
-            setSubmitError('No se pudo preparar el pedido. Intentá nuevamente.');
-            toast.error('No se pudo vaciar el carrito antes de enviar.');
+            // El carrito no se pudo vaciar, pero el pedido ya fue enviado
         }
     };
 

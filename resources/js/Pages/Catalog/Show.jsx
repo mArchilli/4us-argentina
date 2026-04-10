@@ -341,7 +341,7 @@ export default function CatalogShow({ auth, product, featured = [], onOffer = []
 
                             {/* Thumbnails */}
                             {product.media?.length > 1 && (
-                                <div className="flex gap-3 overflow-x-auto pb-1">
+                                <div className="flex gap-3 flex-wrap overflow-x-auto pb-1">
                                     {product.media.map((media) => (
                                         <button
                                             key={media.id}

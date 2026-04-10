@@ -647,7 +647,7 @@ class ProductSeeder extends Seeder
                     'sort_order' => 5,
                 ],
                 [
-                    'file_path'  => $basePath . '/Contenedor-premium-1-6.jpg',
+                    'file_path'  => $basePath . '/Contenedor-premium-1-6.jpeg',
                     'file_type'  => 'image',
                     'is_primary' => false,
                     'sort_order' => 6,
