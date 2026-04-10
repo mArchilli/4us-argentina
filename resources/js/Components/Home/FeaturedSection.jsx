@@ -5,6 +5,7 @@ import toast from 'react-hot-toast';
 import { emitCartChanged } from '@/utils/cartEvents';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { stripHtml } from '@/utils/sanitize';
+import ProductCardSkeleton from '@/Components/ProductCardSkeleton';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -20,6 +21,7 @@ function ProductCard({
     enableHoverZoom = true,
 }) {
     const image = product.primary_media?.url ?? null;
+    const [imageLoaded, setImageLoaded] = useState(!image);
     const sortedPrices = [...(product.prices ?? [])].sort((a, b) => (a.min_quantity || 1) - (b.min_quantity || 1));
     const initialQuantity = sortedPrices[0]?.min_quantity ?? 1;
     const [quantity, setQuantity] = useState(initialQuantity);
@@ -66,11 +68,16 @@ function ProductCard({
     return (
         <article className={`group ${className} h-full flex flex-col justify-between`}>
             <div className={`relative overflow-hidden rounded-[1.6rem] mb-5 bg-[#131313] ${contentClassName} flex-1`}>
+                {/* Skeleton overlay while image loads */}
+                {!imageLoaded && (
+                    <div className="absolute inset-0 bg-[#1c1c1c] animate-pulse z-10" />
+                )}
                 {image ? (
                     <img
                         className={`w-full h-full object-cover transition-transform duration-700 ${enableHoverZoom ? 'group-hover:scale-110' : ''} ${imageClassName}`}
                         src={image}
                         alt={product.title}
+                        onLoad={() => setImageLoaded(true)}
                     />
                 ) : (
                     <div className="w-full h-full flex items-center justify-center">
@@ -196,7 +203,6 @@ export default function FeaturedSection({ products = [] }) {
     const carouselRef = useRef(null);
     const touchStartXRef = useRef(null);
     const [currentIndex, setCurrentIndex] = useState(0);
-
     const productCount = products.length;
     const desktopVisibleCount = productCount > 3 ? 4 : productCount;
 
@@ -328,11 +334,12 @@ export default function FeaturedSection({ products = [] }) {
                     <span className="text-[#8eff71]">DESTACADOS.</span>
                 </h2>
                 <div className="text-[#adaaaa] text-sm tracking-widest uppercase mb-2">
-                    Colección 2026
+                    Colección {new Date().getFullYear()} 
                 </div>
             </div>
 
             <div ref={carouselRef}>
+                {/* ── Desktop ── */}
                 <div className="hidden lg:block">
                     <div className="flex items-center justify-between gap-6 mb-6">
                         <div className="text-sm uppercase tracking-[0.35em] text-[#adaaaa]">
@@ -377,7 +384,7 @@ export default function FeaturedSection({ products = [] }) {
                         </div>
                     </div>
                 </div>
-                {/* ── Mobile + Tablet carousel ── */}
+                {/* ── Mobile + Tablet ── */}
                 <div className="lg:hidden">
                     <div className="flex items-center justify-between mb-6">
                         <div className="text-sm uppercase tracking-[0.35em] text-[#adaaaa]">

@@ -16,6 +16,7 @@ function CategoryBadge({ name }) {
 
 function ProductCard({ product, currentPage }) {
     const image = product.primary_media?.url ?? null;
+    const [imageLoaded, setImageLoaded] = useState(!image);
     const sortedPrices = [...(product.prices ?? [])].sort((a, b) => (a.min_quantity || 1) - (b.min_quantity || 1));
     const [quantity, setQuantity] = useState(sortedPrices[0]?.min_quantity ?? 1);
 
@@ -63,11 +64,16 @@ function ProductCard({ product, currentPage }) {
     return (
         <article className="group relative flex flex-col h-full bg-[#131313] rounded-[1.6rem] overflow-hidden hover:scale-[1.02] transition-all duration-500 shadow-xl">
             <div className="aspect-[4/5] overflow-hidden relative">
+                {/* Skeleton overlay while image loads */}
+                {!imageLoaded && (
+                    <div className="absolute inset-0 bg-[#1c1c1c] animate-pulse z-10" />
+                )}
                 {image ? (
                     <img
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                         src={image}
                         alt={product.title}
+                        onLoad={() => setImageLoaded(true)}
                     />
                 ) : (
                     <div className="w-full h-full flex items-center justify-center bg-[#1a1a1a]">
