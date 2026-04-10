@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, Link, useForm, router } from '@inertiajs/react';
 import toast from 'react-hot-toast';
 import Navbar from '@/Components/Home/Navbar';
 import HomeFooter from '@/Components/Home/HomeFooter';
@@ -179,7 +179,7 @@ export default function CheckoutIndex({ auth, items = [], subtotal = 0, freeShip
         return lines.join('\n');
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
 
         if (!items.length) {
@@ -196,35 +196,18 @@ export default function CheckoutIndex({ auth, items = [], subtotal = 0, freeShip
 
         setSubmitError('');
 
-        // Abrir WhatsApp de forma sincrónica (sobre el gesto del usuario)
-        // para evitar que mobile lo bloquee como popup.
+        // Abrir WhatsApp sincrónicamente sobre el gesto del usuario
+        // (antes de cualquier async) para que mobile no lo bloquee.
         const message = buildWhatsAppMessage();
         const waUrl = `https://wa.me/5491169659907?text=${encodeURIComponent(message)}`;
-        const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-        if (isMobile) {
-            window.location.href = waUrl;
-        } else {
-            window.open(waUrl, '_blank', 'noopener,noreferrer');
-        }
+        window.open(waUrl, '_blank', 'noopener,noreferrer');
 
-        toast.success('Pedido generado. Te redirigimos a WhatsApp.');
-
-        // Vaciar el carrito después de abrir WhatsApp
-        try {
-            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
-            await fetch(route('cart.clear'), {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Accept: 'application/json',
-                    'X-CSRF-TOKEN': csrfToken || '',
-                },
-                body: JSON.stringify({}),
-            });
-            emitCartChanged();
-        } catch {
-            // El carrito no se pudo vaciar, pero el pedido ya fue enviado
-        }
+        // POST al servidor: vacía la sesión y redirige a / en una sola request.
+        // Inertia sigue el redirect server-side, garantizando que la home
+        // recibe la sesión ya limpia sin race conditions.
+        router.post(route('cart.clear'), {}, {
+            onSuccess: () => emitCartChanged(),
+        });
     };
 
     return (

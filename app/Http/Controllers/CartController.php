@@ -100,9 +100,7 @@ class CartController extends Controller
         session()->forget('cart');
         session()->forget('discount_code');
 
-        return response()->json([
-            'message' => 'Carrito vaciado correctamente.',
-        ]);
+        return redirect('/');
     }
 
     public function applyDiscount(Request $request)
