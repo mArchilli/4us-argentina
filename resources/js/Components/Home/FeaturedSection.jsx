@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, memo } from 'react';
 import { Link, router } from '@inertiajs/react';
 import gsap from 'gsap';
 import toast from 'react-hot-toast';
@@ -13,7 +13,7 @@ function getWrappedIndex(index, length) {
     return ((index % length) + length) % length;
 }
 
-function ProductCard({
+const ProductCard = memo(function ProductCard({
     product,
     className = '',
     imageClassName = '',
@@ -77,6 +77,8 @@ function ProductCard({
                         className={`w-full h-full object-cover transition-transform duration-700 ${enableHoverZoom ? 'group-hover:scale-110' : ''} ${imageClassName}`}
                         src={image}
                         alt={product.title}
+                        loading="lazy"
+                        decoding="async"
                         onLoad={() => setImageLoaded(true)}
                     />
                 ) : (
@@ -196,7 +198,7 @@ function ProductCard({
             </div>
         </article>
     );
-}
+});
 
 export default function FeaturedSection({ products = [] }) {
     const headerRef = useRef(null);
@@ -327,13 +329,13 @@ export default function FeaturedSection({ products = [] }) {
     if (productCount === 0) return null;
 
     return (
-        <section id="catalogo" className="py-20 md:py-22 px-6 md:px-16 min-h-screen flex flex-col justify-center">
-            <div ref={headerRef} className="flex justify-between items-end mb-12 md:mb-14">
-                <h2 className="text-4xl md:text-7xl font-bold tracking-tight">
+        <section id="catalogo" className="py-14 sm:py-20 md:py-22 px-4 sm:px-6 md:px-16 min-h-screen flex flex-col justify-center">
+            <div ref={headerRef} className="flex justify-between items-end mb-8 sm:mb-12 md:mb-14 max-w-[1800px] mx-auto w-full">
+                <h2 className="text-[clamp(1.8rem,5vw,4.5rem)] font-bold tracking-tight">
                     LANZAMIENTOS <br />
                     <span className="text-[#8eff71]">DESTACADOS.</span>
                 </h2>
-                <div className="text-[#adaaaa] text-sm tracking-widest uppercase mb-2">
+                <div className="text-[#adaaaa] text-xs sm:text-sm tracking-widest uppercase mb-2">
                     Colección {new Date().getFullYear()} 
                 </div>
             </div>
@@ -368,7 +370,7 @@ export default function FeaturedSection({ products = [] }) {
                             <span className="material-symbols-outlined">arrow_forward</span>
                         </button>
 
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 xl:gap-10 h-full">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 xl:gap-10 h-full max-w-[1800px] mx-auto">
                             {desktopProducts.map(({ product, index }, offset) => (
                                 <div
                                     key={`${product.id}-${index}-${offset}`}

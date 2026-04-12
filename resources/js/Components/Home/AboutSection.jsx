@@ -30,17 +30,17 @@ export default function AboutSection() {
     }, []);
 
     return (
-        <section id="nosotros" className="py-16 px-6 md:px-16 overflow-hidden min-h-screen flex flex-col justify-center">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6  mx-auto">
-                <div ref={leftRef} className="px-0 py-20 md:px-0 md:py-20 rounded-2xl flex flex-col justify-center">
-                    <span className="text-[#8eff71] font-bold tracking-widest uppercase mb-6 block text-lg md:text-2xl">
+        <section id="nosotros" className="py-12 sm:py-16 px-4 sm:px-6 md:px-16 overflow-hidden min-h-screen flex flex-col justify-center">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mx-auto max-w-[1800px]">
+                <div ref={leftRef} className="px-0 py-10 sm:py-20 md:px-0 md:py-20 rounded-2xl flex flex-col justify-center">
+                    <span className="text-[#8eff71] font-bold tracking-widest uppercase mb-4 sm:mb-6 block text-base sm:text-lg md:text-2xl">
                         El Origen
                     </span>
-                    <h2 className="text-6xl md:text-[8rem] font-bold mb-8 tracking-tight">
+                    <h2 className="text-[clamp(2.5rem,8vw,8rem)] font-bold mb-6 sm:mb-8 tracking-tight">
                         DE <span className="text-[#8eff71] italic">INDIA</span> A <br />
                         <span className="text-[#8eff71] italic">BUENOS AIRES.</span>
                     </h2>
-                    <p className="text-[#adaaaa] text-xl md:text-3xl leading-relaxed">
+                    <p className="text-[#adaaaa] text-base sm:text-xl md:text-3xl leading-relaxed">
                         Conectamos el arte global con la cultura local.
                         Importando directamente desde el corazón de la producción en <span className="text-[#8eff71] italic">India</span>,
                         4us Argentina garantiza que cada papel, bandeja y accesorio cumpla

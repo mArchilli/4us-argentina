@@ -25,7 +25,7 @@ export default function HeroSection() {
     }, []);
 
     return (
-        <section id="inicio" className="relative min-h-screen flex items-center px-6 md:px-16 overflow-hidden">
+        <section id="inicio" className="relative min-h-screen flex items-center px-4 sm:px-6 md:px-16 overflow-hidden">
             <div className="absolute inset-0 z-0">
                 <LiquidChrome
                     baseColor={[0.557, 1.0, 0.443]}
@@ -38,23 +38,23 @@ export default function HeroSection() {
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0e0e0e]/40 to-[#0e0e0e]" />
             </div>
 
-            <div ref={contentRef} className="relative z-10 max-w-4xl">
-                <h1 className="text-6xl md:text-9xl lg:text-[10rem] font-black tracking-tighter leading-none mb-6">
+            <div ref={contentRef} className="relative z-10 max-w-4xl 2xl:max-w-6xl mx-auto sm:mx-0">
+                <h1 className="text-[clamp(2.8rem,10vw,10rem)] font-black tracking-tighter leading-none mb-4 sm:mb-6">
                     ELEVÁ LA <br />
                     <span className="text-[#8eff71] italic">CULTURA.</span>
                 </h1>
-                <p className="text-xl md:text-2xl text-[#adaaaa] max-w-xl mb-10 leading-relaxed drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
+                <p className="text-base sm:text-xl md:text-2xl 2xl:text-3xl text-[#adaaaa] max-w-xl 2xl:max-w-2xl mb-6 sm:mb-10 leading-relaxed drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
                     Accesorios premium para fumadores, seleccionados para el conocedor.
                     Importados directamente, auténticos sin concesiones.
                 </p>
-                <div className="flex flex-wrap gap-4">
+                <div className="flex flex-wrap gap-3 sm:gap-4">
                     <a
                         href="#catalogo"
                         onClick={(e) => {
                             e.preventDefault();
                             document.getElementById('catalogo')?.scrollIntoView({ behavior: 'smooth' });
                         }}
-                        className="group bg-[#8eff71] text-[#0d6100] font-headline font-black italic px-8 py-5 rounded-full text-lg uppercase tracking-tight hover:shadow-[0_0_30px_rgba(142,255,113,0.3)] transition-all active:scale-95 flex items-center justify-center gap-2"
+                        className="group bg-[#8eff71] text-[#0d6100] font-headline font-black italic px-5 py-3 sm:px-8 sm:py-5 rounded-full text-sm sm:text-lg uppercase tracking-tight hover:shadow-[0_0_30px_rgba(142,255,113,0.3)] transition-all active:scale-95 flex items-center justify-center gap-2"
                     >
                         VER CATÁLOGO
                         <span className="material-symbols-outlined font-bold transform transition-transform duration-300 group-hover:rotate-90">arrow_forward</span>
@@ -64,7 +64,7 @@ export default function HeroSection() {
                             e.preventDefault();
                             document.getElementById('nosotros')?.scrollIntoView({ behavior: 'smooth' });
                         }}
-                        className="border border-[#adaaaa] text-white px-10 py-4 rounded-full font-headline font-black italic text-lg uppercase tracking-tight hover:bg-[#262626] transition-all active:scale-95"
+                        className="border border-[#adaaaa] text-white px-6 py-3 sm:px-10 sm:py-4 rounded-full font-headline font-black italic text-sm sm:text-lg uppercase tracking-tight hover:bg-[#262626] transition-all active:scale-95"
                     >
                         Nuestra Historia
                     </button>

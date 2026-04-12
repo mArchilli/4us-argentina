@@ -32,16 +32,10 @@ export default function Logo3D({ src, alt, className = '' }) {
                 });
                 entranceTlRef.current = tl;
 
-                // Phase 1: Spin-in — blur separado vía CSS filter, transform vía GPU
+                // Phase 1: Spin-in (GPU-composited transforms + opacity only)
                 tl.fromTo(img,
                     { opacity: 0, scale: 0.4, rotateY: -90, rotateX: 15 },
                     { opacity: 1, scale: 1.08, rotateY: 8, rotateX: -3, duration: 1.1, ease: 'expo.out' },
-                );
-                // blur aparte: solo anima filter, sin interferir con el transform composite
-                tl.fromTo(img,
-                    { filter: 'blur(12px)' },
-                    { filter: 'blur(0px)', duration: 0.6, ease: 'power2.out' },
-                    '<',
                 );
 
                 // Phase 2: Elastic settle — solo propiedades de transform (GPU-only)
@@ -73,6 +67,8 @@ export default function Logo3D({ src, alt, className = '' }) {
                 className="relative max-h-[580px] w-auto object-contain select-none"
                 style={{ opacity: 0, transform: 'translateZ(0)' }}
                 draggable={false}
+                loading="lazy"
+                decoding="async"
                 onLoad={() => setLoaded(true)}
             />
         </div>

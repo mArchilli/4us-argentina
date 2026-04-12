@@ -28,11 +28,11 @@ export default function HomeFooter() {
     }, []);
 
     return (
-        <footer ref={footerRef} className="relative bg-zinc-950 pt-24 pb-10 border-t border-white/5 overflow-hidden min-h-[480px] flex flex-col justify-between opacity-0 translate-y-6 transition-all duration-700 ease-out [&.animate-in]:opacity-100 [&.animate-in]:translate-y-0">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-12 px-6 md:px-16 w-full mx-auto relative z-10 flex-grow content-start">
+        <footer ref={footerRef} className="relative bg-zinc-950 pt-14 sm:pt-24 pb-10 border-t border-white/5 overflow-hidden min-h-[480px] flex flex-col justify-between opacity-0 translate-y-6 transition-all duration-700 ease-out [&.animate-in]:opacity-100 [&.animate-in]:translate-y-0">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-8 sm:gap-12 px-4 sm:px-6 md:px-16 w-full max-w-[1800px] mx-auto relative z-10 flex-grow content-start">
                 {/* Branding & descripción */}
-                <div className="md:col-span-1 space-y-8">
-                    <div className="text-4xl font-black italic tracking-tighter text-[#8eff71]">4US ARGENTINA</div>
+                <div className="md:col-span-1 space-y-6 sm:space-y-8">
+                    <div className="text-2xl sm:text-4xl font-black italic tracking-tighter text-[#8eff71]">4US ARGENTINA</div>
                     <p className="text-zinc-500 text-base leading-relaxed max-w-xs">
                         Cultura premium desde Buenos Aires. Editorial, drops y comunidad para todo el país.
                     </p>
@@ -64,7 +64,7 @@ export default function HomeFooter() {
                     </ul>
                     <div className="hidden md:block pt-4 border-t border-white/5">
                         <p className="text-[10px] text-zinc-600 uppercase tracking-[0.3em] mb-2 font-bold">Consultas directas</p>
-                        <a className="text-[#8eff71] font-headline italic uppercase font-black text-2xl hover:underline underline-offset-8 decoration-2" href="mailto:contacto@4usargentina.com">contacto@4usargentina.com</a>
+                        <a className="text-[#8eff71] font-headline italic uppercase font-black text-lg 2xl:text-2xl hover:underline underline-offset-8 decoration-2 break-all" href="mailto:contacto@4usargentina.com">contacto@4usargentina.com</a>
                     </div>
                 </div>
                 {/* Nav 3: Legal */}
@@ -79,19 +79,19 @@ export default function HomeFooter() {
                 {/* Mail - mobile only (separate block) */}
                 <div className="md:hidden order-5 pt-4 border-t border-white/5">
                     <p className="text-[10px] text-zinc-600 uppercase tracking-[0.3em] mb-2 font-bold">Consultas directas</p>
-                    <a className="text-[#8eff71] font-headline italic uppercase font-black text-2xl hover:underline underline-offset-8 decoration-2" href="mailto:contacto@4usargentina.com">contacto@4usargentina.com</a>
+                    <a className="text-[#8eff71] font-headline italic uppercase font-black text-lg sm:text-2xl hover:underline underline-offset-8 decoration-2 break-all" href="mailto:contacto@4usargentina.com">contacto@4usargentina.com</a>
                 </div>
             </div>
 
             {/* Massive Background Text Anchor */}
-            <div className="w-full mt-auto mb-16 overflow-hidden pointer-events-none select-none">
-                <h2 className="text-[14rem] md:text-[24vw] font-black italic leading-none text-zinc-900/40 tracking-tighter whitespace-nowrap text-center translate-y-12">
+            <div className="w-full mt-auto mb-8 sm:mb-16 overflow-hidden pointer-events-none select-none">
+                <h2 className="text-[clamp(4rem,20vw,28rem)] font-black italic leading-none text-zinc-900/40 tracking-tighter whitespace-nowrap text-center translate-y-12">
                     4US ARGENTINA
                 </h2>
             </div>
 
             {/* Copyright Bar */}
-            <div className="border-t border-white/5 pt-10 px-6 md:px-16 w-full mx-auto flex flex-col md:flex-row justify-between items-center gap-4 relative z-10">
+            <div className="border-t border-white/5 pt-6 sm:pt-10 px-4 sm:px-6 md:px-16 w-full max-w-[1800px] mx-auto flex flex-col md:flex-row justify-between items-center gap-4 relative z-10">
                 <p className="text-zinc-600 text-[10px] uppercase tracking-[0.4em] font-bold text-center md:text-left">© {new Date().getFullYear()} 4US ARGENTINA — TODOS LOS DERECHOS RESERVADOS</p>
                 <div className="flex gap-2 items-center">
                     <span className="text-zinc-700 text-xs uppercase tracking-[0.2em] font-bold">Powered by</span>

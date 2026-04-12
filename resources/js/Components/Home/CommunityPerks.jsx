@@ -35,16 +35,16 @@ const perks = [
 
 export default function CommunityPerks() {
     return (
-        <section id="perks" className="relative py-16 md:py-28 bg-background min-h-screen flex flex-col items-center justify-center overflow-x-hidden">
+        <section id="perks" className="relative py-12 sm:py-16 md:py-28 bg-background min-h-screen flex flex-col items-center justify-center overflow-x-hidden">
             {/* Headline */}
-            <div className="w-full max-w-7xl px-6 md:px-16 text-center mb-10 md:mb-15">
-                <h2 className="font-headline font-black italic uppercase text-3xl sm:text-5xl md:text-7xl lg:text-8xl leading-none tracking-tighter text-on-surface mb-2 whitespace-nowrap">
+            <div className="w-full max-w-7xl px-4 sm:px-6 md:px-16 text-center mb-8 sm:mb-10 md:mb-15">
+                <h2 className="font-headline font-black italic uppercase text-[clamp(1.6rem,6vw,6rem)] leading-none tracking-tighter text-on-surface mb-2">
                     BENEFICIOS DE <span className="text-primary text-[#8eff71]">COMUNIDAD.</span>
                 </h2>
             </div>
 
             {/* Grid de beneficios */}
-            <div className="w-full px-6 md:px-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-4">
+            <div className="w-full px-4 sm:px-6 md:px-16 max-w-[1800px] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-4">
                 {perks.map((perk, idx) => (
                     <div
                         key={perk.title}
@@ -53,7 +53,7 @@ export default function CommunityPerks() {
                         {/* Imagen de fondo para desktop y highlight */}
                         {perk.bg && (
                             <div className="hidden md:block absolute inset-0 opacity-40 group-hover:opacity-60 transition-opacity duration-500">
-                                <img src={perk.bg} alt="" className="w-full h-full object-cover" loading="lazy" />
+                                <img src={perk.bg} alt="" className="w-full h-full object-cover" loading="lazy" decoding="async" />
                             </div>
                         )}
                         {/* Gradiente overlay */}
@@ -61,15 +61,15 @@ export default function CommunityPerks() {
                             <div className="hidden md:block absolute inset-0 bg-gradient-to-t from-surface-container-lowest via-surface-container-lowest/60 to-transparent"></div>
                         )}
                         <div className="relative z-10 flex flex-col gap-2">
-                            <div className="flex items-center gap-4 mb-2">
-                                <span className="material-symbols-outlined text-3xl md:text-4xl" style={{ color: '#8eff71' }}>
+                            <div className="flex items-center gap-3 sm:gap-4 mb-2">
+                                <span className="material-symbols-outlined text-2xl sm:text-3xl md:text-4xl flex-shrink-0" style={{ color: '#8eff71' }}>
                                     {perk.icon}
                                 </span>
-                                <h3 className="font-headline font-bold md:font-black italic uppercase tracking-tight text-lg md:text-2xl">
+                                <h3 className="font-headline font-bold md:font-black italic uppercase tracking-tight text-base sm:text-lg md:text-2xl">
                                     {perk.title}
                                 </h3>
                             </div>
-                            <p className="text-on-surface-variant font-medium text-sm md:text-base leading-snug">
+                            <p className="text-on-surface-variant font-medium text-xs sm:text-sm md:text-base leading-snug">
                                 {perk.description}
                             </p>
                         </div>
@@ -88,8 +88,8 @@ export default function CommunityPerks() {
             </div>
 
             {/* Fondos decorativos para mobile */}
-            <div className="fixed top-1/4 -right-20 w-64 h-64 bg-primary/10 blur-[100px] rounded-full -z-10"></div>
-            <div className="fixed bottom-1/4 -left-20 w-64 h-64 bg-primary/5 blur-[80px] rounded-full -z-10"></div>
+            <div className="absolute top-1/4 -right-20 w-64 h-64 bg-primary/10 blur-[100px] rounded-full -z-10"></div>
+            <div className="absolute bottom-1/4 -left-20 w-64 h-64 bg-primary/5 blur-[80px] rounded-full -z-10"></div>
         </section>
     );
 }
