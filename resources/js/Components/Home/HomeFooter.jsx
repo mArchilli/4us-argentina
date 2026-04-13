@@ -85,7 +85,7 @@ export default function HomeFooter() {
 
             {/* Massive Background Text Anchor */}
             <div className="w-full mt-auto mb-8 sm:mb-16 overflow-hidden pointer-events-none select-none">
-                <h2 className="text-[clamp(4rem,20vw,28rem)] font-black italic leading-none text-zinc-900/40 tracking-tighter whitespace-nowrap text-center translate-y-12">
+                <h2 className="text-[clamp(4rem,20vw,28rem)] font-black italic leading-none text-zinc-900/40 tracking-tighter whitespace-nowrap text-center translate-y-0 sm:translate-y-12">
                     4US ARGENTINA
                 </h2>
             </div>

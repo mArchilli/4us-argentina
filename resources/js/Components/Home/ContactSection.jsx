@@ -43,7 +43,7 @@ export default function ContactSection() {
                     {/* Título */}
                     <div ref={infoRef} className="md:col-span-5 flex flex-col justify-start opacity-0 -translate-x-8 transition-all duration-700 ease-out [&.animate-in]:opacity-100 [&.animate-in]:translate-x-0">
                         <div className="mb-6 sm:mb-8 lg:mb-16">
-                            <h1 className="text-[clamp(2.2rem,7vw,8rem)] font-black tracking-tighter uppercase leading-[0.85] text-left">
+                            <h1 className="text-[clamp(3.2rem,7vw,8rem)] font-black tracking-tighter uppercase leading-[0.85] text-left">
                                 <span className="block text-white">PONETE EN</span>
                                 <span className="block text-[#8eff71] italic">CONTACTO.</span>
                             </h1>

@@ -38,8 +38,8 @@ export default function CommunityPerks() {
         <section id="perks" className="relative py-12 sm:py-16 md:py-28 bg-background min-h-screen flex flex-col items-center justify-center overflow-x-hidden">
             {/* Headline */}
             <div className="w-full max-w-7xl px-4 sm:px-6 md:px-16 text-center mb-8 sm:mb-10 md:mb-15">
-                <h2 className="font-headline font-black italic uppercase text-[clamp(1.6rem,6vw,6rem)] leading-none tracking-tighter text-on-surface mb-2">
-                    BENEFICIOS DE <span className="text-primary text-[#8eff71]">COMUNIDAD.</span>
+                <h2 className="font-headline font-black italic uppercase text-[clamp(2.4rem,6vw,6rem)] leading-none tracking-tighter text-on-surface mb-2 sm:whitespace-nowrap">
+                    BENEFICIOS DE <br className="sm:hidden" /><span className="text-[#8eff71]">COMUNIDAD.</span>
                 </h2>
             </div>
 
@@ -48,19 +48,22 @@ export default function CommunityPerks() {
                 {perks.map((perk, idx) => (
                     <div
                         key={perk.title}
-                        className={`relative overflow-hidden rounded-xl bg-surface-container-low min-h-[250px] flex flex-col justify-end p-6 md:p-8 transition-colors duration-300 group ${perk.highlight ? 'lg:col-span-2' : ''}`}
+                        className={`relative overflow-hidden rounded-xl min-h-[250px] flex flex-col justify-end p-6 md:p-8 group ${perk.highlight ? 'lg:col-span-2' : ''}`}
                     >
-                        {/* Imagen de fondo para desktop y highlight */}
+                        {/* Imagen de fondo — z-0 */}
                         {perk.bg && (
-                            <div className="hidden md:block absolute inset-0 opacity-40 group-hover:opacity-60 transition-opacity duration-500">
-                                <img src={perk.bg} alt="" className="w-full h-full object-cover" loading="lazy" decoding="async" />
-                            </div>
+                            <img
+                                src={perk.bg}
+                                alt=""
+                                className="absolute inset-0 z-0 w-full h-full object-cover"
+                                loading="lazy"
+                                decoding="async"
+                            />
                         )}
-                        {/* Gradiente overlay */}
-                        {perk.bg && (
-                            <div className="hidden md:block absolute inset-0 bg-gradient-to-t from-surface-container-lowest via-surface-container-lowest/60 to-transparent"></div>
-                        )}
-                        <div className="relative z-10 flex flex-col gap-2">
+                        {/* Gradiente overlay — z-[1] */}
+                        <div className="absolute inset-0 z-[1]" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.55) 50%, rgba(0,0,0,0.25) 100%)' }} />
+                        {/* Contenido — z-[2] */}
+                        <div className="relative z-[2] flex flex-col gap-2">
                             <div className="flex items-center gap-3 sm:gap-4 mb-2">
                                 <span className="material-symbols-outlined text-2xl sm:text-3xl md:text-4xl flex-shrink-0" style={{ color: '#8eff71' }}>
                                     {perk.icon}
