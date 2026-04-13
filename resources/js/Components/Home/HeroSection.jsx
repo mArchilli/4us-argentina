@@ -44,8 +44,8 @@ export default function HeroSection() {
                     <span className="text-[#8eff71] italic">CULTURA.</span>
                 </h1>
                 <p className="text-lg sm:text-xl md:text-2xl 2xl:text-3xl text-[#adaaaa] max-w-xl 2xl:max-w-2xl mb-6 sm:mb-10 leading-relaxed drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
-                    Accesorios premium para fumadores, seleccionados para el conocedor.
-                    Importados directamente, auténticos sin concesiones.
+                    Tabaquería premium y growshop con accesorios importados directamente desde India.
+                    Bandejas metálicas, picadores, papeles y más — para el verdadero conocedor.
                 </p>
                 <div className="flex flex-wrap gap-3 sm:gap-4">
                     <a

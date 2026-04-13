@@ -70,7 +70,7 @@ export default function AgeGate({ children }) {
 
                         <h2 className="text-2xl font-bold tracking-tight mb-3">Acceso restringido</h2>
                         <p className="text-[#adaaaa] text-sm mb-10 leading-relaxed">
-                            Debes ser mayor de 18 años para acceder a este sitio. El humo puede esperar, pero la ley no.
+                            Debés ser mayor de 18 años para acceder a nuestra tienda de tabaquería premium y growshop. La ley es la ley.
                         </p>
 
                         <PrimaryButton onClick={handleRetry} className="w-full justify-center">
@@ -103,14 +103,14 @@ export default function AgeGate({ children }) {
                 {/* Left: Branding */}
                 <div className="flex flex-col gap-4 text-center md:text-left order-1">
                     <h1
-                        className="text-[clamp(4.5rem,13vw,9rem)] font-black italic tracking-tighter text-[#8eff71] leading-none uppercase"
+                        className="text-[clamp(1.8rem,10vw,10rem)] font-black italic tracking-tighter text-[#8eff71] leading-none uppercase"
                         style={textGlow}
                     >
                         4US ARGENTINA.
                     </h1>
                     <p className="text-[#adaaaa] max-w-md text-sm md:text-base leading-relaxed tracking-wide">
-                        Este es un espacio de cultura tabaquera premium: aromas, ritual y buena compañía.
-                        Si todavía te piden DNI en la puerta, tranqui, el tiempo vuela y el humo no se apura.
+                        Tabaquería premium &amp; growshop con productos importados directamente de India.
+                        Bandeas metalicas para armado, picadores metalicos, accesorios y cultura del humo para quienes aprecian la diferencia.
                     </p>
                 </div>
 
@@ -126,7 +126,7 @@ export default function AgeGate({ children }) {
 
                         <h2 className="text-3xl font-bold tracking-tight mb-4">Verificación de edad</h2>
                         <p className="text-[#adaaaa] text-sm mb-10 leading-relaxed">
-                            Al ingresar, declaras cumplir con la edad legal permitida para acceder a contenido de cultura tabaquera.
+                            Al ingresar confirmás tener 18 años o más y acceder a nuestra selección de productos de tabaquería premium y growshop importados de India.
                         </p>
 
                         <div className="flex flex-col w-full gap-4">

@@ -37,7 +37,7 @@ export default function ContactSection() {
 
     return (
         <section id="contacto" className="relative min-h-screen py-14 sm:py-24 px-4 sm:px-6 md:px-16 mx-auto flex flex-col justify-center overflow-hidden">
-            <div className="relative z-10 w-full max-w-[1800px] mx-auto">
+            <div className="relative z-10 w-full mx-auto">
                 {/* Heading y Formulario alineados arriba */}
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8 md:gap-12 lg:gap-16 items-stretch">
                     {/* Título */}
@@ -50,10 +50,10 @@ export default function ContactSection() {
                         </div>
                         <div className="space-y-4 sm:space-y-6">
                             <p className="text-lg sm:text-2xl md:text-3xl font-headline font-bold italic uppercase leading-tight text-white">
-                                ¿Querés vender 4us o tenés alguna consulta?
+                                ¿Querés revender accesorios de tabaquería premium y growshop, o tenés alguna consulta?
                             </p>
                             <p className="text-[#adaaaa] text-sm sm:text-lg max-w-md leading-relaxed">
-                                Estamos buscando expandir nuestra cultura. Si sos un retailer o simplemente querés charlar sobre un drop, escribinos. La respuesta es inmediata.
+                                Buscamos expandir nuestra red de distribución de tabaquería premium y growshop en Argentina. Si sos retailer, mayorista o simplemente querés consultar sobre un producto importado de India, escribínos. La respuesta es inmediata.
                             </p>
                         </div>
                         <div className="space-y-4 mt-6 sm:mt-8">
