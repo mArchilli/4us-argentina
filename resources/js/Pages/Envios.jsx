@@ -116,45 +116,33 @@ export default function Envios({ auth }) {
                 {/* ── PUNTOS DE ENCUENTRO ── */}
                 <section className="px-4 sm:px-6 md:px-16 py-20 md:py-32">
                     <div className="max-w-[1800px] mx-auto">
-                        {/* Título centrado */}
-                        <h2 className="text-4xl md:text-7xl font-headline font-black italic uppercase tracking-tighter text-center whitespace-nowrap mb-16 leading-none">
-                            PUNTOS DE <span className="text-[#8eff71]">ENCUENTRO</span>
-                        </h2>
-
-                        {/* Grid: texto izquierda, foto derecha */}
+                        {/* Grid: SVG izquierda, texto derecha */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
+                            {/* SVG Pin */}
+                            <div className="flex items-center justify-center">
+                                <svg viewBox="0 0 100 130" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-80 h-80 md:w-[28rem] md:h-[28rem]">
+                                    <path d="M50 0C27.909 0 10 17.909 10 40c0 30 40 90 40 90s40-60 40-90C90 17.909 72.091 0 50 0z" fill="#8eff71"/>
+                                    <circle cx="50" cy="40" r="16" fill="#0e0e0e"/>
+                                </svg>
+                            </div>
+
                             {/* Texto */}
-                            <div className="space-y-6">
-                                <div className="flex gap-4 items-start">
-                                    <div className="mt-1 flex-shrink-0 w-10 h-10 rounded-lg bg-[#262626] flex items-center justify-center text-[#8eff71]">
-                                        <span className="material-symbols-outlined">location_on</span>
-                                    </div>
-                                    <div className="space-y-4">
-                                        <h3 className="font-headline italic font-black text-6xl md:text-7xl uppercase tracking-tighter leading-none">ZONA <span className="text-[#8eff71]">OESTE</span></h3>
-                                        <p className="text-[#adaaaa] text-xl md:text-2xl leading-relaxed max-w-lg">
-                                            Si sos de zona oeste podemos coordinar un punto de encuentro para que recibas tu pedido de forma más rápida y sin costo de envío. Escribinos y lo arreglamos.
-                                        </p>
-                                    </div>
+                            <div className="space-y-8">
+                                <div className="space-y-5">
+                                    <h3 className="font-headline italic font-black text-7xl md:text-8xl uppercase tracking-tighter leading-none">ZONA <span className="text-[#8eff71]">OESTE</span></h3>
+                                    <p className="text-[#adaaaa] text-2xl md:text-3xl leading-relaxed max-w-lg">
+                                        Si sos de zona oeste podemos coordinar un punto de encuentro para que recibas tu pedido de forma más rápida y sin costo de envío. Escribinos y lo arreglamos.
+                                    </p>
                                 </div>
                                 <a
                                     href="https://wa.me/5491169659907?text=Hola%2C%20soy%20de%20zona%20oeste%20y%20quisiera%20coordinar%20un%20punto%20de%20encuentro."
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="inline-flex items-center gap-2 bg-[#8eff71] text-[#0d6100] font-headline font-black italic px-7 py-4 rounded-full text-base uppercase tracking-tight hover:shadow-[0_0_30px_rgba(142,255,113,0.3)] transition-all active:scale-95"
+                                    className="inline-flex items-center gap-3 bg-[#8eff71] text-[#0d6100] font-headline font-black italic px-10 py-5 rounded-full text-xl uppercase tracking-tight hover:shadow-[0_0_30px_rgba(142,255,113,0.3)] transition-all active:scale-95"
                                 >
                                     Coordinar encuentro
                                     <span className="material-symbols-outlined font-bold">chat</span>
                                 </a>
-                            </div>
-
-                            {/* Foto */}
-                            <div className="rounded-2xl overflow-hidden aspect-[4/3] bg-[#131313] border border-[#484847]/20 flex items-center justify-center">
-                                <img
-                                    src="/images/envios-img.png"
-                                    alt="Punto de encuentro 4US"
-                                    className="w-full h-full object-cover grayscale contrast-125"
-                                    onError={(e) => { e.currentTarget.style.display = 'none'; }}
-                                />
                             </div>
                         </div>
                     </div>
