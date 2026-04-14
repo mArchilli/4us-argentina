@@ -53,7 +53,7 @@ export default function ContactSection() {
                                 ¿Querés vender 4us o tenés alguna consulta?
                             </p>
                             <p className="text-[#adaaaa] text-sm sm:text-lg max-w-md leading-relaxed">
-                                Estamos buscando expandir nuestra cultura. Si sos un retailer o simplemente querés charlar sobre un drop, escribinos. La respuesta es inmediata.
+                                Estamos buscando expandir nuestra cultura. Si sos un mayorista o simplemente querés charlar sobre un drop, escribinos. La respuesta es inmediata.
                             </p>
                         </div>
                         <div className="space-y-4 mt-6 sm:mt-8">
@@ -66,7 +66,7 @@ export default function ContactSection() {
                                             <path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.832-1.438A9.955 9.955 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18a7.96 7.96 0 01-4.108-1.138l-.292-.174-3.028.9.9-3.028-.19-.302A7.963 7.963 0 014 12c0-4.411 3.589-8 8-8s8 3.589 8 8-3.589 8-8 8z" fill="#8eff71" className="group-hover:fill-[#0d6100]"/>
                                         </svg>
                                     </div>
-                                    <span className="text-base sm:text-lg font-bold group-hover:text-[#8eff71] transition-colors">WhatsApp</span>
+                                    <span className="text-base sm:text-lg font-bold group-hover:text-[#8eff71] transition-colors">11-6965-9907</span>
                                 </a>
                                 <a className="inline-flex items-center gap-4 group w-fit" href="https://www.instagram.com/4usargentina/" target="_blank" rel="noreferrer">
                                     <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#262626] flex items-center justify-center group-hover:bg-[#8eff71] transition-all duration-300 flex-shrink-0">
@@ -76,7 +76,7 @@ export default function ContactSection() {
                                             <circle cx="18" cy="6" r="1.5" fill="#8eff71" className="group-hover:fill-[#0d6100]"/>
                                         </svg>
                                     </div>
-                                    <span className="text-base sm:text-lg font-bold group-hover:text-[#8eff71] transition-colors">@4us_arg</span>
+                                    <span className="text-base sm:text-lg font-bold group-hover:text-[#8eff71] transition-colors">@4usargentina</span>
                                 </a>
                                 <a className="inline-flex items-center gap-4 group w-fit" href="mailto:contacto@4usargentina.com" target="_blank" rel="noreferrer">
                                     <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#262626] flex items-center justify-center group-hover:bg-[#8eff71] transition-all duration-300 flex-shrink-0">

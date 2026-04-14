@@ -576,12 +576,14 @@ export default function CatalogIndex({ auth, products = {}, categories = [], act
                                 <p className="text-[#0d6100]/80 text-xl font-bold uppercase tracking-widest mb-12 max-w-2xl mx-auto">
                                     Realizamos pedidos personalizados y ventas mayoristas para locales y clubes de cultivo. Contactanos y armamos tu presupuesto.
                                 </p>
-                                <Link
-                                    href="/#contacto"
+                                <a
+                                    href="https://wa.me/5491169659907?text=Hola%2C%20quisiera%20hacer%20una%20consulta%20sobre%20un%20pedido%20personalizado."
+                                    target="_blank"
+                                    rel="noopener noreferrer"
                                     className="inline-flex items-center justify-center rounded-full bg-[#0d6100] text-[#8eff71] font-headline font-black italic px-12 py-6 text-2xl uppercase tracking-tight transition-all hover:scale-105 shadow-2xl"
                                 >
                                     Contactate
-                                </Link>
+                                </a>
                             </div>
                         </div>
                     </section>

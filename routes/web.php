@@ -54,6 +54,11 @@ Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.s
         Route::get('/retailer', function () {
             return Inertia::render('retailer');
         });
+
+Route::get('/envios', function () {
+    return Inertia::render('Envios');
+})->name('envios');
+
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard', [
         'counts' => [

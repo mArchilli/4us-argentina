@@ -53,12 +53,13 @@ export default function Retailer({ auth }) {
                             Sé parte de la cultura. Llevá 4us a tu zona con descuentos exclusivos para mayoristas y beneficios únicos.
                         </p>
                         <a
-                            href="/files/catalog/catalogo.pdf"
-                            download
+                            href="https://wa.me/5491169659907?text=Hola%2C%20quisiera%20obtener%20el%20cat%C3%A1logo%20mayorista%20de%204US%20Argentina."
+                            target="_blank"
+                            rel="noopener noreferrer"
                             className="inline-flex items-center gap-2 bg-[#8eff71] text-[#0d6100] font-headline font-black italic px-8 py-5 rounded-full text-lg uppercase tracking-tight hover:shadow-[0_0_30px_rgba(142,255,113,0.3)] transition-all active:scale-95"
                         >
                             OBTENER CATÁLOGO MAYORISTA
-                            <span className="material-symbols-outlined font-bold">download</span>
+                            <span className="material-symbols-outlined font-bold">chat</span>
                         </a>
                     </div>
                 </section>
@@ -152,12 +153,13 @@ export default function Retailer({ auth }) {
                                 EL PRÓXIMO DROP PUEDE SER TU MEJOR VENTA. SUMATE A 4US HOY MISMO.
                             </p>
                             <a
-                                href="/files/catalog/catalogo.pdf"
-                                download
+                                href="https://wa.me/5491169659907?text=Hola%2C%20quisiera%20obtener%20el%20cat%C3%A1logo%20mayorista%20de%204US%20Argentina."
+                                target="_blank"
+                                rel="noopener noreferrer"
                                 className="w-full md:w-auto inline-flex items-center justify-center gap-3 bg-[#0d6100] text-[#8eff71] hover:bg-[#0a4f00] transition-all px-8 md:px-16 py-4 md:py-8 rounded-full font-headline font-black italic text-base md:text-2xl tracking-tighter active:scale-95"
                             >
                                 OBTENER CATÁLOGO MAYORISTA
-                                <span className="material-symbols-outlined">download</span>
+                                <span className="material-symbols-outlined">chat</span>
                             </a>
                         </div>
                     </div>

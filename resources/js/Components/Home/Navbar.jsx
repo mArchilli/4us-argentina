@@ -6,6 +6,7 @@ const navLinks = [
     { label: 'INICIO', id: 'inicio', href: '/' },
     { label: 'CATÁLOGO', href: '/catalogo' },
     { label: 'MAYORISTAS', href: '/retailer' },
+    { label: 'ENVÍOS', href: '/envios' },
 ];
 
 export default function Navbar({ auth, hidden = false }) {
