@@ -17,7 +17,7 @@ export default function Edit({ category }) {
 
     return (
         <AuthenticatedLayout header="Editar Categoria">
-            <Head title={`Editar categoria · ${category.name}`} />
+            <Head title={`Editar categoria · ${category.name} | Tabaquería Premium & Growshop — Accesorios Importados de India`} />
 
             <div className="mb-4">
                 <Link

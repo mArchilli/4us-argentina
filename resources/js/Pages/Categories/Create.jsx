@@ -17,7 +17,7 @@ export default function Create() {
 
     return (
         <AuthenticatedLayout header="Nueva Categoria">
-            <Head title="Nueva Categoria" />
+            <Head title="Nueva Categoria | Tabaquería Premium & Growshop — Accesorios Importados de India" />
 
             <div className="mb-4">
                 <Link

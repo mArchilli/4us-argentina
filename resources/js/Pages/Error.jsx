@@ -45,7 +45,7 @@ export default function Error({ status }) {
 
     return (
         <>
-            <Head title={`${msg.code} · ${msg.title}`} />
+            <Head title={`${msg.code} · ${msg.title} | Tabaquería Premium & Growshop — Accesorios Importados de India`} />
 
             <div className="bg-[#0e0e0e] text-white font-body selection:bg-[#8eff71] selection:text-[#0d6100] overflow-hidden h-screen w-screen flex items-center justify-center">
 

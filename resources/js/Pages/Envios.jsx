@@ -1,5 +1,6 @@
 import Navbar from '@/Components/Home/Navbar';
 import HomeFooter from '@/Components/Home/HomeFooter';
+import { Head } from '@inertiajs/react';
 import { useRef, useEffect, useState } from 'react';
 
 export default function Envios({ auth }) {
@@ -43,6 +44,7 @@ export default function Envios({ auth }) {
 
     return (
         <div className="bg-[#0e0e0e] text-white font-body min-h-screen flex flex-col justify-between">
+            <Head title="Envíos | Tabaquería Premium & Growshop — Accesorios Importados de India" />
             <Navbar auth={auth} hidden={footerVisible} />
 
             <main className="flex-1">
@@ -118,12 +120,21 @@ export default function Envios({ auth }) {
                     <div className="max-w-[1800px] mx-auto">
                         {/* Grid: SVG izquierda, texto derecha */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
-                            {/* SVG Pin */}
+                            {/* Google Maps – Zona Oeste GBA */}
                             <div className="flex items-center justify-center">
-                                <svg viewBox="0 0 100 130" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-80 h-80 md:w-[28rem] md:h-[28rem]">
-                                    <path d="M50 0C27.909 0 10 17.909 10 40c0 30 40 90 40 90s40-60 40-90C90 17.909 72.091 0 50 0z" fill="#8eff71"/>
-                                    <circle cx="50" cy="40" r="16" fill="#0e0e0e"/>
-                                </svg>
+                                <div className="relative w-full h-80 md:h-[28rem] rounded-2xl overflow-hidden border border-[#8eff71]/20 shadow-[0_0_40px_rgba(142,255,113,0.08)]">
+                                    <iframe
+                                        title="Zona Oeste del Gran Buenos Aires"
+                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d26342.5!2d-58.7278!3d-34.6654!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bc9b4e2adbd2a3%3A0x8e2f76b1c02b2f7a!2sMerlo%2C%20Buenos%20Aires!5e0!3m2!1ses!2sar!4v1713100000000!5m2!1ses!2sar"
+                                        className="w-full h-full"
+                                        style={{ filter: 'grayscale(40%) contrast(1.05) brightness(0.85)' }}
+                                        allowFullScreen=""
+                                        loading="lazy"
+                                        referrerPolicy="no-referrer-when-downgrade"
+                                    />
+                                    {/* overlay sutil para integrar con el diseño oscuro */}
+                                    <div className="absolute inset-0 pointer-events-none rounded-2xl ring-1 ring-inset ring-[#8eff71]/10" />
+                                </div>
                             </div>
 
                             {/* Texto */}

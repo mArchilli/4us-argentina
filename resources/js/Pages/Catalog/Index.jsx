@@ -333,7 +333,7 @@ export default function CatalogIndex({ auth, products = {}, categories = [], act
 
     return (
         <>
-            <Head title="Catálogo - 4us Argentina" />
+            <Head title="Catálogo | Tabaquería Premium & Growshop — Accesorios Importados de India" />
             <div className="bg-[#0e0e0e] text-white min-h-screen">
                 <Navbar auth={auth} hidden={footerVisible} />
 

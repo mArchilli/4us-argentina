@@ -31,7 +31,7 @@ export default function Edit({ settings, catalog }) {
 
     return (
         <AuthenticatedLayout header="Configuración de la tienda">
-            <Head title="Configuración de la tienda" />
+            <Head title="Configuración de la tienda | Tabaquería Premium & Growshop — Accesorios Importados de India" />
 
             <div className="max-w-2xl">
                 {/* Page header */}

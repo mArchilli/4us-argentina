@@ -20,7 +20,7 @@ export default function Create() {
 
     return (
         <AuthenticatedLayout header="Nuevo código de descuento">
-            <Head title="Nuevo código de descuento" />
+            <Head title="Nuevo código de descuento | Tabaquería Premium & Growshop — Accesorios Importados de India" />
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="mb-4">

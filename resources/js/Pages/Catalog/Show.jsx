@@ -261,7 +261,7 @@ export default function CatalogShow({ auth, product, featured = [], onOffer = []
 
     return (
         <>
-            <Head title={`${product.title} - 4us Argentina`} />
+            <Head title={`${product.title} | Tabaquería Premium & Growshop — Accesorios Importados de India`} />
             <div className="bg-[#0e0e0e] text-white min-h-screen">
                 <Navbar auth={auth} />
 

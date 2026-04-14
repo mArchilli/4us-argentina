@@ -20,7 +20,7 @@ export default function Edit({ discountCode }) {
 
     return (
         <AuthenticatedLayout header="Editar código de descuento">
-            <Head title="Editar código de descuento" />
+            <Head title="Editar código de descuento | Tabaquería Premium & Growshop — Accesorios Importados de India" />
 
             <div className="max-w-2xl">
                 <div className="mb-4">

@@ -48,7 +48,7 @@ export default function Index({ categories, filters = {} }) {
 
     return (
         <AuthenticatedLayout header="Categorias">
-            <Head title="Categorias" />
+            <Head title="Categorias | Tabaquería Premium & Growshop — Accesorios Importados de India" />
 
             {flash?.success && (
                 <div className="mb-6 bg-[#8eff71]/10 border border-[#8eff71]/30 text-[#8eff71] px-4 py-3 rounded-xl text-sm">

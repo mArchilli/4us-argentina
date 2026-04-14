@@ -212,7 +212,7 @@ export default function CheckoutIndex({ auth, items = [], subtotal = 0, freeShip
 
     return (
         <>
-            <Head title="Checkout - 4us Argentina" />
+            <Head title="Checkout | Tabaquería Premium & Growshop — Accesorios Importados de India" />
             <div className="bg-[#0e0e0e] text-white min-h-screen">
                 <Navbar auth={auth} hidden={footerVisible} />
 

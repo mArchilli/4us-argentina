@@ -27,7 +27,7 @@ export default function Index({ codes }) {
 
     return (
         <AuthenticatedLayout header="Códigos de descuento">
-            <Head title="Códigos de descuento" />
+            <Head title="Códigos de descuento | Tabaquería Premium & Growshop — Accesorios Importados de India" />
 
             {flash?.success && (
                 <div className="mb-6 bg-[#8eff71]/10 border border-[#8eff71]/30 text-[#8eff71] px-4 py-3 rounded-xl text-sm">

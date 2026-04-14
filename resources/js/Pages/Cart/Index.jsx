@@ -160,7 +160,7 @@ export default function CartIndex({ auth, items = [], subtotal = 0, freeShipping
 
     return (
         <>
-            <Head title="Carrito - 4us Argentina" />
+            <Head title="Carrito | Tabaquería Premium & Growshop — Accesorios Importados de India" />
             <div className="bg-[#0e0e0e] text-white min-h-screen">
                 {/* Decorative ambient blurs */}
                 <div className="fixed top-0 right-0 w-[50vw] h-[50vw] bg-[#8eff71]/5 blur-[120px] rounded-full -z-10 pointer-events-none" />

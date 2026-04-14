@@ -74,7 +74,7 @@ export default function Index({ products, categories = [], filters = {} }) {
 
     return (
         <AuthenticatedLayout header="Productos">
-            <Head title="Productos" />
+            <Head title="Productos | Tabaquería Premium & Growshop — Accesorios Importados de India" />
 
             {/* Flash */}
             {flash?.success && (

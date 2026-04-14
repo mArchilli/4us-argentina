@@ -3,6 +3,7 @@
 
 import Navbar from '@/Components/Home/Navbar';
 import HomeFooter from '@/Components/Home/HomeFooter';
+import { Head } from '@inertiajs/react';
 
 import { useRef, useEffect, useState } from 'react';
 
@@ -30,6 +31,7 @@ export default function Retailer({ auth }) {
 
     return (
         <div className="bg-[#0e0e0e] text-white font-body min-h-screen flex flex-col justify-between">
+            <Head title="Mayoristas | Tabaquería Premium & Growshop — Accesorios Importados de India" />
             <Navbar auth={auth} hidden={footerVisible} />
 
             <main className="flex-1">

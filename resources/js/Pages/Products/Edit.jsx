@@ -94,7 +94,7 @@ export default function Edit({ product, categories = [] }) {
 
     return (
         <AuthenticatedLayout header="Editar Producto">
-            <Head title={`Editar · ${product.title}`} />
+            <Head title={`Editar · ${product.title} | Tabaquería Premium & Growshop — Accesorios Importados de India`} />
 
             {/* Back link */}
             <div className="mb-4">

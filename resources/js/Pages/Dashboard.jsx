@@ -49,7 +49,7 @@ export default function Dashboard({ counts = {} }) {
 
     return (
         <AuthenticatedLayout>
-            <Head title="Dashboard — 4US Argentina" />
+            <Head title="Dashboard | Tabaquería Premium & Growshop — Accesorios Importados de India" />
 
             {/* Hero heading */}
             <div className="relative mb-10 overflow-hidden rounded-[2rem] bg-gradient-to-br from-[#131313] to-[#0e0e0e] border border-[#2a2a2a] p-8 md:p-12">

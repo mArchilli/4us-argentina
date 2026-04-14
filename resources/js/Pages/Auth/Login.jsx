@@ -17,7 +17,7 @@ export default function Login({ status, canResetPassword }) {
 
     return (
         <div className="relative min-h-screen bg-[#1c1c1c] font-body text-white overflow-hidden">
-            <Head title="Iniciar sesión" />
+            <Head title="Iniciar sesión | Tabaquería Premium & Growshop — Accesorios Importados de India" />
 
             {/*  Background blobs  */}
             <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">

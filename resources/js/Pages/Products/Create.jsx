@@ -91,7 +91,7 @@ export default function Create({ categories = [] }) {
 
     return (
         <AuthenticatedLayout header="Nuevo Producto">
-            <Head title="Nuevo Producto" />
+            <Head title="Nuevo Producto | Tabaquería Premium & Growshop — Accesorios Importados de India" />
 
             {/* Back link */}
             <div className="mb-4">
