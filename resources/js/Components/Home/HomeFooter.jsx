@@ -29,12 +29,12 @@ export default function HomeFooter() {
 
     return (
         <footer ref={footerRef} className="relative bg-zinc-950 pt-14 sm:pt-24 pb-10 border-t border-white/5 overflow-hidden min-h-[480px] flex flex-col justify-between opacity-0 translate-y-6 transition-all duration-700 ease-out [&.animate-in]:opacity-100 [&.animate-in]:translate-y-0">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-8 sm:gap-12 px-4 sm:px-6 md:px-16 w-full max-w-[1800px] mx-auto relative z-10 flex-grow content-start">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-8 sm:gap-12 px-4 sm:px-6 md:px-16 w-full  mx-auto relative z-10 flex-grow content-start">
                 {/* Branding & descripción */}
                 <div className="md:col-span-1 space-y-6 sm:space-y-8">
                     <div className="text-2xl sm:text-4xl font-black italic tracking-tighter text-[#8eff71]">4US ARGENTINA</div>
                     <p className="text-zinc-500 text-base leading-relaxed max-w-xs">
-                        Cultura premium desde Buenos Aires. Editorial, drops y comunidad para todo el país.
+                        Tabaquería premium &amp; growshop importado de India. Bandejas metálicas, picadores y accesorios para todo Argentina.
                     </p>
                     <div className="flex space-x-4">
                         <a className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-zinc-400 hover:text-[#8eff71] hover:border-[#8eff71] transition-all duration-300" href="https://www.instagram.com/4usargentina/" target="_blank" rel="noreferrer">

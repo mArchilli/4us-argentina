@@ -6,28 +6,28 @@ const perks = [
     {
         icon: 'bolt',
         title: 'ENTREGA FLASH',
-        description: 'Recibí tus productos en menos de 24hs en zonas seleccionadas de CABA y GBA.',
+        description: 'Recibí tus accesorios de tabaquería premium y growshop en menos de 24hs en zonas seleccionadas de CABA y GBA.',
         bg: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDUZBEMJrU5v3ZRVnOPvfV9o-RcRU61nFN1_vikkO9lRT3E7whiybebm9eDhXHWci3VIDZnNKkNOSl34SYvyWX2Xf-unbLHP3WKLDf3RponEoByDpZ87r4I-PvsGFrLbIWTsIWZIwdR2Mv91e9OqI9mrT1MNMzhC9Pq7TuYWoS382IrFA9IXkxQCk5RQeGKDDTXIWrAxioKbW_LRRZ3AnuJwqdBcKUTNFPAWYdV48ChD-i8BnC5_4JsiLQor7bnzFRWfc8gz_jeLOlt',
         highlight: true,
     },
     {
         icon: 'new_releases',
         title: 'DROPS EXCLUSIVOS',
-        description: 'Acceso anticipado a lanzamientos limitados y colaboraciones especiales de 4US.',
+        description: 'Acceso anticipado a lanzamientos limitados de productos importados de India y colaboraciones especiales de 4US.',
         bg: '/images/image1-comunidad.jpg',
         highlight: false,
     },
     {
         icon: 'payments',
-        title: 'EL MEJOR MARGEN GANANCIA',
-        description: 'Nuestros precios y ofertas por mayor estan pensandos para que tengas los mejores margenes de ganancia con productos de calidad.',
+        title: 'EL MEJOR MARGEN DE GANANCIA',
+        description: 'Nuestros precios mayoristas de tabaquería premium y growshop están pensados para que maximices tu margen con productos importados de calidad.',
         bg: '/images/image3-comunidad.jpg',
         highlight: false,
     },
     {
         icon: 'groups',
         title: 'COMUNIDAD VIP',
-        description: 'Invitaciones a fiestas privadas, showrooms exclusivos y sorteos mensuales.',
+        description: 'Invitaciones a eventos privados, showrooms exclusivos de productos importados y sorteos mensuales para la comunidad 4US.',
         bg: '/images/image2-comunidad.jpg',
         highlight: true,
     },
@@ -44,7 +44,7 @@ export default function CommunityPerks() {
             </div>
 
             {/* Grid de beneficios */}
-            <div className="w-full px-4 sm:px-6 md:px-16 max-w-[1800px] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-4">
+            <div className="w-full px-4 sm:px-6 md:px-16 mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-4">
                 {perks.map((perk, idx) => (
                     <div
                         key={perk.title}

@@ -330,7 +330,7 @@ export default function FeaturedSection({ products = [] }) {
 
     return (
         <section id="catalogo" className="py-14 sm:py-20 md:py-22 px-4 sm:px-6 md:px-16 min-h-screen flex flex-col justify-center">
-            <div ref={headerRef} className="flex justify-between items-end mb-8 sm:mb-12 md:mb-14 max-w-[1800px] mx-auto w-full">
+            <div ref={headerRef} className="flex justify-between items-end mb-8 sm:mb-12 md:mb-14 mx-auto w-full">
                 <h2 className="text-[clamp(1.8rem,5vw,4.5rem)] font-bold tracking-tight">
                     LANZAMIENTOS <br />
                     <span className="text-[#8eff71]">DESTACADOS.</span>
@@ -370,7 +370,7 @@ export default function FeaturedSection({ products = [] }) {
                             <span className="material-symbols-outlined">arrow_forward</span>
                         </button>
 
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 xl:gap-10 h-full max-w-[1800px] mx-auto">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 xl:gap-10 h-full mx-auto">
                             {desktopProducts.map(({ product, index }, offset) => (
                                 <div
                                     key={`${product.id}-${index}-${offset}`}
