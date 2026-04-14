@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 
 const links = [
     { label: 'Instagram', href: 'https://www.instagram.com/4usargentina/' },
@@ -10,6 +10,15 @@ const links = [
 
 export default function HomeFooter() {
     const footerRef = useRef(null);
+    const [copied, setCopied] = useState(false);
+
+    const handleCopyEmail = (e) => {
+        e.preventDefault();
+        navigator.clipboard.writeText('contacto@4usargentina.com').then(() => {
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2500);
+        });
+    };
 
     useEffect(() => {
         const el = footerRef.current;
@@ -59,27 +68,26 @@ export default function HomeFooter() {
                     <h5 className="font-headline font-black italic uppercase tracking-tighter text-white text-xl">Comunidad</h5>
                     <ul className="space-y-4">
                         <li><a className="text-zinc-500 uppercase text-xs tracking-[0.2em] font-bold hover:text-[#8eff71] hover:italic transition-all duration-300" href="https://www.instagram.com/4usargentina/" target="_blank" rel="noreferrer">Instagram</a></li>
-                        <li><a className="text-zinc-500 uppercase text-xs tracking-[0.2em] font-bold hover:text-[#8eff71] hover:italic transition-all duration-300" href="https://wa.me/5491169659907" target="_blank" rel="noreferrer">WhatsApp</a></li>
-                        <li><a className="text-zinc-500 uppercase text-xs tracking-[0.2em] font-bold hover:text-[#8eff71] hover:italic transition-all duration-300" href="mailto:contacto@4usargentina.com">Contacto</a></li>
+                        <li><a className="text-zinc-500 uppercase text-xs tracking-[0.2em] font-bold hover:text-[#8eff71] hover:italic transition-all duration-300" href="https://wa.me/5491169659907" target="_blank" rel="noopener noreferrer">WhatsApp</a></li>
+                        <li><button onClick={handleCopyEmail} className="text-zinc-500 uppercase text-xs tracking-[0.2em] font-bold hover:text-[#8eff71] hover:italic transition-all duration-300 cursor-pointer">Contacto</button></li>
                     </ul>
                     <div className="hidden md:block pt-4 border-t border-white/5">
                         <p className="text-[10px] text-zinc-600 uppercase tracking-[0.3em] mb-2 font-bold">Consultas directas</p>
-                        <a className="text-[#8eff71] font-headline italic uppercase font-black text-lg 2xl:text-2xl hover:underline underline-offset-8 decoration-2 break-all" href="mailto:contacto@4usargentina.com">contacto@4usargentina.com</a>
+                        <button onClick={handleCopyEmail} className="text-[#8eff71] font-headline italic uppercase font-black text-lg 2xl:text-2xl hover:underline underline-offset-8 decoration-2 break-all cursor-pointer text-left">contacto@4usargentina.com</button>
                     </div>
                 </div>
                 {/* Nav 3: Legal */}
                 <div className="space-y-8 order-4 md:order-none">
                     <h5 className="font-headline font-black italic uppercase tracking-tighter text-white text-xl">Legal</h5>
                     <ul className="space-y-4">
-                        <li><a className="text-zinc-500 uppercase text-xs tracking-[0.2em] font-bold hover:text-[#8eff71] hover:italic transition-all duration-300" href="#">Política de privacidad</a></li>
-                        <li><a className="text-zinc-500 uppercase text-xs tracking-[0.2em] font-bold hover:text-[#8eff71] hover:italic transition-all duration-300" href="#">Envíos</a></li>
+                        <li><a className="text-zinc-500 uppercase text-xs tracking-[0.2em] font-bold hover:text-[#8eff71] hover:italic transition-all duration-300" href="/envios">Envíos</a></li>
                         <li><a className="text-zinc-500 uppercase text-xs tracking-[0.2em] font-bold hover:text-[#8eff71] hover:italic transition-all duration-300" href="/login">Ingresar</a></li>
                     </ul>
                 </div>
                 {/* Mail - mobile only (separate block) */}
                 <div className="md:hidden order-5 pt-4 border-t border-white/5">
                     <p className="text-[10px] text-zinc-600 uppercase tracking-[0.3em] mb-2 font-bold">Consultas directas</p>
-                    <a className="text-[#8eff71] font-headline italic uppercase font-black text-lg sm:text-2xl hover:underline underline-offset-8 decoration-2 break-all" href="mailto:contacto@4usargentina.com">contacto@4usargentina.com</a>
+                    <button onClick={handleCopyEmail} className="text-[#8eff71] font-headline italic uppercase font-black text-lg sm:text-2xl hover:underline underline-offset-8 decoration-2 break-all cursor-pointer text-left">contacto@4usargentina.com</button>
                 </div>
             </div>
 
@@ -104,6 +112,10 @@ export default function HomeFooter() {
                         Pampa Labs
                     </a>
                 </div>
+            </div>
+            {/* Toast copiado */}
+            <div className={`fixed bottom-8 left-1/2 -translate-x-1/2 z-[200] bg-[#8eff71] text-[#0d6100] px-6 py-3 rounded-full font-bold text-sm uppercase tracking-tight shadow-2xl transition-all duration-300 ${copied ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}>
+                Correo copiado correctamente
             </div>
         </footer>
     );
