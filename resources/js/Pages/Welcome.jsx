@@ -5,11 +5,12 @@ import Navbar from '@/Components/Home/Navbar';
 import HeroSection from '@/Components/Home/HeroSection';
 import AboutSection from '@/Components/Home/AboutSection';
 import FeaturedSection from '@/Components/Home/FeaturedSection';
+import OfferedSection from '@/Components/Home/OfferedSection';
 import CommunityPerks from '@/Components/Home/CommunityPerks';
 import ContactSection from '@/Components/Home/ContactSection';
 import HomeFooter from '@/Components/Home/HomeFooter';
 
-export default function Welcome({ auth, featuredProducts }) {
+export default function Welcome({ auth, featuredProducts, offeredProducts }) {
     const footerRef = useRef(null);
     const [footerVisible, setFooterVisible] = useState(false);
 
@@ -41,6 +42,7 @@ export default function Welcome({ auth, featuredProducts }) {
 
                 <main className='flex-1'>
                     <HeroSection />
+                    {offeredProducts?.length > 0 && <OfferedSection products={offeredProducts} />}
                     <AboutSection />
                     <FeaturedSection products={featuredProducts} />
                     <CommunityPerks />

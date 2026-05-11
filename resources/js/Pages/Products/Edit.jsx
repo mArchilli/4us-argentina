@@ -14,7 +14,8 @@ export default function Edit({ product, categories = [] }) {
         description: product.description ?? '',
         is_featured: product.is_featured,
         offer_active: product.offer_active,
-        offer_price: product.offer_price ?? '',
+        offer_discount_percent: product.offer_discount_percent ?? '',
+        offer_scope: product.offer_scope ?? 'retail',
         offer_ends_at: product.offer_ends_at ? product.offer_ends_at.substring(0, 10) : '',
         category_ids: product.categories?.map((category) => category.id) ?? [],
         prices: product.prices.map((p) => ({
@@ -318,24 +319,29 @@ export default function Edit({ product, categories = [] }) {
                             />
                             {data.offer_active && (
                                 <>
-                                    <Field label="Precio de oferta (ARS)" error={errors.offer_price}>
+                                    <Field label="Descuento (%)" error={errors.offer_discount_percent}>
                                         <input
                                             type="number"
-                                            step="0.01"
-                                            min="0"
-                                            value={data.offer_price}
-                                            onChange={(e) => setData('offer_price', e.target.value)}
-                                            placeholder="0.00"
+                                            min="1"
+                                            max="100"
+                                            step="1"
+                                            value={data.offer_discount_percent}
+                                            onChange={(e) => setData('offer_discount_percent', e.target.value)}
+                                            placeholder="ej: 20"
                                             className={inputCls}
                                         />
                                     </Field>
+                                    <Toggle
+                                        label="Aplicar a todos los precios"
+                                        description="Incluye mayoristas. Desactivado aplica solo al precio minorista."
+                                        checked={data.offer_scope === 'all'}
+                                        onChange={(v) => setData('offer_scope', v ? 'all' : 'retail')}
+                                    />
                                     <Field label="Válida hasta" error={errors.offer_ends_at}>
                                         <input
                                             type="date"
                                             value={data.offer_ends_at}
-                                            onChange={(e) =>
-                                                setData('offer_ends_at', e.target.value)
-                                            }
+                                            onChange={(e) => setData('offer_ends_at', e.target.value)}
                                             className={`${inputCls} [color-scheme:dark]`}
                                         />
                                     </Field>

@@ -20,8 +20,17 @@ use Illuminate\Support\Facades\Cache;
 Route::get('/', function () {
     $featured = Cache::remember('home.featured_products', now()->addMinutes(5), function () {
         return Product::with(['primaryMedia', 'prices', 'categories'])
-            ->select(['id', 'title', 'description', 'is_featured', 'offer_active', 'offer_price', 'offer_ends_at', 'created_at'])
+            ->select(['id', 'title', 'description', 'is_featured', 'offer_active', 'offer_discount_percent', 'offer_scope', 'offer_ends_at', 'created_at'])
             ->where('is_featured', true)
+            ->latest()
+            ->limit(12)
+            ->get();
+    });
+
+    $offered = Cache::remember('home.offered_products', now()->addMinutes(5), function () {
+        return Product::with(['primaryMedia', 'prices', 'categories'])
+            ->select(['id', 'title', 'description', 'is_featured', 'offer_active', 'offer_discount_percent', 'offer_scope', 'offer_ends_at', 'created_at'])
+            ->where('offer_active', true)
             ->latest()
             ->limit(12)
             ->get();
@@ -32,6 +41,7 @@ Route::get('/', function () {
         'laravelVersion'   => Application::VERSION,
         'phpVersion'       => PHP_VERSION,
         'featuredProducts' => $featured,
+        'offeredProducts'  => $offered,
     ]);
 });
 

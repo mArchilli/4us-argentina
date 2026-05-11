@@ -103,7 +103,15 @@ export default function CatalogShow({ auth, product, featured = [], onOffer = []
     const activeTierIndex = findTierForQuantity(quantity);
     const activeTier = sortedPrices[activeTierIndex] ?? sortedPrices[0];
     const unitPrice = activeTier ? Number(activeTier.price) : 0;
-    const totalPrice = unitPrice * quantity;
+
+    const discountPct = product.offer_active && product.offer_discount_percent ? Number(product.offer_discount_percent) : 0;
+    const offerScope = product.offer_scope ?? 'retail';
+    const isRetailTier = activeTierIndex === 0;
+    const effectiveUnitPrice = discountPct > 0 && (offerScope === 'all' || isRetailTier)
+        ? Math.round(unitPrice * (1 - discountPct / 100) * 100) / 100
+        : unitPrice;
+    const hasOfferOnTier = effectiveUnitPrice < unitPrice;
+    const totalPrice = effectiveUnitPrice * quantity;
 
     const handleQuantityChange = (value) => {
         const parsed = Number(value);
@@ -386,9 +394,19 @@ export default function CatalogShow({ auth, product, featured = [], onOffer = []
                                     <div className="space-y-4">
                                         <div>
                                             <p className="text-xs uppercase tracking-[0.18em] text-[#adaaaa] mb-1">Precio por unidad actual</p>
+                                            {hasOfferOnTier && (
+                                                <p className="text-[#adaaaa] text-xl line-through leading-tight">
+                                                    ${unitPrice.toLocaleString('es-AR')} ARS
+                                                </p>
+                                            )}
                                             <span className="text-4xl font-black text-[#8eff71]">
-                                                ${unitPrice.toLocaleString('es-AR')} ARS
+                                                ${effectiveUnitPrice.toLocaleString('es-AR')} ARS
                                             </span>
+                                            {hasOfferOnTier && (
+                                                <span className="ml-3 bg-[#ff7351]/15 text-[#ff7351] px-3 py-0.5 rounded-full text-xs font-bold uppercase align-middle">
+                                                    -{discountPct}% OFF
+                                                </span>
+                                            )}
                                             <p className="mt-1 text-[#adaaaa] text-sm">
                                                 Total: <span className="text-white font-semibold">${totalPrice.toLocaleString('es-AR')} ARS</span>
                                             </p>
@@ -414,16 +432,6 @@ export default function CatalogShow({ auth, product, featured = [], onOffer = []
                                         )}
                                     </div>
 
-                                    {product.offer_active && product.offer_price && (
-                                        <div className="mt-2 flex items-center gap-3">
-                                            <span className="text-2xl font-black text-[#ff7351]">
-                                                ${Number(product.offer_price).toLocaleString('es-AR')} ARS
-                                            </span>
-                                            <span className="bg-[#ff7351]/15 text-[#ff7351] px-3 py-0.5 rounded-full text-xs font-bold uppercase">
-                                                Precio oferta
-                                            </span>
-                                        </div>
-                                    )}
                                 </div>
                             )}
 

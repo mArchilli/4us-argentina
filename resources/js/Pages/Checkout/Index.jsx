@@ -139,7 +139,13 @@ export default function CheckoutIndex({ auth, items = [], subtotal = 0, freeShip
             'Hola! Quiero finalizar este pedido:',
             '',
             '*Productos*',
-            ...items.map((item, index) => `${index + 1}. ${item.title} x${item.quantity} - ${formatArs(item.line_total)}`),
+            ...items.map((item, index) => {
+                const hasOffer = item.offer_percent && item.unit_price < item.original_unit_price;
+                const offerNote = hasOffer
+                    ? ` _(antes ${formatArs(item.original_unit_price * item.quantity)}, -${item.offer_percent}% OFF)_`
+                    : '';
+                return `${index + 1}. ${item.title} x${item.quantity} - ${formatArs(item.line_total)}${offerNote}`;
+            }),
             '',
             `*Subtotal:* ${formatArs(subtotal)}`,
         ];
@@ -370,17 +376,6 @@ export default function CheckoutIndex({ auth, items = [], subtotal = 0, freeShip
                                         )}
                                     </div>
                                 </section>
-
-                                {/* Payment — locked until shipping filled */}
-                                <section className="bg-[#131313] rounded-[1rem] p-6 mt-6 opacity-40 grayscale pointer-events-none select-none">
-                                    <h2 className="text-xl font-bold mb-4 uppercase tracking-widest flex items-center gap-3">
-                                        <span className="material-symbols-outlined text-[#767575]">payments</span>
-                                        Método de Pago
-                                    </h2>
-                                    <div className="h-16 bg-[#191a1a] border border-dashed border-[#484848] rounded-xl flex items-center justify-center">
-                                        <span className="text-[#adaaaa] text-xs italic">Completá el envío para habilitar el pago</span>
-                                    </div>
-                                </section>
                             </form>
                         </div>
 
@@ -466,23 +461,6 @@ export default function CheckoutIndex({ auth, items = [], subtotal = 0, freeShip
                                 <p className="mt-4 text-[9px] text-center text-[#adaaaa] uppercase tracking-[0.15em] leading-relaxed">
                                     Secure checkout powered by 4US Argentina.<br />Neon vibes only.
                                 </p>
-                            </div>
-
-                            {/* Promo banner */}
-                            <div className="bg-[#8eff71] rounded-[1rem] p-4 text-[#0d6100] flex items-center gap-3 overflow-hidden relative">
-                                <span className="material-symbols-outlined text-3xl shrink-0" style={{ fontVariationSettings: "'FILL' 1" }}>
-                                    auto_fix_high
-                                </span>
-                                <div>
-                                    <p className="font-bold leading-tight text-sm uppercase">15% OFF EXTRA</p>
-                                    <p className="text-[10px] uppercase tracking-wide">
-                                        Usá el código <span className="font-black">NEONVIBE</span>
-                                    </p>
-                                </div>
-                                {/* Decorative bolt */}
-                                <div className="absolute -right-4 -bottom-4 text-[#0d6100]/10 scale-[2.5] pointer-events-none">
-                                    <span className="material-symbols-outlined text-7xl">bolt</span>
-                                </div>
                             </div>
 
                             <Link

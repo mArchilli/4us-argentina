@@ -189,6 +189,21 @@ class CartController extends Controller
                 ->last() ?? $prices->first();
             $unitPrice = $selectedPrice ? (float) $selectedPrice->price : 0;
 
+            if ($product->offer_active && $product->offer_discount_percent) {
+                $percent = (float) $product->offer_discount_percent;
+                $scope   = $product->offer_scope ?? 'retail';
+
+                if ($scope === 'all') {
+                    $unitPrice = round($unitPrice * (1 - $percent / 100), 2);
+                } else {
+                    $secondTier       = $prices->skip(1)->first();
+                    $isRetailQuantity = !$secondTier || $quantity < (int) $secondTier->min_quantity;
+                    if ($isRetailQuantity) {
+                        $unitPrice = round($unitPrice * (1 - $percent / 100), 2);
+                    }
+                }
+            }
+
             $items[] = [
                 'product_id'  => $product->id,
                 'title'       => $product->title,

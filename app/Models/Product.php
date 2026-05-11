@@ -14,15 +14,16 @@ class Product extends Model
         'description',
         'is_featured',
         'offer_active',
-        'offer_price',
+        'offer_discount_percent',
+        'offer_scope',
         'offer_ends_at',
     ];
 
     protected $casts = [
-        'is_featured'   => 'boolean',
-        'offer_active'  => 'boolean',
-        'offer_ends_at' => 'datetime',
-        'offer_price'   => 'decimal:2',
+        'is_featured'            => 'boolean',
+        'offer_active'           => 'boolean',
+        'offer_ends_at'          => 'datetime',
+        'offer_discount_percent' => 'integer',
     ];
 
     public function prices(): HasMany

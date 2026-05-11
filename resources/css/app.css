@@ -94,6 +94,14 @@
     color: #adaaaa;
     font-size: 1rem;
     line-height: 1.75;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    min-width: 0;
+}
+
+.product-description img {
+    max-width: 100%;
+    height: auto;
 }
 
 .product-description strong { color: #ffffff; }

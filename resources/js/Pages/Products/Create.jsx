@@ -13,7 +13,8 @@ export default function Create({ categories = [] }) {
         description: '',
         is_featured: false,
         offer_active: false,
-        offer_price: '',
+        offer_discount_percent: '',
+        offer_scope: 'retail',
         offer_ends_at: '',
         category_ids: [],
         prices: [{ label: 'Por unidad', min_quantity: 1, price: '' }],
@@ -197,17 +198,24 @@ export default function Create({ categories = [] }) {
                             />
                             {data.offer_active && (
                                 <>
-                                    <Field label="Precio de oferta (ARS)" error={errors.offer_price}>
+                                    <Field label="Descuento (%)" error={errors.offer_discount_percent}>
                                         <input
                                             type="number"
-                                            step="0.01"
-                                            min="0"
-                                            value={data.offer_price}
-                                            onChange={(e) => setData('offer_price', e.target.value)}
-                                            placeholder="0.00"
+                                            min="1"
+                                            max="100"
+                                            step="1"
+                                            value={data.offer_discount_percent}
+                                            onChange={(e) => setData('offer_discount_percent', e.target.value)}
+                                            placeholder="ej: 20"
                                             className={inputCls}
                                         />
                                     </Field>
+                                    <Toggle
+                                        label="Aplicar a todos los precios"
+                                        description="Incluye mayoristas. Desactivado aplica solo al precio minorista."
+                                        checked={data.offer_scope === 'all'}
+                                        onChange={(v) => setData('offer_scope', v ? 'all' : 'retail')}
+                                    />
                                     <Field label="Válida hasta" error={errors.offer_ends_at}>
                                         <input
                                             type="date"

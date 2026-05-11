@@ -162,15 +162,36 @@ class CheckoutController extends Controller
             $selectedPrice = $prices
                 ->filter(fn ($price) => (int) $price->min_quantity <= $quantity)
                 ->last() ?? $prices->first();
-            $unitPrice = $selectedPrice ? (float) $selectedPrice->price : 0;
+            $originalUnitPrice = $selectedPrice ? (float) $selectedPrice->price : 0;
+            $unitPrice         = $originalUnitPrice;
+            $offerPercent      = null;
+
+            if ($product->offer_active && $product->offer_discount_percent) {
+                $percent = (float) $product->offer_discount_percent;
+                $scope   = $product->offer_scope ?? 'retail';
+
+                if ($scope === 'all') {
+                    $unitPrice    = round($originalUnitPrice * (1 - $percent / 100), 2);
+                    $offerPercent = $percent;
+                } else {
+                    $secondTier       = $prices->skip(1)->first();
+                    $isRetailQuantity = !$secondTier || $quantity < (int) $secondTier->min_quantity;
+                    if ($isRetailQuantity) {
+                        $unitPrice    = round($originalUnitPrice * (1 - $percent / 100), 2);
+                        $offerPercent = $percent;
+                    }
+                }
+            }
 
             $items[] = [
-                'product_id'  => $product->id,
-                'title'       => $product->title,
-                'image'       => $product->primaryMedia?->url,
-                'unit_price'  => $unitPrice,
-                'quantity'    => $quantity,
-                'line_total'  => $unitPrice * $quantity,
+                'product_id'          => $product->id,
+                'title'               => $product->title,
+                'image'               => $product->primaryMedia?->url,
+                'unit_price'          => $unitPrice,
+                'original_unit_price' => $originalUnitPrice,
+                'offer_percent'       => $offerPercent,
+                'quantity'            => $quantity,
+                'line_total'          => $unitPrice * $quantity,
             ];
         }
 

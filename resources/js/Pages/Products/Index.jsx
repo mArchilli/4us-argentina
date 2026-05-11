@@ -427,9 +427,9 @@ function ProductCard({ product, onDelete }) {
                         )}
                     </p>
                 )}
-                {product.offer_active && product.offer_price && (
+                {product.offer_active && product.offer_discount_percent && (
                     <p className="text-[#ff7351] text-xs mt-0.5">
-                        Oferta: ${Number(product.offer_price).toLocaleString('es-AR')} ARS
+                        Oferta: {product.offer_discount_percent}% desc.{product.offer_scope === 'all' ? ' (todos los precios)' : ' (minorista)'}
                     </p>
                 )}
                 {product.categories?.length > 0 && (

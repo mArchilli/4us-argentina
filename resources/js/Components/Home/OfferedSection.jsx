@@ -5,7 +5,6 @@ import toast from 'react-hot-toast';
 import { emitCartChanged } from '@/utils/cartEvents';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { stripHtml } from '@/utils/sanitize';
-import ProductCardSkeleton from '@/Components/ProductCardSkeleton';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -94,13 +93,19 @@ const ProductCard = memo(function ProductCard({
                     </div>
                 )}
 
-                {product.offer_active && (
-                    <div className="absolute top-6 right-6">
-                        <span className="bg-[#ff7351] text-white px-4 py-1 rounded-full text-sm font-bold">
-                            Oferta
-                        </span>
+                {/* Hot Sale danger tape ribbon */}
+                <div className="absolute top-0 right-0 w-44 h-44 overflow-hidden rounded-tr-[1.6rem] z-10 pointer-events-none">
+                    <div
+                        className="absolute top-11 -right-10 rotate-45 w-56 py-3 text-center text-sm font-black uppercase tracking-widest shadow-lg"
+                        style={{
+                            backgroundImage: 'repeating-linear-gradient(90deg, #facc15 0px, #facc15 9px, #111111 9px, #111111 18px)',
+                            color: '#fff',
+                            textShadow: '0 1px 3px rgba(0,0,0,0.95)',
+                        }}
+                    >
+                        HOT SALE
                     </div>
-                )}
+                </div>
             </div>
 
             <div className="flex justify-between items-start gap-3">
@@ -212,7 +217,7 @@ const ProductCard = memo(function ProductCard({
     );
 });
 
-export default function FeaturedSection({ products = [] }) {
+export default function OfferedSection({ products = [] }) {
     const headerRef = useRef(null);
     const carouselRef = useRef(null);
     const touchStartXRef = useRef(null);
@@ -260,14 +265,6 @@ export default function FeaturedSection({ products = [] }) {
             };
         });
 
-    const previousProduct = productCount > 0
-        ? products[getWrappedIndex(currentIndex - 1, productCount)]
-        : null;
-    const currentProduct = productCount > 0 ? products[currentIndex] : null;
-    const nextProduct = productCount > 0
-        ? products[getWrappedIndex(currentIndex + 1, productCount)]
-        : null;
-
     useEffect(() => {
         if (productCount === 0) {
             setCurrentIndex(0);
@@ -293,7 +290,7 @@ export default function FeaturedSection({ products = [] }) {
             );
 
             gsap.fromTo(
-                Array.from(carouselRef.current.querySelectorAll('[data-featured-item]')),
+                Array.from(carouselRef.current.querySelectorAll('[data-offered-item]')),
                 { y: 60, opacity: 0 },
                 {
                     y: 0, opacity: 1, duration: 0.8, ease: 'power3.out',
@@ -341,14 +338,14 @@ export default function FeaturedSection({ products = [] }) {
     if (productCount === 0) return null;
 
     return (
-        <section id="catalogo" className="py-14 sm:py-20 md:py-22 px-4 sm:px-6 md:px-16 min-h-screen flex flex-col justify-center">
+        <section id="ofertas" className="py-14 sm:py-20 md:py-22 px-4 sm:px-6 md:px-16 min-h-screen flex flex-col justify-center">
             <div ref={headerRef} className="flex justify-between items-end mb-8 sm:mb-12 md:mb-14 mx-auto w-full">
                 <h2 className="text-[clamp(1.8rem,5vw,4.5rem)] font-bold tracking-tight">
-                    LANZAMIENTOS <br />
-                    <span className="text-[#8eff71]">DESTACADOS.</span>
+                    HOT SALE <br />
+                    <span className="text-[#8eff71]">OFERTAS.</span>
                 </h2>
                 <div className="text-[#adaaaa] text-xs sm:text-sm tracking-widest uppercase mb-2">
-                    Colección {new Date().getFullYear()} 
+                    Por tiempo limitado
                 </div>
             </div>
 
@@ -362,7 +359,6 @@ export default function FeaturedSection({ products = [] }) {
                     </div>
 
                     <div className="relative">
-                        {/* Arrow: previous — overlays first card */}
                         <button
                             type="button"
                             onClick={goToPrevious}
@@ -372,7 +368,6 @@ export default function FeaturedSection({ products = [] }) {
                             <span className="material-symbols-outlined">arrow_back</span>
                         </button>
 
-                        {/* Arrow: next — overlays last card */}
                         <button
                             type="button"
                             onClick={goToNext}
@@ -386,7 +381,7 @@ export default function FeaturedSection({ products = [] }) {
                             {desktopProducts.map(({ product, index }, offset) => (
                                 <div
                                     key={`${product.id}-${index}-${offset}`}
-                                    data-featured-item
+                                    data-offered-item
                                     className={`h-full ${offset % 2 !== 0 ? 'xl:mt-14' : ''}`}
                                 >
                                     <ProductCard
@@ -440,7 +435,7 @@ export default function FeaturedSection({ products = [] }) {
                             {products.map((product, i) => (
                                 <div
                                     key={product.id}
-                                    data-featured-item
+                                    data-offered-item
                                     className={`flex-shrink-0 transition-opacity duration-500 ${
                                         carouselWidth > 0 && !isSlideActive(i) ? 'opacity-40' : 'opacity-100'
                                     } ${carouselWidth === 0 ? 'w-[78%] md:w-[48%]' : ''}`}
