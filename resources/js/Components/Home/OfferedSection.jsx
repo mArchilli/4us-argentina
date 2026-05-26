@@ -103,7 +103,7 @@ const ProductCard = memo(function ProductCard({
                             textShadow: '0 1px 3px rgba(0,0,0,0.95)',
                         }}
                     >
-                        HOT SALE
+                        {product.offer_name || 'HOT SALE'}
                     </div>
                 </div>
             </div>

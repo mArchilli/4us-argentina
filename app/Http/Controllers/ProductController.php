@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\ProductMedia;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
@@ -150,6 +151,9 @@ class ProductController extends Controller
             }
         }
 
+        Cache::forget('home.featured_products');
+        Cache::forget('home.offered_products');
+
         return redirect()->route('products.index')
             ->with('success', 'Producto creado exitosamente.');
     }
@@ -257,6 +261,9 @@ class ProductController extends Controller
             }
         }
 
+        Cache::forget('home.featured_products');
+        Cache::forget('home.offered_products');
+
         return redirect()->route('products.index')
             ->with('success', 'Producto actualizado exitosamente.');
     }
@@ -267,6 +274,9 @@ class ProductController extends Controller
             File::delete(public_path($media->file_path));
         }
         $product->delete();
+
+        Cache::forget('home.featured_products');
+        Cache::forget('home.offered_products');
 
         return redirect()->route('products.index')
             ->with('success', 'Producto eliminado exitosamente.');
