@@ -14,6 +14,7 @@ class Product extends Model
         'description',
         'is_featured',
         'offer_active',
+        'offer_name',
         'offer_discount_percent',
         'offer_scope',
         'offer_ends_at',

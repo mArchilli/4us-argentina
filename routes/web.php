@@ -54,6 +54,7 @@ Route::patch('/carrito/actualizar', [CartController::class, 'update'])->name('ca
 Route::delete('/carrito/eliminar', [CartController::class, 'remove'])->name('cart.remove');
 Route::post('/carrito/vaciar', [CartController::class, 'clear'])->name('cart.clear');
 Route::get('/carrito/count', [CartController::class, 'count'])->name('cart.count');
+Route::get('/carrito/items', [CartController::class, 'items'])->name('cart.items');
 
 Route::post('/carrito/aplicar-descuento', [CartController::class, 'applyDiscount'])->name('cart.applyDiscount');
 Route::post('/carrito/quitar-descuento', [CartController::class, 'removeDiscount'])->name('cart.removeDiscount');

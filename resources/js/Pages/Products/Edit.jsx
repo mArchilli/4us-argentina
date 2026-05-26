@@ -14,6 +14,7 @@ export default function Edit({ product, categories = [] }) {
         description: product.description ?? '',
         is_featured: product.is_featured,
         offer_active: product.offer_active,
+        offer_name: product.offer_name ?? '',
         offer_discount_percent: product.offer_discount_percent ?? '',
         offer_scope: product.offer_scope ?? 'retail',
         offer_ends_at: product.offer_ends_at ? product.offer_ends_at.substring(0, 10) : '',
@@ -319,6 +320,16 @@ export default function Edit({ product, categories = [] }) {
                             />
                             {data.offer_active && (
                                 <>
+                                    <Field label="Nombre de la oferta" error={errors.offer_name}>
+                                        <input
+                                            type="text"
+                                            maxLength="100"
+                                            value={data.offer_name}
+                                            onChange={(e) => setData('offer_name', e.target.value)}
+                                            placeholder="ej: Hot Sale, Promo Invierno"
+                                            className={inputCls}
+                                        />
+                                    </Field>
                                     <Field label="Descuento (%)" error={errors.offer_discount_percent}>
                                         <input
                                             type="number"

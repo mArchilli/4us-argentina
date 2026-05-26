@@ -13,6 +13,7 @@ export default function Create({ categories = [] }) {
         description: '',
         is_featured: false,
         offer_active: false,
+        offer_name: '',
         offer_discount_percent: '',
         offer_scope: 'retail',
         offer_ends_at: '',
@@ -198,6 +199,16 @@ export default function Create({ categories = [] }) {
                             />
                             {data.offer_active && (
                                 <>
+                                    <Field label="Nombre de la oferta" error={errors.offer_name}>
+                                        <input
+                                            type="text"
+                                            maxLength="100"
+                                            value={data.offer_name}
+                                            onChange={(e) => setData('offer_name', e.target.value)}
+                                            placeholder="ej: Hot Sale, Promo Invierno"
+                                            className={inputCls}
+                                        />
+                                    </Field>
                                     <Field label="Descuento (%)" error={errors.offer_discount_percent}>
                                         <input
                                             type="number"

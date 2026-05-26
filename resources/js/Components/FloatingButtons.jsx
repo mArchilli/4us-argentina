@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Link, router } from '@inertiajs/react';
+import { router } from '@inertiajs/react';
 import { subscribeCartChanged } from '@/utils/cartEvents';
+import CartModal from '@/Components/CartModal';
 
 const ADMIN_PREFIXES = ['Dashboard', 'Products/', 'Categories/', 'DiscountCodes/', 'StoreSettings/', 'Profile/', 'Auth/'];
 
@@ -17,6 +18,7 @@ export default function FloatingButtons() {
 
     const [cartCount, setCartCount] = useState(0);
     const [atBottom, setAtBottom] = useState(false);
+    const [cartOpen, setCartOpen] = useState(false);
 
     const fetchCartCount = useCallback(() => {
         fetch('/carrito/count')
@@ -62,17 +64,21 @@ export default function FloatingButtons() {
     if (isAdmin) return null;
 
     return (
-        <div
-            className="fixed right-6 z-50 flex flex-col items-center gap-3 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
-            style={{ bottom: atBottom ? '6rem' : '1.5rem' }}
-        >
-            {/* Cart Button */}
-            <Link
-                href="/carrito"
-                className="relative w-14 h-14 md:w-[4.2rem] md:h-[4.2rem] rounded-[1.1rem] bg-[#131313] border border-[#2a2a2a] flex items-center justify-center text-white hover:border-[#8eff71]/40 hover:shadow-[0_0_20px_rgba(142,255,113,0.1)] transition-all duration-300 group"
-                aria-label="Carrito"
+        <>
+            <CartModal isOpen={cartOpen} onClose={() => setCartOpen(false)} />
+
+            <div
+                className="fixed right-6 z-50 flex flex-col items-center gap-3 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
+                style={{ bottom: atBottom ? '6rem' : '1.5rem' }}
             >
-                <span className="material-symbols-outlined text-[22px] md:text-[26px] text-[#8eff71] group-hover:text-[#c] transition-colors duration-300">
+            {/* Cart Button */}
+            <button
+                type="button"
+                onClick={() => setCartOpen(true)}
+                className="relative w-14 h-14 md:w-[4.2rem] md:h-[4.2rem] rounded-[1.1rem] bg-[#131313] border border-[#2a2a2a] flex items-center justify-center text-white hover:border-[#8eff71]/40 hover:shadow-[0_0_20px_rgba(142,255,113,0.1)] transition-colors duration-300 group"
+                aria-label="Abrir carrito"
+            >
+                <span className="material-symbols-outlined text-[22px] md:text-[26px] text-[#8eff71] transition-colors duration-300">
                     shopping_cart
                 </span>
 
@@ -81,7 +87,7 @@ export default function FloatingButtons() {
                         {cartCount > 99 ? '99+' : cartCount}
                     </span>
                 )}
-            </Link>
+            </button>
 
             {/* WhatsApp Button */}
             <a
@@ -100,5 +106,6 @@ export default function FloatingButtons() {
                 </svg>
             </a>
         </div>
+        </>
     );
 }

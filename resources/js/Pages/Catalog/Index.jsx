@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState, memo, useMemo } from 'react';
 import { Head, Link, router } from '@inertiajs/react';
 import toast from 'react-hot-toast';
 import Navbar from '@/Components/Home/Navbar';
@@ -14,10 +14,13 @@ function CategoryBadge({ name }) {
     );
 }
 
-function ProductCard({ product, currentPage }) {
+const ProductCard = memo(function ProductCard({ product, currentPage }) {
     const image = product.primary_media?.url ?? null;
     const [imageLoaded, setImageLoaded] = useState(!image);
-    const sortedPrices = [...(product.prices ?? [])].sort((a, b) => (a.min_quantity || 1) - (b.min_quantity || 1));
+    const sortedPrices = useMemo(
+        () => [...(product.prices ?? [])].sort((a, b) => (a.min_quantity || 1) - (b.min_quantity || 1)),
+        [product.prices],
+    );
     const [quantity, setQuantity] = useState(sortedPrices[0]?.min_quantity ?? 1);
 
     const findTierForQuantity = (qty) => {
@@ -62,7 +65,7 @@ function ProductCard({ product, currentPage }) {
     };
 
     return (
-        <article className="group relative flex flex-col h-full bg-[#131313] rounded-[1.6rem] overflow-hidden hover:scale-[1.02] transition-all duration-500 shadow-xl">
+        <article className="group relative flex flex-col h-full bg-[#131313] rounded-[1.6rem] overflow-hidden hover:scale-[1.02] transition-transform duration-500 shadow-xl">
             <div className="aspect-[4/5] overflow-hidden relative">
                 {/* Skeleton overlay while image loads */}
                 {!imageLoaded && (
@@ -73,6 +76,8 @@ function ProductCard({ product, currentPage }) {
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                         src={image}
                         alt={product.title}
+                        loading="lazy"
+                        decoding="async"
                         onLoad={() => setImageLoaded(true)}
                     />
                 ) : (
@@ -191,14 +196,14 @@ function ProductCard({ product, currentPage }) {
                     <button
                         type="button"
                         onClick={handleAddToCart}
-                        className="w-full bg-[#8eff71] text-[#0d6100] py-2.5 rounded-full font-black uppercase tracking-tighter flex items-center justify-center gap-1.5 transition-all duration-300 text-xs hover:shadow-[0_0_20px_rgba(142,255,113,0.35)]"
+                        className="w-full bg-[#8eff71] text-[#0d6100] py-2.5 rounded-full font-black uppercase tracking-tighter flex items-center justify-center gap-1.5 transition-shadow duration-300 text-xs hover:shadow-[0_0_20px_rgba(142,255,113,0.35)]"
                     >
                         <span className="material-symbols-outlined text-sm">add_shopping_cart</span>
                         Agregar
                     </button>
                     <Link
                         href={`${route('catalog.show', product.id)}?page=${currentPage}`}
-                        className="w-full bg-[#8eff71]/10 border border-[#8eff71]/20 text-[#8eff71] py-2.5 rounded-full font-black uppercase tracking-tighter flex items-center justify-center gap-1.5 group-hover:bg-[#8eff71] group-hover:text-[#0d6100] transition-all duration-300 text-xs"
+                        className="w-full bg-[#8eff71]/10 border border-[#8eff71]/20 text-[#8eff71] py-2.5 rounded-full font-black uppercase tracking-tighter flex items-center justify-center gap-1.5 group-hover:bg-[#8eff71] group-hover:text-[#0d6100] transition-colors duration-300 text-xs"
                     >
                         Ver
                     </Link>
@@ -212,11 +217,15 @@ function ProductCard({ product, currentPage }) {
             </div>
         </article>
     );
-}
+});
 
 /* ─────────────────────────── Pagination ──────────────────────────────── */
 function Pagination({ links, currentPage, lastPage }) {
     if (lastPage <= 1) return null;
+
+    const isPrev = (label) => label.includes('Previous') || label.includes('laquo');
+    const isNext = (label) => label.includes('Next') || label.includes('raquo');
+    const isNavLink = (label) => isPrev(label) || isNext(label);
 
     return (
         <nav className="mt-16 flex justify-center" aria-label="Paginación">
@@ -224,17 +233,17 @@ function Pagination({ links, currentPage, lastPage }) {
                 {links.map((link, i) => {
                     const isActive = link.active;
                     const isDisabled = !link.url;
-                    const label = link.label
-                        .replace('&laquo;', '«')
-                        .replace('&raquo;', '»')
-                        .replace('Previous', '«')
-                        .replace('Next', '»');
+                    const nav = isNavLink(link.label);
+                    const icon = isPrev(link.label) ? 'chevron_left' : isNext(link.label) ? 'chevron_right' : null;
+                    const content = icon
+                        ? <span className="material-symbols-outlined text-[20px] leading-none">{icon}</span>
+                        : <span className="text-sm font-bold">{link.label}</span>;
 
                     if (isDisabled) {
                         return (
                             <li key={i}>
-                                <span className="w-10 h-10 flex items-center justify-center rounded-full text-sm font-bold text-[#484848] cursor-default">
-                                    {label}
+                                <span className="w-10 h-10 flex items-center justify-center rounded-full text-[#484848] cursor-default">
+                                    {content}
                                 </span>
                             </li>
                         );
@@ -244,14 +253,14 @@ function Pagination({ links, currentPage, lastPage }) {
                         <li key={i}>
                             <Link
                                 href={link.url}
-                                className={`w-10 h-10 flex items-center justify-center rounded-full text-sm font-bold transition-all duration-300 ${
+                                className={`w-10 h-10 flex items-center justify-center rounded-full transition-all duration-300 ${
                                     isActive
                                         ? 'bg-[#8eff71] text-[#0d6100] shadow-[0_0_15px_rgba(142,255,113,0.3)]'
                                         : 'bg-[#1a1a1a] text-[#adaaaa] border border-[#2a2a2a] hover:border-[#8eff71]/40 hover:text-[#8eff71]'
                                 }`}
                                 preserveScroll={false}
                             >
-                                {label}
+                                {content}
                             </Link>
                         </li>
                     );
@@ -342,7 +351,7 @@ export default function CatalogIndex({ auth, products = {}, categories = [], act
                     <section className="relative min-h-screen flex flex-col justify-center px-6 md:px-12 lg:px-24 mb-20 overflow-hidden">
                         <div className="absolute top-0 right-2 h-full opacity-40 z-0 lg:mr-28 lg:pr-28 md:mr-14 md:pr-16">
                             
-                            <img alt="Catálogo 4US" className="w-full h-full object-cover grayscale contrast-125 " src="/images/catalog-images.png" />
+                            <img alt="Catálogo 4US" className="w-full h-full object-cover grayscale contrast-125" src="/images/catalog-images.png" fetchpriority="high" decoding="async" />
                         </div>
                         <div className="relative z-10 max-w-4xl pt-24">
                             <div className="inline-block px-3 py-1 bg-[#8eff71]/10 border border-[#8eff71]/20 rounded-full mb-6">

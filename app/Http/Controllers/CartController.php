@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\DiscountCode;
 use App\Models\Product;
 use App\Models\StoreSetting;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -68,6 +69,9 @@ class CartController extends Controller
             session()->put('cart', $cart);
         }
 
+        if ($request->wantsJson()) {
+            return response()->json(['ok' => true]);
+        }
         return back()->with('success', 'Carrito actualizado.');
     }
 
@@ -82,7 +86,21 @@ class CartController extends Controller
         unset($cart[$productId]);
         session()->put('cart', $cart);
 
+        if ($request->wantsJson()) {
+            return response()->json(['ok' => true]);
+        }
         return back()->with('success', 'Producto eliminado del carrito.');
+    }
+
+    public function items(): JsonResponse
+    {
+        $cart  = session()->get('cart', []);
+        $items = $this->resolveCartItems($cart);
+
+        return response()->json([
+            'items'    => $items,
+            'subtotal' => collect($items)->sum('line_total'),
+        ]);
     }
 
     public function count()
@@ -95,11 +113,14 @@ class CartController extends Controller
         ]);
     }
 
-    public function clear()
+    public function clear(Request $request)
     {
         session()->forget('cart');
         session()->forget('discount_code');
 
+        if ($request->wantsJson()) {
+            return response()->json(['ok' => true]);
+        }
         return redirect('/');
     }
 
