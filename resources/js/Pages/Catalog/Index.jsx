@@ -33,11 +33,17 @@ const ProductCard = memo(function ProductCard({ product, currentPage }) {
     const activeTierIndex = findTierForQuantity(quantity);
     const activeTier = sortedPrices[activeTierIndex] ?? sortedPrices[0];
     const unitPrice = activeTier ? Number(activeTier.price) : 0;
-    const totalPrice = unitPrice * quantity;
-    const baseUnitPrice = sortedPrices[0] ? Number(sortedPrices[0].price) : 0;
-    const savingsPerUnit = Math.max(0, baseUnitPrice - unitPrice);
+    const discountPct = product.offer_active && product.offer_discount_percent ? Number(product.offer_discount_percent) : 0;
+    const offerScope = product.offer_scope ?? 'retail';
+    const isRetailTier = activeTierIndex === 0;
+    const effectiveUnitPrice = discountPct > 0 && (offerScope === 'all' || isRetailTier)
+        ? Math.round(unitPrice * (1 - discountPct / 100) * 100) / 100
+        : unitPrice;
+    const totalPrice = effectiveUnitPrice * quantity;
+    const savingsPerUnit = Math.max(0, unitPrice - effectiveUnitPrice);
     const savingsTotal = savingsPerUnit * quantity;
-    const savingsPercent = baseUnitPrice > 0 ? Math.round((savingsPerUnit / baseUnitPrice) * 100) : 0;
+    const savingsPercent = unitPrice > 0 ? Math.round((savingsPerUnit / unitPrice) * 100) : 0;
+    const hasDiscount = effectiveUnitPrice < unitPrice;
 
     const handleQuantityChange = (value) => {
         const parsed = Number(value);
@@ -121,15 +127,20 @@ const ProductCard = memo(function ProductCard({ product, currentPage }) {
                     <div className="text-right flex-shrink-0">
                         {sortedPrices.length > 0 ? (
                             <>
+                                {hasDiscount && (
+                                    <p className="text-[#adaaaa] text-xs line-through text-right leading-tight">
+                                        ${unitPrice.toLocaleString('es-AR')}
+                                    </p>
+                                )}
                                 <span className="text-[#8eff71] font-black text-lg md:text-xl">
-                                    ${unitPrice.toLocaleString('es-AR')}
+                                    ${effectiveUnitPrice.toLocaleString('es-AR')}
                                 </span>
                                 <p className="text-[#adaaaa] text-xs text-right">
                                     Total: ${totalPrice.toLocaleString('es-AR')}
                                 </p>
                                 {savingsTotal > 0 && (
-                                    <p className="text-[#8eff71] text-[10px] font-bold text-right uppercase tracking-wide">
-                                        Ahorras ${savingsTotal.toLocaleString('es-AR')} ({savingsPercent}%)
+                                    <p className="text-[#ff7351] text-[10px] font-bold text-right uppercase tracking-wide">
+                                        -{savingsPercent}% OFF
                                     </p>
                                 )}
                             </>
