@@ -9,7 +9,12 @@ import { sanitizeHtml } from '@/utils/sanitize';
 /* ─────────────────────────── Small reusable card ─────────────────────── */
 function MiniProductCard({ product }) {
     const image = product.primary_media?.url ?? null;
-    const firstPrice = product.prices?.[0];
+    const sortedPrices = [...(product.prices ?? [])].sort((a, b) => (a.min_quantity || 1) - (b.min_quantity || 1));
+    const firstPrice = sortedPrices[0];
+    const basePrice = firstPrice ? Number(firstPrice.price) : 0;
+    const discountPct = product.offer_active && product.offer_discount_percent ? Number(product.offer_discount_percent) : 0;
+    const effectivePrice = discountPct > 0 ? Math.round(basePrice * (1 - discountPct / 100) * 100) / 100 : basePrice;
+    const hasDiscount = effectivePrice < basePrice;
 
     return (
         <Link
@@ -37,9 +42,21 @@ function MiniProductCard({ product }) {
             <div className="p-4">
                 <h4 className="font-bold text-white text-sm leading-tight line-clamp-1 mb-1">{product.title}</h4>
                 {firstPrice && (
-                    <p className="text-[#8eff71] font-black text-sm">
-                        ${Number(firstPrice.price).toLocaleString('es-AR')} ARS
-                    </p>
+                    <div>
+                        {hasDiscount && (
+                            <p className="text-[#adaaaa] text-xs line-through leading-tight">
+                                ${basePrice.toLocaleString('es-AR')} ARS
+                            </p>
+                        )}
+                        <p className="text-[#8eff71] font-black text-sm">
+                            ${effectivePrice.toLocaleString('es-AR')} ARS
+                        </p>
+                        {hasDiscount && (
+                            <p className="text-[#ff7351] text-[10px] font-bold uppercase tracking-wide">
+                                -{discountPct}% OFF
+                            </p>
+                        )}
+                    </div>
                 )}
                 {product.categories?.length > 0 && (
                     <div className="mt-2 flex flex-wrap gap-1">
